@@ -9,13 +9,14 @@ enum UserManagerSingletonState {
   waiting,
   running,
   alive,
-  dead,
+  error,
 }
 
 /// 사용목적
 /// 우리는 주소값을 참조하도록 하고싶지만
 /// Riverpod는 state에 새로운 값 대입을 기점으로 rebuild를 하기 때문에 주소값이 변경되어버린다.
-/// 그래서 우린 singleton을 업데이트 해주고
+/// 그래서 singleton의 상태를 파악하기위해 얘를 사용합니다.
+/// Singleton 데이터 변화를 감지하려면 이녀석을 watch해야합니다.
 @Riverpod(keepAlive: true)
 class UserManagerBuffer extends _$UserManagerBuffer {
 
@@ -33,7 +34,7 @@ class UserManagerBuffer extends _$UserManagerBuffer {
       UserManagerBufferSingleton().addAll(serviceId: serviceId, users: value);
       state = UserManagerSingletonState.alive;
     }).catchError((e) {
-      state = UserManagerSingletonState.alive;
+      state = UserManagerSingletonState.error;
     });
 
 

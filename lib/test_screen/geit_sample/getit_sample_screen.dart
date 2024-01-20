@@ -25,7 +25,7 @@ class GetItScreen extends ConsumerWidget {
       case GetItScreenStateWait():
         return Center(
           child: Text(
-            '플롯팅버튼을 눌러서 사용자데이터를 가져오세요.(${delay.inSeconds}초 딜레이)',
+            '💥목표 : tree복사 → tree참조로 → 화면갱신까지💥\r\n플롯팅버튼을 눌러서 사용자데이터를 가져오세요.(${delay.inSeconds}초 딜레이)',
           ),
         );
       case GetItScreenStateLoading():

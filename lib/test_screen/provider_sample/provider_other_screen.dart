@@ -14,7 +14,7 @@ class ProviderOtherScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return FutureBuilder(
-      future: ref.read(providerScreenViewModelProvider.notifier).getData(),
+      future: ref.read(providerScreenViewModelProvider.notifier).otherFetchData(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return const Center(
@@ -27,7 +27,7 @@ class ProviderOtherScreen extends ConsumerWidget {
         if (!snapshot.hasData) {
           return Center(
             child: Text(
-              '사용자 데이터를 바로 가져옵니다!(${delay.inSeconds}초 딜레이)',
+              '💥목표 : tree복사 → tree참조로 → 화면갱신까지💥\r\n사용자 데이터를 바로 가져옵니다!(${delay.inSeconds}초 딜레이)',
             ),
           );
         }

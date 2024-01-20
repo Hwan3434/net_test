@@ -26,7 +26,7 @@ class ProviderScreenViewModel extends _$ProviderScreenViewModel {
   }
 
 
-  Future<List<LoginUserModel>> getData() async {
+  Future<List<LoginUserModel>> otherFetchData() async {
     await Future.delayed(delay);
     return await ref.read(loginUseCaseProvider).loginUsers();
   }
