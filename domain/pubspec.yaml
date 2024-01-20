@@ -37,6 +37,7 @@ dependencies:
   json_annotation: ^4.8.0
   collection: ^1.17.0
 
+  get_it: ^7.6.7
 
   riverpod: ^2.1.0
   riverpod_generator: ^2.1.0

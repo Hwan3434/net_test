@@ -1,66 +1,90 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:net_test/test_screen/test_screen_state.dart';
-import 'package:net_test/test_screen/test_screen_state_container.dart';
+import 'package:net_test/main.dart';
+import 'package:net_test/test_screen/buffer_sample/buffer_screen.dart';
+import 'package:net_test/test_screen/buffer_sample/buffer_screen_state_view_model.dart';
+import 'package:net_test/test_screen/geit_sample/getit_sample_screen.dart';
+import 'package:net_test/test_screen/geit_sample/getit_screen_state_view_model.dart';
+import 'package:net_test/test_screen/provider_sample/provider_other_screen.dart';
+import 'package:net_test/test_screen/provider_sample/provider_screen.dart';
+import 'package:net_test/test_screen/provider_sample/provider_screen_state_view_model.dart';
+import 'package:net_test/test_screen/sample_common_widget/changed_btn_widget.dart';
 
-class TestScreen extends ConsumerWidget {
-  final String title;
-  const TestScreen({
-    super.key,
-    required this.title,
-  });
+class TestScreen extends ConsumerStatefulWidget {
+  const TestScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<TestScreen> createState() => _TestScreenState();
+}
+
+const delay = Duration(seconds: 3);
+
+class _TestScreenState extends ConsumerState<TestScreen> {
+  final Map<SampleScreen, Widget> screenWidgets = {
+    SampleScreen.provider: const ProviderScreen(title: 'Provider Sample'),
+    SampleScreen.buffer: const BufferScreen(title: 'Buffer Sample'),
+    SampleScreen.getIt: const GetItScreen(title: 'GetIt Sample'),
+    SampleScreen.otherProvider:
+    const ProviderOtherScreen(title: 'Provider Other Sample'),
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final screen = ref.watch(changedScreen);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(title),
+        title: Text(screen.toString()),
       ),
-      body: Builder(builder: (context) {
-        final testState = ref.watch(testScreenStateContainerProvider);
-
-        if (testState is TestScreenStateError) {
-          return const Center(
-            child: Text(
-              '데이터를 불러오는데 실패하였습니다.',
-            ),
-          );
-        }
-        if (testState is TestScreenStateWait) {
-          return const Center(
-            child: Text(
-              '플롯팅버튼을 눌러서 사용자데이터를 가져오세요.',
-            ),
-          );
-        }
-
-        if (testState is TestScreenStateLoading) {
-          return const Center(
-            child: Text(
-              '사용자 데이터를 가져오는 중입니다.',
-            ),
-          );
-        }
-
-        if (testState is TestScreenStateSuccess) {
-          return Center(
-            child: Text(
-              '가져온 사용자 : ${testState.loginUserList.length}',
-            ),
-          );
-        }
-
-        throw Exception('존재 할 수 없는 상태입니다. : ${testState.runtimeType}');
-      }),
+      body: SafeArea(
+        child: screenWidgets[screen]!,
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          debugPrint('플로팅버튼 클릭');
-          ref.read(testScreenStateContainerProvider.notifier).fetchData();
+          switch (screen) {
+            case SampleScreen.provider:
+              ref.read(providerScreenViewModelProvider.notifier).fetchData();
+              break;
+            case SampleScreen.buffer:
+              ref
+                  .read(bufferScreenViewModelProvider.notifier)
+                  .fetchData(serviceId: searchKey);
+              break;
+            case SampleScreen.getIt:
+              ref.read(getItScreenViewModelProvider.notifier).fetchData();
+              break;
+            case SampleScreen.otherProvider:
+              break;
+          }
         },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        child: const Icon(Icons.refresh),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.text_snippet),
+            label: SampleScreen.provider.name,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.home),
+            label: SampleScreen.buffer.name,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.people),
+            label: SampleScreen.getIt.name,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.people),
+            label: SampleScreen.otherProvider.name,
+          ),
+        ],
+        currentIndex: screen.index,
+        onTap: (value) {
+          ref
+              .read(changedScreen.notifier)
+              .update((state) => SampleScreen.values[value]);
+        },
+      ),
     );
   }
 }
