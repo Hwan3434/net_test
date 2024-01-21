@@ -4,27 +4,42 @@ import 'package:net_test/test_screen/provider_sample/provider_screen_state.dart'
 import 'package:net_test/test_screen/provider_sample/provider_screen_state_view_model.dart';
 import 'package:net_test/test_screen/test_screen.dart';
 
-class ProviderScreen extends ConsumerWidget {
-  final String title;
+class ProviderScreen extends ConsumerStatefulWidget {
+
   const ProviderScreen({
     super.key,
-    required this.title,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ProviderScreen> createState() => _ProviderScreenState();
+}
+
+class _ProviderScreenState extends ConsumerState<ProviderScreen>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
     final testState = ref.watch(providerScreenViewModelProvider);
-    switch(testState){
+    switch (testState) {
       case ProviderScreenStateLoading():
         return const Center(
-          child: Text(
-            '사용자 데이터를 가져오는 중입니다.',
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '사용자 데이터를 가져오는 중입니다.',
+              ),
+              CircularProgressIndicator()
+            ],
           ),
         );
       case ProviderScreenStateWait():
         return Center(
           child: Text(
-            '💥목표 : tree복사 → tree참조로 → 화면갱신까지💥\r\n플롯팅버튼을 눌러서 사용자데이터를 가져오세요.(${delay.inSeconds}초 딜레이)',
+            '💥목표 : tree복사 → tree참조로 → 화면갱신까지💥\r\n플롯팅버튼을 눌러서 사용자데이터를 가져오세요.(${delay.inSeconds}초 딜레이)\r\nProvider',
           ),
         );
       case ProviderScreenStateError():
@@ -36,7 +51,7 @@ class ProviderScreen extends ConsumerWidget {
       case ProviderScreenStateSuccess():
         return Center(
           child: Text(
-            '가져온 사용자 : ${testState.loginUserList.length}',
+            '(복사 후 화면 갱신) 가져온 사용자 : ${testState.loginUserList.length}',
           ),
         );
     }

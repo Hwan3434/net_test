@@ -7,7 +7,7 @@ part of 'provider_screen_state_view_model.dart';
 // **************************************************************************
 
 String _$providerScreenViewModelHash() =>
-    r'b54732f8cb8efa0fb9001467ac13f07423a5e617';
+    r'cacd841bbbc4f433924b7ab1f7d33f48d3b04206';
 
 /// See also [ProviderScreenViewModel].
 @ProviderFor(ProviderScreenViewModel)

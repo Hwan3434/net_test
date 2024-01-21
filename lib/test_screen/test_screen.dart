@@ -8,7 +8,6 @@ import 'package:net_test/test_screen/geit_sample/getit_screen_state_view_model.d
 import 'package:net_test/test_screen/provider_sample/provider_other_screen.dart';
 import 'package:net_test/test_screen/provider_sample/provider_screen.dart';
 import 'package:net_test/test_screen/provider_sample/provider_screen_state_view_model.dart';
-import 'package:net_test/test_screen/sample_common_widget/changed_btn_widget.dart';
 
 class TestScreen extends ConsumerStatefulWidget {
   const TestScreen({super.key});
@@ -20,23 +19,34 @@ class TestScreen extends ConsumerStatefulWidget {
 const delay = Duration(seconds: 3);
 
 class _TestScreenState extends ConsumerState<TestScreen> {
+  final pageController = PageController();
+
   final Map<SampleScreen, Widget> screenWidgets = {
-    SampleScreen.provider: const ProviderScreen(title: 'Provider Sample'),
-    SampleScreen.buffer: const BufferScreen(title: 'Buffer Sample'),
-    SampleScreen.getIt: const GetItScreen(title: 'GetIt Sample'),
+    SampleScreen.provider: const ProviderScreen(),
+    SampleScreen.buffer: const BufferScreen(),
+    SampleScreen.getIt: const GetItScreen(),
     SampleScreen.otherProvider:
-    const ProviderOtherScreen(title: 'Provider Other Sample'),
+        const ProviderOtherScreen(),
   };
+
 
   @override
   Widget build(BuildContext context) {
     final screen = ref.watch(changedScreen);
+    debugPrint('Hi !');
     return Scaffold(
       appBar: AppBar(
         title: Text(screen.toString()),
       ),
       body: SafeArea(
-        child: screenWidgets[screen]!,
+        child: PageView(
+          controller: pageController,
+          physics: NeverScrollableScrollPhysics(),
+          onPageChanged: (value) {
+            debugPrint('hi : $value');
+          },
+          children: screenWidgets.values.toList(),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -80,9 +90,11 @@ class _TestScreenState extends ConsumerState<TestScreen> {
         ],
         currentIndex: screen.index,
         onTap: (value) {
+          pageController.jumpToPage(value);
           ref
               .read(changedScreen.notifier)
               .update((state) => SampleScreen.values[value]);
+
         },
       ),
     );

@@ -1,5 +1,3 @@
-import 'package:domain/sample/login/model/login_user_model.dart';
-
 sealed class BufferScreenState {}
 
 class BufferScreenStateWait extends BufferScreenState {}
@@ -25,6 +23,14 @@ class BufferScreenStateSuccess extends BufferScreenState {
 
 sealed class BufferUserUpdateState{}
 
-class SuccessBufferUpdate extends BufferUserUpdateState{}
-class FailBufferUpdate extends BufferUserUpdateState{}
+class WaitBufferUpdate extends BufferUserUpdateState{
+  final String stateWait = "WaitBufferUpdate";
+}
+
+class SuccessBufferUpdate extends BufferUserUpdateState{
+  final String stateSuccess = "SuccessBufferUpdate";
+}
+class FailBufferUpdate extends BufferUserUpdateState{
+  final String stateFail = "SuccessBufferUpdate";
+}
 

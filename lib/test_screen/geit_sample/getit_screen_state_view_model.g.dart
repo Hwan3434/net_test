@@ -7,7 +7,7 @@ part of 'getit_screen_state_view_model.dart';
 // **************************************************************************
 
 String _$getItScreenViewModelHash() =>
-    r'276165000ac466f8203ceb68213de19fce104521';
+    r'e8624be25cb5e5ed1822ee56e02457bacb3c7580';
 
 /// See also [GetItScreenViewModel].
 @ProviderFor(GetItScreenViewModel)

@@ -7,12 +7,12 @@ part of 'buffer_screen_state_view_model.dart';
 // **************************************************************************
 
 String _$bufferScreenViewModelHash() =>
-    r'dd43050f84943bf6f16ad0ff041c802dd46b642e';
+    r'ad85c36fc1615c5a022387de4ee83bd4fa500666';
 
 /// See also [BufferScreenViewModel].
 @ProviderFor(BufferScreenViewModel)
 final bufferScreenViewModelProvider = AutoDisposeNotifierProvider<
-    BufferScreenViewModel, BufferScreenState>.internal(
+    BufferScreenViewModel, BufferScreenModel>.internal(
   BufferScreenViewModel.new,
   name: r'bufferScreenViewModelProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,6 +22,6 @@ final bufferScreenViewModelProvider = AutoDisposeNotifierProvider<
   allTransitiveDependencies: null,
 );
 
-typedef _$BufferScreenViewModel = AutoDisposeNotifier<BufferScreenState>;
+typedef _$BufferScreenViewModel = AutoDisposeNotifier<BufferScreenModel>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

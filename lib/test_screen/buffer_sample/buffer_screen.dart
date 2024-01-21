@@ -7,46 +7,48 @@ import 'package:net_test/user/buffer/user_manager_buffer_singleton.dart';
 
 const searchKey = 'testKey';
 
-class BufferScreen extends ConsumerWidget {
-  final String title;
-
-  const BufferScreen({
-    super.key,
-    required this.title,
-  });
+class BufferScreen extends ConsumerStatefulWidget {
+  const BufferScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final testState = ref.watch(bufferScreenViewModelProvider);
-    switch(testState){
-      case BufferScreenStateError():
+  ConsumerState<BufferScreen> createState() => _BufferScreenState();
+}
+
+class _BufferScreenState extends ConsumerState<BufferScreen>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    /// select하면 좋은데 중요한건 어미의 상태 변화는 읽지못함 !
+    final testState = ref.watch(bufferScreenViewModelProvider
+        .select((value) => value.isBufferUserUpdateState));
+    switch (testState) {
+      case WaitBufferUpdate():
         return Center(
+          child: Text(
+            '💥목표 : tree복사 → tree참조로 → 화면갱신까지💥\r\n플롯팅버튼을 눌러서 사용자데이터를 가져오세요.(${delay.inSeconds}초 딜레이)\r\nbuffer',
+          ),
+        );
+      case SuccessBufferUpdate():
+        return Builder(builder: (context) {
+          final data = UserManagerBufferSingleton()
+              .treeManager
+              .data[searchKey]
+              ?.children;
+          return Center(
+            child: Text(
+              '(참조 화면갱신 - Flag변수) 가져온 사용자 : ${data?.length}\r\nFlag State - ${testState.toString()}',
+            ),
+          );
+        });
+      case FailBufferUpdate():
+        return const Center(
           child: Text(
             '데이터를 불러오는데 실패하였습니다.',
           ),
-        );
-      case BufferScreenStateWait():
-        return Center(
-          child: Text(
-            '💥목표 : tree복사 → tree참조로 → 화면갱신까지💥\r\n플롯팅버튼을 눌러서 사용자데이터를 가져오세요.(${delay.inSeconds}초 딜레이)',
-          ),
-        );
-      case BufferScreenStateLoading():
-        return Center(
-          child: Text(
-            '사용자 데이터를 가져오는 중입니다.',
-          ),
-        );
-      case BufferScreenStateSuccess():
-        return Builder(
-            builder: (context) {
-              final data = UserManagerBufferSingleton().treeManager.data[searchKey]?.children;
-              return Center(
-                child: Text(
-                  '주소 참조 상태 : ${testState.isUserUpdateState} 가져온 사용자 : ${data?.length}',
-                ),
-              );
-            }
         );
     }
   }
