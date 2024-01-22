@@ -24,7 +24,7 @@ class _BufferScreenState extends ConsumerState<BufferScreen>
     super.build(context);
     /// select하면 좋은데 중요한건 어미의 상태 변화는 읽지못함 !
     final testState = ref.watch(bufferScreenViewModelProvider
-        .select((value) => value.isBufferUserUpdateState));
+        .select((value) => value.treeState));
     switch (testState) {
       case WaitBufferUpdate():
         return Center(
@@ -34,13 +34,13 @@ class _BufferScreenState extends ConsumerState<BufferScreen>
         );
       case SuccessBufferUpdate():
         return Builder(builder: (context) {
-          final data = UserManagerBufferSingleton()
+          final treeData = testState.tree
               .treeManager
               .data[searchKey]
               ?.children;
           return Center(
             child: Text(
-              '(참조 화면갱신 - Flag변수) 가져온 사용자 : ${data?.length}\r\nFlag State - ${testState.toString()}',
+              '(참조 화면갱신 - Flag변수) 가져온 사용자 : ${treeData?.length}\r\nFlag State - ${testState.toString()}',
             ),
           );
         });

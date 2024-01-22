@@ -4,7 +4,7 @@ import 'package:domain/sample/login/login_usecase.dart';
 import 'package:riverpod/riverpod.dart';
 
 final loginUseCaseProvider = Provider<LoginUseCase>((ref) {
-  final userRepository = ref.read(userRepositoryProvider);
+  final userRepository = ref.watch(userRepositoryProvider);
   return LoginUseCaseImpl(
     userRepository,
   );

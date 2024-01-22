@@ -8,6 +8,7 @@ import 'package:net_test/test_screen/geit_sample/getit_screen_state_view_model.d
 import 'package:net_test/test_screen/provider_sample/provider_other_screen.dart';
 import 'package:net_test/test_screen/provider_sample/provider_screen.dart';
 import 'package:net_test/test_screen/provider_sample/provider_screen_state_view_model.dart';
+import 'package:net_test/test_screen/test_sample/sample_data_model.dart';
 
 class TestScreen extends ConsumerStatefulWidget {
   const TestScreen({super.key});
@@ -33,7 +34,6 @@ class _TestScreenState extends ConsumerState<TestScreen> {
   @override
   Widget build(BuildContext context) {
     final screen = ref.watch(changedScreen);
-    debugPrint('Hi !');
     return Scaffold(
       appBar: AppBar(
         title: Text(screen.toString()),
@@ -60,7 +60,8 @@ class _TestScreenState extends ConsumerState<TestScreen> {
                   .fetchData(serviceId: searchKey);
               break;
             case SampleScreen.getIt:
-              ref.read(getItScreenViewModelProvider.notifier).fetchData();
+              // ref.read(getItScreenViewModelProvider.notifier).fetchData();
+              ref.read(sampleViewModelProvider.notifier).updateUsecase();
               break;
             case SampleScreen.otherProvider:
               break;

@@ -10,6 +10,7 @@ class LoginUseCaseImpl implements LoginUseCase {
   @override
   Future<List<LoginUserModel>> loginUsers() {
     return _repository.getUsers().then((value) {
+
       return value.map((e) => LoginUserModel.fromDataModel(dataModel: e)).toList();
     }).catchError((error) {
       throw error;

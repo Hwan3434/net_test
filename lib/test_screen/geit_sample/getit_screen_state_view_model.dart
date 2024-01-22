@@ -1,6 +1,7 @@
 import 'package:domain/getit/locator.dart';
 import 'package:domain/sample/login/impl/login_usercase_impl.dart';
 import 'package:domain/sample/login/login_usecase.dart';
+import 'package:domain/sample/login/provider/login_usecase_provider.dart';
 import 'package:net_test/test_screen/geit_sample/getit_screen_state.dart';
 import 'package:net_test/test_screen/test_screen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

@@ -8,11 +8,14 @@ part 'buffer_screen_state_view_model.g.dart';
 
 @riverpod
 class BufferScreenViewModel extends _$BufferScreenViewModel {
+
   @override
   BufferScreenModel build() {
     return BufferScreenModel(
-      state: BufferScreenStateWait(),
-      isBufferUserUpdateState: WaitBufferUpdate(),
+      model: BufferScreenStateWait(),
+      treeState: WaitBufferUpdate(
+        tree: UserManagerBufferSingleton(),
+      ),
     );
   }
 
@@ -24,9 +27,13 @@ class BufferScreenViewModel extends _$BufferScreenViewModel {
     await Future.delayed(delay);
     await ref.read(loginUseCaseProvider).loginUsers().then((value) {
       UserManagerBufferSingleton().addAll(serviceId: serviceId, users: value);
-      state = state.copyWith(isBufferUserUpdateState: SuccessBufferUpdate());
+      state = state.copyWith(isBufferUserUpdateState: SuccessBufferUpdate(
+        tree: UserManagerBufferSingleton(),
+      ));
     }).catchError((e) {
-      state = state.copyWith(isBufferUserUpdateState: FailBufferUpdate());
+      state = state.copyWith(isBufferUserUpdateState: FailBufferUpdate(
+        tree: UserManagerBufferSingleton(),
+      ));
     });
   }
 }
@@ -34,12 +41,13 @@ class BufferScreenViewModel extends _$BufferScreenViewModel {
 
 
 class BufferScreenModel {
-  final BufferScreenState state;
-  final BufferUserUpdateState isBufferUserUpdateState;
+  final BufferScreenState model;
+  final BufferUserUpdateState treeState;
+
 
   BufferScreenModel({
-    required this.state,
-    required this.isBufferUserUpdateState,
+    required this.model,
+    required this.treeState,
   });
 
 
@@ -48,8 +56,8 @@ class BufferScreenModel {
     BufferUserUpdateState? isBufferUserUpdateState,
   }) {
     return BufferScreenModel(
-      state: state ?? this.state,
-      isBufferUserUpdateState: isBufferUserUpdateState ?? this.isBufferUserUpdateState,
+      model: state ?? this.model,
+      treeState: isBufferUserUpdateState ?? this.treeState,
     );
   }
 }
