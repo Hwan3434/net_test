@@ -12,21 +12,26 @@ class BufferScreenViewModel extends _$BufferScreenViewModel {
   BufferScreenModel build() {
     return BufferScreenModel(
       state: BufferScreenStateWait(),
-      isBufferUserUpdateState: WaitBufferUpdate(),
+      treeState: WaitBufferUpdate(
+        userManagerBufferSingleton: UserManagerBufferSingleton(),
+      ),
     );
   }
 
   void fetchData({required String serviceId,}) async {
-    /// 문제 발생 !!
     state = state.copyWith(
       state: BufferScreenStateLoading()
     );
     await Future.delayed(delay);
     await ref.read(loginUseCaseProvider).loginUsers().then((value) {
       UserManagerBufferSingleton().addAll(serviceId: serviceId, users: value);
-      state = state.copyWith(isBufferUserUpdateState: SuccessBufferUpdate());
+      state = state.copyWith(isBufferUserUpdateState: SuccessBufferUpdate(
+        userManagerBufferSingleton: UserManagerBufferSingleton(),
+      ));
     }).catchError((e) {
-      state = state.copyWith(isBufferUserUpdateState: FailBufferUpdate());
+      state = state.copyWith(isBufferUserUpdateState: FailBufferUpdate(
+        userManagerBufferSingleton: UserManagerBufferSingleton(),
+      ));
     });
   }
 }
@@ -35,11 +40,11 @@ class BufferScreenViewModel extends _$BufferScreenViewModel {
 
 class BufferScreenModel {
   final BufferScreenState state;
-  final BufferUserUpdateState isBufferUserUpdateState;
+  final BufferUserUpdateState treeState;
 
   BufferScreenModel({
     required this.state,
-    required this.isBufferUserUpdateState,
+    required this.treeState,
   });
 
 
@@ -49,7 +54,7 @@ class BufferScreenModel {
   }) {
     return BufferScreenModel(
       state: state ?? this.state,
-      isBufferUserUpdateState: isBufferUserUpdateState ?? this.isBufferUserUpdateState,
+      treeState: isBufferUserUpdateState ?? this.treeState,
     );
   }
 }

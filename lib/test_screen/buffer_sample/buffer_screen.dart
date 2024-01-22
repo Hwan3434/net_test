@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:net_test/test_screen/buffer_sample/buffer_screen_state.dart';
 import 'package:net_test/test_screen/buffer_sample/buffer_screen_state_view_model.dart';
 import 'package:net_test/test_screen/test_screen.dart';
-import 'package:net_test/user/buffer/user_manager_buffer_singleton.dart';
 
 const searchKey = 'testKey';
 
@@ -22,9 +21,8 @@ class _BufferScreenState extends ConsumerState<BufferScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    /// select하면 좋은데 중요한건 어미의 상태 변화는 읽지못함 !
     final testState = ref.watch(bufferScreenViewModelProvider
-        .select((value) => value.isBufferUserUpdateState));
+        .select((value) => value.treeState));
     switch (testState) {
       case WaitBufferUpdate():
         return Center(
@@ -34,7 +32,7 @@ class _BufferScreenState extends ConsumerState<BufferScreen>
         );
       case SuccessBufferUpdate():
         return Builder(builder: (context) {
-          final data = UserManagerBufferSingleton()
+          final data = testState.userManagerBufferSingleton
               .treeManager
               .data[searchKey]
               ?.children;
