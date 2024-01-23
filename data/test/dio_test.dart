@@ -1,5 +1,5 @@
 import 'package:data/common/dio_provider.dart';
-import 'package:data/sample/user/provider/user_repository_provider.dart';
+import 'package:data/sample/user/provider/user_repository_factory_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -19,7 +19,7 @@ void main() {
     test('프로바이더로 데이터 가져오기', () async {
       final container = ProviderContainer();
 
-      final userProvider = container.read(userRepositoryProvider);
+      final userProvider = container.read(userRepositoryFactoryProvider);
 
       final res = await userProvider.getUsers();
 

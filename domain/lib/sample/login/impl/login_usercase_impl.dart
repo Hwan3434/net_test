@@ -1,9 +1,9 @@
-import 'package:data/sample/user/repository/base_user_repository.dart';
+import 'package:data/sample/user/repository/user_repository.dart';
 import 'package:domain/sample/login/login_usecase.dart';
 import 'package:domain/sample/login/model/login_user_model.dart';
 
 class LoginUseCaseImpl implements LoginUseCase {
-  final BaseUserRepository _repository;
+  final UserRepository _repository;
 
   LoginUseCaseImpl(this._repository);
 

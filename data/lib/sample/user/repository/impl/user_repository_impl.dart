@@ -1,10 +1,10 @@
-import 'package:data/sample/user/datasource/base_user_datasource.dart';
+import 'package:data/sample/user/datasource/user_datasource.dart';
 import 'package:data/sample/user/datasource/model/response/res_user_model.dart';
-import 'package:data/sample/user/repository/base_user_repository.dart';
+import 'package:data/sample/user/repository/user_repository.dart';
 import 'package:flutter/widgets.dart';
 
-class UserRepositoryImpl implements BaseUserRepository {
-  final BaseUserDataSource _dataSource;
+class UserRepositoryImpl implements UserRepository {
+  final UserDataSource _dataSource;
   UserRepositoryImpl(this._dataSource);
 
   @override

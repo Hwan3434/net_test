@@ -1,7 +1,7 @@
-import 'package:data/sample/user/datasource/base_user_datasource.dart';
+import 'package:data/sample/user/datasource/user_datasource.dart';
 import 'package:data/sample/user/datasource/model/response/res_user_model.dart';
 
-class LocalUserDataSourceImpl implements BaseUserDataSource {
+class LocalUserDataSourceImpl implements UserDataSource {
   @override
   Future<List<ResUserModel>> users() async {
     return [
