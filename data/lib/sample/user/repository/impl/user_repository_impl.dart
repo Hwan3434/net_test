@@ -13,6 +13,7 @@ class UserRepositoryImpl implements UserRepository {
       return value;
     }).catchError((onError) {
       debugPrint('니 와죽노 ? : ${onError}');
+      return (List.empty() as List<ResUserModel>);
     });
   }
 }
