@@ -1,4 +1,4 @@
-import 'package:domain/sample/login/provider/login_usecase_factory_provider.dart';
+import 'package:domain/usecase/login/factory/login_usecase_factory_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 

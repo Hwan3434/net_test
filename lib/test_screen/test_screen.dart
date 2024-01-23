@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:net_test/common/app_const.dart';
 import 'package:net_test/main.dart';
-import 'package:net_test/test_screen/buffer_sample/buffer_screen.dart';
-import 'package:net_test/test_screen/buffer_sample/buffer_screen_provider.dart';
-import 'package:net_test/test_screen/geit_sample/getit_screen.dart';
-import 'package:net_test/test_screen/geit_sample/getit_screen_state_view_model.dart';
-import 'package:net_test/test_screen/provider_sample/provider_screen.dart';
-import 'package:net_test/test_screen/provider_sample/provider_screen_state_view_model.dart';
+import 'package:net_test/test_screen/buffer/buffer_screen.dart';
+import 'package:net_test/test_screen/buffer/buffer_screen_provider.dart';
+import 'package:net_test/test_screen/common_widget/floating_widget.dart';
+import 'package:net_test/test_screen/geit/getit_screen.dart';
+import 'package:net_test/test_screen/geit/getit_screen_state_view_model.dart';
+import 'package:net_test/test_screen/provider/provider_screen.dart';
+import 'package:net_test/test_screen/provider/provider_screen_state_view_model.dart';
 
 class TestScreen extends ConsumerStatefulWidget {
   const TestScreen({super.key});
@@ -14,8 +16,6 @@ class TestScreen extends ConsumerStatefulWidget {
   @override
   ConsumerState<TestScreen> createState() => _TestScreenState();
 }
-
-const delay = Duration(seconds: 3);
 
 class _TestScreenState extends ConsumerState<TestScreen> {
   final pageController = PageController();
@@ -49,23 +49,9 @@ class _TestScreenState extends ConsumerState<TestScreen> {
           children: screenWidgets.values.toList(),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          switch (screen) {
-            case SampleScreen.provider:
-              ref.read(providerScreenProvider.notifier).fetchData();
-              break;
-            case SampleScreen.buffer:
-              ref
-                  .read(bufferScreenProvider.notifier)
-                  .fetchData(serviceId: searchKey);
-              break;
-            case SampleScreen.getIt:
-              ref.read(getItScreenProvider.notifier).fetchData();
-              break;
-          }
-        },
-        child: const Icon(Icons.refresh),
+      floatingActionButton: FloatingWidget(
+        screen: screen,
+        searchKey: AppConst.searchKey,
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,

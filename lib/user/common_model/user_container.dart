@@ -1,5 +1,4 @@
-
-import 'package:domain/sample/login/model/login_user_model.dart';
+import 'package:domain/usecase/login/model/login_user_model.dart';
 
 class UserContainer {
   final String serviceId;
