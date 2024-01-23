@@ -1,5 +1,5 @@
 import 'package:domain/sample/login/model/login_user_model.dart';
-import 'package:domain/sample/login/provider/login_usecase_provider.dart';
+import 'package:domain/sample/login/provider/login_usecase_factory_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:net_test/test_screen/provider_sample/provider_screen_model.dart';
 import 'package:net_test/test_screen/test_screen.dart';
@@ -21,7 +21,7 @@ class ProviderScreenStateNotifier extends StateNotifier<ProviderScreenModel> {
     state = ProviderScreenModelLoading();
 
     await Future.delayed(delay);
-    await ref.read(loginUseCaseProvider).loginUsers().then((value) {
+    await ref.read(loginUseCaseFactoryProvider).loginUsers().then((value) {
       state = ProviderScreenModelSuccess(loginUserList: value);
     }).catchError((e) {
       state = ProviderScreenModelError(errorMessage: e.toString());

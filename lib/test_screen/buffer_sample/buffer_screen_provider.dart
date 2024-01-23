@@ -1,4 +1,4 @@
-import 'package:domain/sample/login/provider/login_usecase_provider.dart';
+import 'package:domain/sample/login/provider/login_usecase_factory_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:net_test/test_screen/buffer_sample/buffer_screen_model.dart';
 import 'package:net_test/test_screen/test_screen.dart';
@@ -28,7 +28,7 @@ class BufferScreenStateNotifier extends StateNotifier<BufferScreenModel> {
   }) async {
     state = state.copyWith(state: BufferScreenStateLoading());
     await Future.delayed(delay);
-    await ref.read(loginUseCaseProvider).loginUsers().then((value) {
+    await ref.read(loginUseCaseFactoryProvider).loginUsers().then((value) {
       UserManagerBufferSingleton().addAll(serviceId: serviceId, users: value);
       state = state.copyWith(
           isBufferUserUpdateState: SuccessBufferUpdate(
