@@ -1,5 +1,27 @@
 import 'package:net_test/user/buffer/user_manager_buffer_singleton.dart';
 
+class BufferScreenModel {
+  final BufferScreenState state;
+  final BufferUserUpdateState treeState;
+
+  BufferScreenModel({
+    required this.state,
+    required this.treeState,
+  });
+
+
+  copyWith({
+    BufferScreenState? state,
+    BufferUserUpdateState? isBufferUserUpdateState,
+  }) {
+    return BufferScreenModel(
+      state: state ?? this.state,
+      treeState: isBufferUserUpdateState ?? this.treeState,
+    );
+  }
+}
+
+
 sealed class BufferScreenState {}
 
 class BufferScreenStateWait extends BufferScreenState {}

@@ -1,34 +1,30 @@
 import 'package:domain/sample/login/model/login_user_model.dart';
 import 'package:domain/sample/login/provider/login_usecase_provider.dart';
-import 'package:net_test/test_screen/provider_sample/provider_screen_state.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:net_test/test_screen/provider_sample/provider_screen_model.dart';
 import 'package:net_test/test_screen/test_screen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'provider_screen_state_view_model.g.dart';
+final providerScreenProvider = StateNotifierProvider.autoDispose<
+    ProviderScreenStateNotifier, ProviderScreenModel>((ref) {
+  return ProviderScreenStateNotifier(ref: ref);
+});
 
-@riverpod
-class ProviderScreenViewModel extends _$ProviderScreenViewModel {
-  @override
-  ProviderScreenState build() {
-    return ProviderScreenStateWait();
-  }
+class ProviderScreenStateNotifier extends StateNotifier<ProviderScreenModel> {
+  final Ref ref;
+
+  ProviderScreenStateNotifier({
+    required this.ref,
+  }) : super(ProviderScreenModelWait());
 
   void fetchData() async {
-    state = ProviderScreenStateLoading();
+    state = ProviderScreenModelLoading();
 
     await Future.delayed(delay);
-
     await ref.read(loginUseCaseProvider).loginUsers().then((value) {
-      state = ProviderScreenStateSuccess(loginUserList: value);
+      state = ProviderScreenModelSuccess(loginUserList: value);
     }).catchError((e) {
-      state = ProviderScreenStateError(errorMessage: e.toString());
+      state = ProviderScreenModelError(errorMessage: e.toString());
     });
   }
-
-
-  Future<List<LoginUserModel>> otherFetchData() async {
-    await Future.delayed(delay);
-    return await ref.read(loginUseCaseProvider).loginUsers();
-  }
-
 }

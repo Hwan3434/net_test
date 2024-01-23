@@ -1,36 +1,31 @@
 import 'package:domain/getit/locator.dart';
 import 'package:domain/sample/login/impl/login_usercase_impl.dart';
 import 'package:domain/sample/login/login_usecase.dart';
-import 'package:net_test/test_screen/geit_sample/getit_screen_state.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:net_test/test_screen/geit_sample/getit_screen_model.dart';
 import 'package:net_test/test_screen/test_screen.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'getit_screen_state_view_model.g.dart';
+final getItScreenProvider =
+    StateNotifierProvider<GetItScreenStateNotifier, GetItScreenModel>((ref) {
+  final loginUseCase = locator<LoginUseCaseImpl>();
+  return GetItScreenStateNotifier(loginUseCase);
+});
 
-@riverpod
-class GetItScreenViewModel extends _$GetItScreenViewModel {
+class GetItScreenStateNotifier extends StateNotifier<GetItScreenModel> {
+  final LoginUseCase _loginUseCase;
 
-  late final LoginUseCase _loginUseCase;
-
-  @override
-  GetItScreenState build() {
-    init();
-    return GetItScreenStateWait();
-  }
-
-  init(){
-    _loginUseCase = locator<LoginUseCaseImpl>();
-  }
+  GetItScreenStateNotifier(
+    this._loginUseCase,
+  ) : super(GetItScreenModelWait());
 
   void fetchData() async {
-    state = GetItScreenStateLoading();
+    state = GetItScreenModelLoading();
 
     await Future.delayed(delay);
     await _loginUseCase.loginUsers().then((value) {
-      state = GetItScreenStateSuccess(loginUserList: value);
+      state = GetItScreenModelSuccess(loginUserList: value);
     }).catchError((e) {
-      state = GetItScreenStateError(errorMessage: e.toString());
+      state = GetItScreenModelError(errorMessage: e.toString());
     });
-
   }
 }

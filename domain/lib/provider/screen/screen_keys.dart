@@ -1,4 +1,0 @@
-enum ScreenKeys{
-  main,
-  login,
-}

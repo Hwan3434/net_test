@@ -48,11 +48,6 @@ class SampleButton extends StatelessWidget {
                     .read(changedScreen.notifier)
                     .update((state) => SampleScreen.getIt);
                 break;
-              case SampleScreen.otherProvider:
-                ref
-                    .read(changedScreen.notifier)
-                    .update((state) => SampleScreen.otherProvider);
-                break;
             }
           },
           child: Text(screen.toString()),

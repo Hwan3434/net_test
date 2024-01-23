@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:net_test/test_screen/buffer_sample/buffer_screen_state.dart';
-import 'package:net_test/test_screen/buffer_sample/buffer_screen_state_view_model.dart';
+import 'package:net_test/test_screen/buffer_sample/buffer_screen_model.dart';
+import 'package:net_test/test_screen/buffer_sample/buffer_screen_provider.dart';
 import 'package:net_test/test_screen/test_screen.dart';
 
 const searchKey = 'testKey';
@@ -21,7 +21,7 @@ class _BufferScreenState extends ConsumerState<BufferScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final testState = ref.watch(bufferScreenViewModelProvider
+    final testState = ref.watch(bufferScreenProvider
         .select((value) => value.treeState));
     switch (testState) {
       case WaitBufferUpdate():

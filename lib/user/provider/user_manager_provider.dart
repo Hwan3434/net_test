@@ -8,7 +8,6 @@ import 'package:net_test/user/common_model/user_manager.dart';
 class UserManagerProvider extends StateNotifier<UserManager> {
   UserManagerProvider() : super(UserManager(data: {}));
 
-
   void addTreeItem({required String id, required LoginUserModel item}) {
     if (state.data.containsKey(id)) {
       // If the key exists, update the data
