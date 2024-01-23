@@ -1,10 +1,4 @@
-
-
-
-
-
-
-import 'package:domain/sample/login/model/login_user_model.dart';
+import 'package:domain/usecase/login/model/login_user_model.dart';
 import 'package:net_test/user/common_model/user_container.dart';
 
 class UserManager {

@@ -1,12 +1,7 @@
 import 'package:domain/getit/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:net_test/test_screen/geit_sample/getit_sample_screen.dart';
-import 'package:net_test/test_screen/provider_sample/provider_other_screen.dart';
-import 'package:net_test/test_screen/provider_sample/provider_screen.dart';
 import 'package:net_test/test_screen/test_screen.dart';
-
-import 'test_screen/buffer_sample/buffer_screen.dart';
 
 void main() {
 
@@ -46,7 +41,6 @@ enum SampleScreen{
   provider,
   buffer,
   getIt,
-  otherProvider,
 }
 final changedScreen = StateProvider((ref) {
   return SampleScreen.provider;

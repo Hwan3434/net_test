@@ -1,7 +1,7 @@
-import 'package:data/sample/user/datasource/impl/remote_user_datasource_impl.dart';
-import 'package:data/sample/user/repository/impl/user_repository_impl.dart';
+import 'package:data/data/user/datasource/impl/remote_user_datasource_impl.dart';
+import 'package:data/data/user/repository/impl/user_repository_impl.dart';
 import 'package:dio/dio.dart';
-import 'package:domain/sample/login/impl/login_usercase_impl.dart';
+import 'package:domain/usecase/login/impl/login_usercase_impl.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 

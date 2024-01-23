@@ -1,13 +1,10 @@
-
-
-import 'package:domain/sample/login/model/login_user_model.dart';
+import 'package:domain/usecase/login/model/login_user_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:net_test/user/common_model/user_container.dart';
 import 'package:net_test/user/common_model/user_manager.dart';
 
 class UserManagerProvider extends StateNotifier<UserManager> {
   UserManagerProvider() : super(UserManager(data: {}));
-
 
   void addTreeItem({required String id, required LoginUserModel item}) {
     if (state.data.containsKey(id)) {
