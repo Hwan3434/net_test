@@ -218,14 +218,14 @@ packages:
     source: hosted
     version: "2.3.4"
   data:
-    dependency: transitive
+    dependency: "direct main"
     description:
       path: data
       relative: true
     source: path
     version: "1.0.0+1"
   dio:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: dio
       sha256: "7d328c4d898a61efc3cd93655a0955858e29a0aa647f0f9e02d59b3bb275e2e8"
@@ -306,7 +306,7 @@ packages:
     source: hosted
     version: "3.2.0"
   get_it:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: get_it
       sha256: e6017ce7fdeaf218dc51a100344d8cb70134b80e28b760f8bb23c242437bafd7

@@ -1,5 +1,7 @@
-import 'package:domain/usecase/login/model/login_user_model.dart';
+import 'package:domain/usecase/login/res_model/login_user_model.dart';
 
 abstract interface class LoginUseCase {
-  Future<List<LoginUserModel>> loginUsers();
+  Future<List<LoginUserModel>> loginUsers({
+    required int memberNo,
+  });
 }

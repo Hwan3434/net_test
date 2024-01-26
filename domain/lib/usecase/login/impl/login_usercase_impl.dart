@@ -1,7 +1,6 @@
-import 'package:data/data/user/repository/user_repository.dart';
+import 'package:domain/repository/user_repository.dart';
 import 'package:domain/usecase/login/login_usecase.dart';
-
-import '../model/login_user_model.dart';
+import 'package:domain/usecase/login/res_model/login_user_model.dart';
 
 class LoginUseCaseImpl implements LoginUseCase {
   final UserRepository _repository;
@@ -9,9 +8,11 @@ class LoginUseCaseImpl implements LoginUseCase {
   LoginUseCaseImpl(this._repository);
 
   @override
-  Future<List<LoginUserModel>> loginUsers() {
-    return _repository.getUsers().then((value) {
-      return value.map((e) => LoginUserModel.fromDataModel(dataModel: e)).toList();
+  Future<List<LoginUserModel>> loginUsers({
+    required int memberNo,
+  }) {
+    return _repository.getUsers(memberNo: 3).then((value) {
+      return value;
     }).catchError((error) {
       throw error;
     });

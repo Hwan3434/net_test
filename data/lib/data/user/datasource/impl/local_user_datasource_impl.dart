@@ -1,9 +1,9 @@
-import 'package:data/data/user/datasource/user_datasource.dart';
 import 'package:data/data/user/datasource/model/response/res_user_model.dart';
+import 'package:data/data/user/datasource/user_datasource.dart';
 
 class LocalUserDataSourceImpl implements UserDataSource {
   @override
-  Future<List<ResUserModel>> users() async {
+  Future<List<ResUserModel>> users({required int memberNo}) async {
     return [
       ResUserModel(id: 1, name: 'John Doe 1'),
       ResUserModel(id: 2, name: 'John Doe 2'),

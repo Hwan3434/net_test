@@ -1,5 +1,5 @@
-import 'package:data/data/user/datasource/user_datasource.dart';
 import 'package:data/data/user/datasource/model/response/res_user_model.dart';
+import 'package:data/data/user/datasource/user_datasource.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 
@@ -11,5 +11,5 @@ abstract class RemoteUserDataSourceImpl implements UserDataSource {
 
   @GET('/users')
   @override
-  Future<List<ResUserModel>> users();
+  Future<List<ResUserModel>> users({required int memberNo});
 }

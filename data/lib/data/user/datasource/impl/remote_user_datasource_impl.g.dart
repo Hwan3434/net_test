@@ -19,7 +19,7 @@ class _RemoteUserDataSourceImpl implements RemoteUserDataSourceImpl {
   String? baseUrl;
 
   @override
-  Future<List<ResUserModel>> users() async {
+  Future<List<ResUserModel>> users({required int memberNo}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};

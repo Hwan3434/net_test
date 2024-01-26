@@ -1,23 +1,38 @@
-import 'package:domain/getit/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:net_test/test_screen/test_screen.dart';
 
 void main() {
-
-  initLocator();
-
   runApp(
-    const ProviderScope(
+    ProviderScope(
       observers: [
+        // Logger(),
       ],
       child: MyApp(),
     ),
   );
 }
 
+class Logger extends ProviderObserver {
+  @override
+  void didUpdateProvider(ProviderBase provider, Object? previousValue,
+      Object? newValue, ProviderContainer container) {
+    debugPrint('''
+      "provider": "${provider.name ?? provider.runtimeType}"
+    ''');
+  }
 
-
+  @override
+  void didAddProvider(
+      ProviderBase provider, Object? value, ProviderContainer container) {
+    debugPrint('''
+    {
+      "provider:" "${provider.name ?? provider.runtimeType}",
+      "value": "$value"
+    }
+    ''');
+  }
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -35,13 +50,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-enum SampleScreen{
-  provider,
-  buffer,
-  getIt,
-}
-final changedScreen = StateProvider((ref) {
-  return SampleScreen.provider;
-});

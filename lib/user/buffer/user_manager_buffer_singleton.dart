@@ -1,9 +1,9 @@
-import 'package:domain/usecase/login/model/login_user_model.dart';
-import 'package:net_test/user/common_model/user_manager.dart';
+import 'package:domain/usecase/login/res_model/login_user_model.dart';
 
 class UserManagerBufferSingleton {
-  static final UserManagerBufferSingleton _singleton = UserManagerBufferSingleton._internal();
-  final UserManager treeManager = UserManager(data: {});
+  static final UserManagerBufferSingleton _singleton =
+      UserManagerBufferSingleton._internal();
+  final Set<LoginUserModel> data = {};
 
   factory UserManagerBufferSingleton() {
     return _singleton;
@@ -11,11 +11,11 @@ class UserManagerBufferSingleton {
 
   UserManagerBufferSingleton._internal();
 
-  void add({required String serviceId, required LoginUserModel user}) {
-    treeManager.add(serviceId: serviceId, user: user);
+  void add({required LoginUserModel user}) {
+    data.add(user);
   }
 
-  void addAll({required String serviceId, required List<LoginUserModel> users}) {
-    treeManager.addAll(serviceId: serviceId, users: users);
+  void addAll({required List<LoginUserModel> users}) {
+    data.addAll(users);
   }
 }
