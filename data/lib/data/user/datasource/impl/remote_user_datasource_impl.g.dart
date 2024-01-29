@@ -19,13 +19,36 @@ class _RemoteUserDataSourceImpl implements RemoteUserDataSourceImpl {
   String? baseUrl;
 
   @override
-  Future<List<ResUserModel>> users({required int memberNo}) async {
+  Future<UserDResModel> user(userId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio
-        .fetch<List<dynamic>>(_setStreamType<List<ResUserModel>>(Options(
+        .fetch<Map<String, dynamic>>(_setStreamType<UserDResModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/users/${userId}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = UserDResModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<List<UsersDResModel>> users() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio
+        .fetch<List<dynamic>>(_setStreamType<List<UsersDResModel>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -38,7 +61,7 @@ class _RemoteUserDataSourceImpl implements RemoteUserDataSourceImpl {
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     var value = _result.data!
-        .map((dynamic i) => ResUserModel.fromJson(i as Map<String, dynamic>))
+        .map((dynamic i) => UsersDResModel.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
   }

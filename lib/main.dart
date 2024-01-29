@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:net_test/test_screen/test_screen.dart';
+import 'package:net_test/user_screen/user_view/user_view.dart';
 
 void main() {
   runApp(
@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: false,
       ),
-      home: TestScreen(),
+      home: UserView(),
     );
   }
 }
