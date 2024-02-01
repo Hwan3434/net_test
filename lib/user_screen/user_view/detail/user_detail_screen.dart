@@ -84,7 +84,7 @@ class UserDetailScreen extends BaseStateScreen<UserDetailScreenStateModel> {
 }
 
 class _UserDetailErrorView extends StatelessWidget {
-  const _UserDetailErrorView({super.key});
+  const _UserDetailErrorView();
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +95,7 @@ class _UserDetailErrorView extends StatelessWidget {
 }
 
 class _UserDetailLoadingView extends StatelessWidget {
-  const _UserDetailLoadingView({super.key});
+  const _UserDetailLoadingView();
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +106,7 @@ class _UserDetailLoadingView extends StatelessWidget {
 }
 
 class _UserDetailLoadingLandscapeView extends StatelessWidget {
-  const _UserDetailLoadingLandscapeView({super.key});
+  const _UserDetailLoadingLandscapeView();
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +117,7 @@ class _UserDetailLoadingLandscapeView extends StatelessWidget {
 }
 
 class _UserDetailWaitView extends StatelessWidget {
-  const _UserDetailWaitView({super.key});
+  const _UserDetailWaitView();
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +130,7 @@ class _UserDetailWaitView extends StatelessWidget {
 class _UserDetailSuccessView extends StatelessWidget {
   final UserDetailScreenDataModel model;
 
-  const _UserDetailSuccessView({super.key, required this.model});
+  const _UserDetailSuccessView({required this.model});
 
   @override
   Widget build(BuildContext context) {

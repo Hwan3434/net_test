@@ -32,7 +32,6 @@ class OcAppbarComponent extends BaseStateView<OcAppbarComponentModel>
           title: Text(p0.name),
           systemOverlayStyle: systemUiOverlayStyle,
         );
-        ;
       },
     );
   }
