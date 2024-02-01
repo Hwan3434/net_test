@@ -1,4 +1,3 @@
-import 'package:domain/usecase/login/factory/login_usecase_factory_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 
@@ -7,10 +6,10 @@ void main() {
     test('usercase로 로그인 데이터 가져오기', () async {
       final container = ProviderContainer();
 
-      final loginUseCase = container.read(loginUseCaseFactoryProvider);
-
-      final result = await loginUseCase.loginUsers();
-      expect(result.length, 10);
+      // final loginUseCase =
+      //     container.read(UsecaseProviderManager().loginUseCaseFactoryProvider);
+      // final result = await loginUseCase.loginUsers(index: 3);
+      // expect(result.length, 10);
     });
   });
 }

@@ -1,28 +1,41 @@
-import 'package:domain/getit/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:net_test/test_screen/test_screen.dart';
+import 'package:net_test/user_screen/user_view/user_screen.dart';
 
 void main() {
-
-  initLocator();
-
   runApp(
-    const ProviderScope(
+    ProviderScope(
       observers: [
+        // Logger(),
       ],
       child: MyApp(),
     ),
   );
 }
 
+class Logger extends ProviderObserver {
+  @override
+  void didUpdateProvider(ProviderBase provider, Object? previousValue,
+      Object? newValue, ProviderContainer container) {
+    debugPrint('''
+      "provider": "${provider.name ?? provider.runtimeType}"
+    ''');
+  }
 
-
+  @override
+  void didAddProvider(
+      ProviderBase provider, Object? value, ProviderContainer container) {
+    debugPrint('''
+    {
+      "provider:" "${provider.name ?? provider.runtimeType}",
+      "value": "$value"
+    }
+    ''');
+  }
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,17 +44,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: false,
       ),
-      home: TestScreen(),
+      home: UserScreen(),
     );
   }
 }
-
-
-enum SampleScreen{
-  provider,
-  buffer,
-  getIt,
-}
-final changedScreen = StateProvider((ref) {
-  return SampleScreen.provider;
-});

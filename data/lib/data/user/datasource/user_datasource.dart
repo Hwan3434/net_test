@@ -1,5 +1,7 @@
-import 'package:data/data/user/datasource/model/response/res_user_model.dart';
+import 'model/response/user_dres_model.dart';
+import 'model/response/users_dres_model.dart';
 
 abstract class UserDataSource {
-  Future<List<ResUserModel>> users();
+  Future<UserDResModel> user(int userId);
+  Future<List<UsersDResModel>> users();
 }
