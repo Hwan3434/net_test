@@ -1,4 +1,4 @@
-import 'package:domain/usecase/user/login_usecase.dart';
+import 'package:domain/usecase/user/user_usecase.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:net_test/common/app_const.dart';
 import 'package:net_test/manager/data_manager.dart';
@@ -10,7 +10,7 @@ final bufferPageProvider =
   final serviceId = ref.watch(
       DataManager().usecaseStateProvider.select((value) => value.service));
   final loginUseCase =
-      ref.read(DataManager().loginUseCaseFactoryProvider(serviceId));
+      ref.read(DataManager().userUseCaseFactoryProvider(serviceId));
   return BufferPageStateNotifier(loginUseCase);
 });
 

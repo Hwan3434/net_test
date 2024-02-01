@@ -1,6 +1,6 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:net_test/user_screen/user_view/user_view.dart';
+// import 'package:net_test/user_screen/user_view/user_screen.dart';
 //
 // class ChangedBtnComponent extends ConsumerWidget {
 //   final VoidCallback? onPressed;

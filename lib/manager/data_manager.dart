@@ -1,10 +1,9 @@
 import 'package:data/data/user/datasource/impl/remote_user_datasource_impl.dart';
 import 'package:data/data/user/repository/impl/user_repository_impl.dart';
 import 'package:dio/dio.dart';
-import 'package:domain/usecase/user/cache/list_cache.dart';
-import 'package:domain/usecase/user/impl/login_usercase_impl.dart';
-import 'package:domain/usecase/user/login_usecase.dart';
-import 'package:domain/usecase/user/model/response/user_model.dart';
+import 'package:domain/usecase/user/cache_config/user_usecase_cache_config.dart';
+import 'package:domain/usecase/user/impl/user_usercase_impl.dart';
+import 'package:domain/usecase/user/user_usecase.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DataManager {
@@ -14,14 +13,13 @@ class DataManager {
     return _singleton;
   }
 
-  late ListCache<UserModel> userCache;
   late final StateNotifierProvider<TestStateNotifier, UseCaseStateModel>
       usecaseStateProvider;
+
   late final StateProviderFamily<UserUseCase, String>
-      loginUseCaseFactoryProvider;
+      userUseCaseFactoryProvider;
 
   DataManager._internal() {
-    userCache = ListCache<UserModel>();
     usecaseStateProvider =
         StateNotifierProvider<TestStateNotifier, UseCaseStateModel>((ref) {
       return TestStateNotifier(
@@ -33,7 +31,7 @@ class DataManager {
         ),
       );
     });
-    loginUseCaseFactoryProvider =
+    userUseCaseFactoryProvider =
         StateProvider.family<UserUseCase, String>((ref, serviceId) {
       final dio = Dio(
         BaseOptions(
@@ -45,7 +43,12 @@ class DataManager {
 
       final remoteDataSource = RemoteUserDataSourceImpl(dio);
       final repositoryImpl = UserRepositoryImpl(remoteDataSource);
-      return UserUseCaseImpl(repositoryImpl, cache: userCache);
+      return UserUseCaseImpl(
+        repositoryImpl,
+        UserUseCaseCacheConfig(
+          [UserUseCaseKeys.getUser],
+        ),
+      );
     });
   }
 }
@@ -65,7 +68,7 @@ class TestStateNotifier extends StateNotifier<UseCaseStateModel> {
       service: service,
     );
 
-    ref.invalidate(DataManager().loginUseCaseFactoryProvider);
+    ref.invalidate(DataManager().userUseCaseFactoryProvider);
   }
 }
 

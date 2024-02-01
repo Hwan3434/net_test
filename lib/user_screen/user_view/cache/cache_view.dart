@@ -19,7 +19,7 @@ class _CacheViewState extends ConsumerState<CacheView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Column(
+    return const Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         DataStateWidget(),
