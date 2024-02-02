@@ -1,9 +1,11 @@
+import 'package:data/common/dio_client_provider.dart';
+import 'package:data/common/domain/baseUrlProvider.dart';
 import 'package:data/data/user/datasource/impl/remote_user_datasource_impl.dart';
 import 'package:data/data/user/repository/impl/user_repository_impl.dart';
-import 'package:dio/dio.dart';
 import 'package:domain/usecase/user/cache_config/user_usecase_cache_config.dart';
 import 'package:domain/usecase/user/impl/user_usercase_impl.dart';
 import 'package:domain/usecase/user/user_usecase.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DataManager {
@@ -33,15 +35,16 @@ class DataManager {
     });
     userUseCaseFactoryProvider =
         StateProvider.family<UserUseCase, String>((ref, serviceId) {
-      final dio = Dio(
-        BaseOptions(
-          baseUrl: 'https://jsonplaceholder.$serviceId.com',
-          connectTimeout: 5000,
-          receiveTimeout: 3000,
-        ),
-      );
-
-      final remoteDataSource = RemoteUserDataSourceImpl(dio);
+      final dioClient = ref.watch(dioClientProvider);
+      // final dio = Dio(
+      //   BaseOptions(
+      //     baseUrl: 'https://jsonplaceholder.$serviceId.com',
+      //     connectTimeout: 5000,
+      //     receiveTimeout: 3000,
+      //   ),
+      // );
+      debugPrint('client가 다시만들어짐 ${dioClient.dio.options.baseUrl}');
+      final remoteDataSource = RemoteUserDataSourceImpl(dioClient.dio);
       final repositoryImpl = UserRepositoryImpl(remoteDataSource);
       return UserUseCaseImpl(
         repositoryImpl,
@@ -67,7 +70,9 @@ class TestStateNotifier extends StateNotifier<UseCaseStateModel> {
       domain: domain,
       service: service,
     );
-
+    ref
+        .read(baseUrlProvider.notifier)
+        .update((state) => 'https://jsonplaceholder.$service.com');
     ref.invalidate(DataManager().userUseCaseFactoryProvider);
   }
 }

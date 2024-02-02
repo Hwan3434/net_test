@@ -1,0 +1,104 @@
+import 'package:flutter/material.dart';
+import 'package:ui/ui/change_cls/cls_view.dart';
+import 'package:ui/ui/change_first/first_view.dart';
+import 'package:ui/ui/change_last/last_view.dart';
+import 'package:ui/ui/change_wapper/wrapper_view.dart';
+import 'package:ui/ui/original/original_view.dart';
+
+class SampleScreen extends StatelessWidget {
+  const SampleScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('TestApp'),
+      ),
+      body: SizedBox(
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return Scaffold(body: OriginalView());
+                    },
+                  ),
+                );
+              },
+              child: Text(
+                'Original',
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return Scaffold(body: FirstView());
+                    },
+                  ),
+                );
+              },
+              child: Text(
+                'FirstView',
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return Scaffold(body: ClsView());
+                    },
+                  ),
+                );
+              },
+              child: Text(
+                'cls',
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return Scaffold(body: WrapperView());
+                    },
+                  ),
+                );
+              },
+              child: Text(
+                'provider',
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return Scaffold(body: LastView());
+                    },
+                  ),
+                );
+              },
+              child: Text(
+                'Last',
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
