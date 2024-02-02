@@ -1,6 +1,5 @@
 import 'package:domain/repository/user/model/response/user_rres_model.dart';
 import 'package:domain/repository/user/model/response/users_rres_model.dart';
-import 'package:flutter/widgets.dart';
 
 class UserModel {
   final int id;
