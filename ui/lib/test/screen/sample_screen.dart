@@ -3,6 +3,7 @@ import 'package:ui/ui/change_cls/cls_view.dart';
 import 'package:ui/ui/change_first/first_view.dart';
 import 'package:ui/ui/change_last/last_view.dart';
 import 'package:ui/ui/change_wapper/wrapper_view.dart';
+import 'package:ui/ui/org_notifier/org_notifier_view.dart';
 import 'package:ui/ui/original/original_view.dart';
 
 class SampleScreen extends StatelessWidget {
@@ -34,6 +35,23 @@ class SampleScreen extends StatelessWidget {
               },
               child: Text(
                 'Original',
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return Scaffold(
+                        body: SafeArea(child: OrgNotifierView()),
+                      );
+                    },
+                  ),
+                );
+              },
+              child: Text(
+                'Org_Notifier',
               ),
             ),
             ElevatedButton(

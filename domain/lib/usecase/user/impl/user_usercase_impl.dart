@@ -17,19 +17,23 @@ class UserUseCaseImpl implements UserUseCase {
 
   UserUseCaseImpl(this._repository, this.cacheConfig);
 
-  T? _getCacheOrNull<T>(UserUseCaseKeys key, List<dynamic> param) {
+  T? _getCacheOrNull<T>(UserUseCaseKeys key, String paramKey) {
     assert(cacheConfig.cache.containsKey(UserUseCaseKeys.getUser));
     assert(userCache.containsKey(UserUseCaseKeys.getUser));
 
     return cacheConfig.cache[key]!
-        ? userCache[key]!.getFromParameter(param)
+        ? userCache[key]!.getFromParameter(paramKey)
         : null;
   }
 
-  void _IsUseAddCache<T>(UserUseCaseKeys key, List<dynamic> param, T data) {
+  void _IsUseAddCache<T>(UserUseCaseKeys key, String paramKey, T data) {
     assert(cacheConfig.cache.containsKey(UserUseCaseKeys.getUser));
     assert(userCache.containsKey(UserUseCaseKeys.getUser));
-    userCache[key]!.add(param, data);
+    userCache[key]!.add(paramKey, data);
+  }
+
+  String _createParamKey(List<dynamic> param) {
+    return param.map((e) => e.toString()).join(",");
   }
 
   @override
@@ -37,7 +41,7 @@ class UserUseCaseImpl implements UserUseCase {
     required int userId,
   }) {
     const cacheKey = UserUseCaseKeys.getUser;
-    final paramKey = [userId];
+    final paramKey = _createParamKey([userId]);
     assert(cacheConfig.cache.containsKey(cacheKey));
 
     final cache = _getCacheOrNull<UserModel>(cacheKey, paramKey);
@@ -60,7 +64,7 @@ class UserUseCaseImpl implements UserUseCase {
   @override
   Future<List<UserModel>> getUsers() {
     const cacheKey = UserUseCaseKeys.getUsers;
-    final paramKey = [];
+    final paramKey = _createParamKey([]);
     assert(cacheConfig.cache.containsKey(cacheKey));
 
     final cache = _getCacheOrNull<List<UserModel>>(cacheKey, paramKey);

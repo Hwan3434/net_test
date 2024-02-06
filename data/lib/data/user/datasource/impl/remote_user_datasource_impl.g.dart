@@ -19,24 +19,24 @@ class _RemoteUserDataSourceImpl implements RemoteUserDataSourceImpl {
   String? baseUrl;
 
   @override
-  Future<UserDResModel> user(userId) async {
+  Future<UserDResModel> user(
+    Options options,
+    int userId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<UserDResModel>(Options(
+    final Map<String, dynamic>? _data = null;
+    final newOptions = newRequestOptions(options);
+    newOptions.extra.addAll(_extra);
+    newOptions.headers.addAll(_dio.options.headers);
+    newOptions.headers.addAll(_headers);
+    final _result = await _dio.fetch<Map<String, dynamic>>(newOptions.copyWith(
       method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/users/${userId}',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+      baseUrl: baseUrl ?? _dio.options.baseUrl,
+      queryParameters: queryParameters,
+      path: '/users/${userId}',
+    )..data = _data);
     final value = UserDResModel.fromJson(_result.data!);
     return value;
   }
@@ -46,7 +46,7 @@ class _RemoteUserDataSourceImpl implements RemoteUserDataSourceImpl {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<List<dynamic>>(_setStreamType<List<UsersDResModel>>(Options(
       method: 'GET',
@@ -59,11 +59,40 @@ class _RemoteUserDataSourceImpl implements RemoteUserDataSourceImpl {
               queryParameters: queryParameters,
               data: _data,
             )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
     var value = _result.data!
         .map((dynamic i) => UsersDResModel.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
+  }
+
+  RequestOptions newRequestOptions(Object? options) {
+    if (options is RequestOptions) {
+      return options as RequestOptions;
+    }
+    if (options is Options) {
+      return RequestOptions(
+        method: options.method,
+        sendTimeout: options.sendTimeout,
+        receiveTimeout: options.receiveTimeout,
+        extra: options.extra,
+        headers: options.headers,
+        responseType: options.responseType,
+        contentType: options.contentType.toString(),
+        validateStatus: options.validateStatus,
+        receiveDataWhenStatusError: options.receiveDataWhenStatusError,
+        followRedirects: options.followRedirects,
+        maxRedirects: options.maxRedirects,
+        requestEncoder: options.requestEncoder,
+        responseDecoder: options.responseDecoder,
+        path: '',
+      );
+    }
+    return RequestOptions(path: '');
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
@@ -77,5 +106,22 @@ class _RemoteUserDataSourceImpl implements RemoteUserDataSourceImpl {
       }
     }
     return requestOptions;
+  }
+
+  String _combineBaseUrls(
+    String dioBaseUrl,
+    String? baseUrl,
+  ) {
+    if (baseUrl == null || baseUrl.trim().isEmpty) {
+      return dioBaseUrl;
+    }
+
+    final url = Uri.parse(baseUrl);
+
+    if (url.isAbsolute) {
+      return url.toString();
+    }
+
+    return Uri.parse(dioBaseUrl).resolveUri(url).toString();
   }
 }

@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:retrofit/http.dart';
+import 'package:retrofit/retrofit.dart';
 
 import '../model/response/user_dres_model.dart';
 import '../model/response/users_dres_model.dart';
@@ -13,7 +13,7 @@ abstract class RemoteUserDataSourceImpl implements UserDataSource {
 
   @GET('/users/{userId}')
   @override
-  Future<UserDResModel> user(@Path() int userId);
+  Future<UserDResModel> user(@DioOptions() Options options, @Path() int userId);
   @GET('/users')
   @override
   Future<List<UsersDResModel>> users();

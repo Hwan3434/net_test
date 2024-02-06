@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ui/test/get_it.dart';
 import 'package:ui/test/screen/sample_screen.dart';
 
-void main() => runApp(ProviderScope(child: const MyApp()));
+void main() {
+  setupLocator();
+  runApp(ProviderScope(child: const MyApp()));
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

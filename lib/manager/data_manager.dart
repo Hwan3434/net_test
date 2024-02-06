@@ -36,21 +36,12 @@ class DataManager {
     userUseCaseFactoryProvider =
         StateProvider.family<UserUseCase, String>((ref, serviceId) {
       final dioClient = ref.watch(dioClientProvider);
-      // final dio = Dio(
-      //   BaseOptions(
-      //     baseUrl: 'https://jsonplaceholder.$serviceId.com',
-      //     connectTimeout: 5000,
-      //     receiveTimeout: 3000,
-      //   ),
-      // );
       debugPrint('client가 다시만들어짐 ${dioClient.dio.options.baseUrl}');
       final remoteDataSource = RemoteUserDataSourceImpl(dioClient.dio);
       final repositoryImpl = UserRepositoryImpl(remoteDataSource);
       return UserUseCaseImpl(
         repositoryImpl,
-        UserUseCaseCacheConfig(
-          [UserUseCaseKeys.getUser],
-        ),
+        UserUseCaseCacheConfig([]),
       );
     });
   }

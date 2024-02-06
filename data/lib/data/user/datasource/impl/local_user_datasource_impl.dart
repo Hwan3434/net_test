@@ -1,10 +1,12 @@
+import 'package:dio/dio.dart';
+
 import '../model/response/user_dres_model.dart';
 import '../model/response/users_dres_model.dart';
 import '../user_datasource.dart';
 
 class LocalUserDataSourceImpl implements UserDataSource {
   @override
-  Future<UserDResModel> user(int userId) {
+  Future<UserDResModel> user(Options options, int userId) {
     // TODO: implement user
     return Future.value(UserDResModel(
       id: 1,

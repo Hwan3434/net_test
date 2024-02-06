@@ -1,16 +1,11 @@
 # net_test
 
-A new Flutter project.
+Injeinc Flutter 아키텍쳐 학습용 샘플 프로젝트
 
 ## Getting Started
+최초 clone 시 아래 커맨드 명령어를 입력 하여야합니다.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+cd /data 'dart pub run build_runner build', 'flutter pub get'  
+cd /doamin 'dart pub run build_runner build', 'flutter pub get'  
+cd / 'dart pub run build_runner build', 'flutter pub get'  
+cd /ui 'dart pub run build_runner build', 'flutter pub get'  

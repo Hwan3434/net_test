@@ -28,7 +28,7 @@ class _UserDetailScreenStateNotifier
 
   void init() async {
     state = UserDetailScreenStateModelLoading();
-    await Future.delayed(Duration(seconds: 3));
+    // await Future.delayed(Duration(seconds: 3));
     _userUseCase.getUser(userId: userId).then((value) {
       state = UserDetailScreenStateModelSuccess(
           viewModel: UserDetailScreenDataModel(model: value));

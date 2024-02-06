@@ -64,7 +64,7 @@ class _OriginalViewState extends ConsumerState<OriginalView> {
           children: [
             Center(
               child: Text(
-                '가져온 사용자 : $user',
+                '가져온 사용자 : \r\n${user.map((e) => 'name : ${e.name}').join(', \r\n')}',
               ),
             ),
           ],
