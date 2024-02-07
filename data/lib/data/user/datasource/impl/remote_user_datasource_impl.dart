@@ -13,7 +13,7 @@ abstract class RemoteUserDataSourceImpl implements UserDataSource {
 
   @GET('/users/{userId}')
   @override
-  Future<UserDResModel> user(@DioOptions() Options options, @Path() int userId);
+  Future<UserDResModel> user(@Path() int userId);
   @GET('/users')
   @override
   Future<List<UsersDResModel>> users();

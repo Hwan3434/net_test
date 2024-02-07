@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'last_consumer_stateful_widget.dart';
 
+// LastStatefulView<VM> 만들어
 abstract class LastStateView<VM> extends LastConsumerStatefulWidget<VM> {
   const LastStateView({
     super.key,

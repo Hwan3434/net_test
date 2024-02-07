@@ -1,5 +1,8 @@
-import 'package:data/common/dio_client.dart';
+import 'package:data/data/user/datasource/model/response/user_dres_model.dart';
 import 'package:data/data/user/datasource/user_datasource.dart';
+import 'package:domain/repository/user/model/request/delete_rreq_model.dart';
+import 'package:domain/repository/user/model/request/insert_rreq_model.dart';
+import 'package:domain/repository/user/model/request/update_rreq_model.dart';
 import 'package:domain/repository/user/model/request/user_rreq_model.dart';
 import 'package:domain/repository/user/model/request/users_rreq_model.dart';
 import 'package:domain/repository/user/model/response/user_rres_model.dart';
@@ -8,13 +11,12 @@ import 'package:domain/repository/user/user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final UserDataSource _dataSource;
+
   UserRepositoryImpl(this._dataSource);
 
   @override
   Future<UserRResModel> getUser({required UserRReqModel request}) async {
-    return await _dataSource
-        .user(options.toOptions(), request.userId)
-        .then((value) {
+    return await _dataSource.user(request.userId).then((value) {
       return UserRResModel(
         id: value.id,
         name: value.name,
@@ -39,6 +41,51 @@ class UserRepositoryImpl implements UserRepository {
       return value.map((e) => UsersRResModel(id: e.id, name: e.name)).toList();
     }).catchError((onError) {
       return List.empty();
+    });
+  }
+
+  @override
+  void insert({required InsertDResModel request}) async {
+    return await _dataSource
+        .insert(
+      UserDResModel(
+        id: request.id,
+        name: request.name,
+        username: request.username,
+        email: request.email,
+      ),
+    )
+        .then((value) {
+      return;
+    }).catchError((onError) {
+      return;
+    });
+  }
+
+  @override
+  void update({required UpdateDResModel request}) async {
+    return await _dataSource
+        .insert(
+      UserDResModel(
+        id: request.id,
+        name: request.name,
+        username: request.username,
+        email: request.email,
+      ),
+    )
+        .then((value) {
+      return;
+    }).catchError((onError) {
+      return;
+    });
+  }
+
+  @override
+  void delete({required DeleteRReqModel request}) async {
+    return await _dataSource.delete(request.userId).then((value) {
+      return;
+    }).catchError((onError) {
+      return;
     });
   }
 }

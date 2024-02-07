@@ -8,6 +8,7 @@ class OrgNotifierStateModelLoading extends OrgNotifierStateModel {}
 
 class OrgNotifierStateModelSuccess extends OrgNotifierStateModel {
   final Set<UserModel> data;
+
   OrgNotifierStateModelSuccess({required this.data});
 
   OrgNotifierStateModelSuccess copyWith({

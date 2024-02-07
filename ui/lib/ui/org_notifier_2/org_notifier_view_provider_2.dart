@@ -3,38 +3,43 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ui/test/user_data_provider.dart';
 import 'package:ui/test/user_use_case.dart';
 
-import 'org_notifier_view_model.dart';
+import 'org_notifier_view_model_2.dart';
 
-final orgNotifierViewProvider = StateNotifierProvider.autoDispose<
-    _OrgNotifierViewNotifier, OrgNotifierStateModel>((ref) {
+final orgNotifierViewProvider2 = StateNotifierProvider.autoDispose<
+    _OrgNotifierViewNotifier2, OrgNotifierViewModel>((ref) {
   final userUseCase = ref.read(userUsecaseProvider);
-  return _OrgNotifierViewNotifier(userUseCase);
+  return _OrgNotifierViewNotifier2(
+    userUseCase,
+    OrgNotifierViewModel(state: OrgNotifierViewState.wait, data: {}),
+  );
 });
 
-class _OrgNotifierViewNotifier extends StateNotifier<OrgNotifierStateModel> {
+class _OrgNotifierViewNotifier2 extends StateNotifier<OrgNotifierViewModel> {
   final UserUseCase _userUsecase;
   final _userDataNotifier = UserDataNotifier();
-  _OrgNotifierViewNotifier(this._userUsecase)
-      : super(OrgNotifierStateModelWait()) {
+  _OrgNotifierViewNotifier2(this._userUsecase, super._state) {
     _userDataNotifier.addListener(_updateState);
     _init();
   }
 
   void _init() {
     if (_userDataNotifier.size != 0) {
-      state = OrgNotifierStateModelSuccess(data: _userDataNotifier.data);
+      _updateState();
     } else {
       callUsers();
     }
   }
 
   void _updateState() {
-    state = OrgNotifierStateModelSuccess(data: _userDataNotifier.data);
+    state = state.copyWith(
+      state: OrgNotifierViewState.success,
+      data: _userDataNotifier.data,
+    );
   }
 
   void callUsers() async {
-    state = OrgNotifierStateModelLoading();
-    // await Future.delayed(const Duration(seconds: 2));
+    state = state.copyWith(state: OrgNotifierViewState.loading);
+    await Future.delayed(const Duration(seconds: 2));
     final users = await _userUsecase.getUsers();
     _userDataNotifier.addAll(users);
   }

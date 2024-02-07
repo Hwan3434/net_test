@@ -19,24 +19,28 @@ class _RemoteUserDataSourceImpl implements RemoteUserDataSourceImpl {
   String? baseUrl;
 
   @override
-  Future<UserDResModel> user(
-    Options options,
-    int userId,
-  ) async {
+  Future<UserDResModel> user(int userId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
-    final newOptions = newRequestOptions(options);
-    newOptions.extra.addAll(_extra);
-    newOptions.headers.addAll(_dio.options.headers);
-    newOptions.headers.addAll(_headers);
-    final _result = await _dio.fetch<Map<String, dynamic>>(newOptions.copyWith(
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<UserDResModel>(Options(
       method: 'GET',
-      baseUrl: baseUrl ?? _dio.options.baseUrl,
-      queryParameters: queryParameters,
-      path: '/users/${userId}',
-    )..data = _data);
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/users/${userId}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
     final value = UserDResModel.fromJson(_result.data!);
     return value;
   }
@@ -70,31 +74,6 @@ class _RemoteUserDataSourceImpl implements RemoteUserDataSourceImpl {
     return value;
   }
 
-  RequestOptions newRequestOptions(Object? options) {
-    if (options is RequestOptions) {
-      return options as RequestOptions;
-    }
-    if (options is Options) {
-      return RequestOptions(
-        method: options.method,
-        sendTimeout: options.sendTimeout,
-        receiveTimeout: options.receiveTimeout,
-        extra: options.extra,
-        headers: options.headers,
-        responseType: options.responseType,
-        contentType: options.contentType.toString(),
-        validateStatus: options.validateStatus,
-        receiveDataWhenStatusError: options.receiveDataWhenStatusError,
-        followRedirects: options.followRedirects,
-        maxRedirects: options.maxRedirects,
-        requestEncoder: options.requestEncoder,
-        responseDecoder: options.responseDecoder,
-        path: '',
-      );
-    }
-    return RequestOptions(path: '');
-  }
-
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||
@@ -123,5 +102,23 @@ class _RemoteUserDataSourceImpl implements RemoteUserDataSourceImpl {
     }
 
     return Uri.parse(dioBaseUrl).resolveUri(url).toString();
+  }
+
+  @override
+  Future<void> delete(int userId) {
+    // TODO: implement delete
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> insert(UserDResModel user) {
+    // TODO: implement insert
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> update(UserDResModel user) {
+    // TODO: implement update
+    throw UnimplementedError();
   }
 }

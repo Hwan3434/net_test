@@ -79,4 +79,22 @@ class UserUseCaseImpl implements UserUseCase {
       throw error;
     });
   }
+
+  @override
+  Future<void> delete() {
+    // TODO: implement delete
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> insert() {
+    // TODO: implement insert
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> update() {
+    // TODO: implement update
+    throw UnimplementedError();
+  }
 }
