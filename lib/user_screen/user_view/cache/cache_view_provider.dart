@@ -1,3 +1,4 @@
+import 'package:domain/usecase/result/result.dart';
 import 'package:domain/usecase/user/user_usecase.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:net_test/common/app_const.dart';
@@ -35,17 +36,20 @@ class BufferPageStateNotifier extends StateNotifier<CacheViewModel> {
     state = state.copyWith(bufferUserUpdateState: LoadingBufferUpdate());
     await Future.delayed(AppConst.delay);
     await _loginUseCase.getUsers().then((value) {
-      state = state.copyWith(
-        data: state.data,
-        bufferUserUpdateState: SuccessBufferUpdate(
-          data: value,
-        ),
-      );
-    }).catchError((e) {
-      state = state.copyWith(
-        data: state.data,
-        bufferUserUpdateState: FailBufferUpdate(),
-      );
+      switch (value) {
+        case ResultSuccess(data: final successData):
+          state = state.copyWith(
+            data: state.data,
+            bufferUserUpdateState: SuccessBufferUpdate(
+              data: successData,
+            ),
+          );
+        case ResultError(e: final error):
+          state = state.copyWith(
+            data: state.data,
+            bufferUserUpdateState: FailBufferUpdate(),
+          );
+      }
     });
   }
 }

@@ -1,5 +1,5 @@
+import 'package:domain/usecase/result/result.dart';
 import 'package:domain/usecase/user/user_usecase.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:net_test/manager/data_manager.dart';
 import 'package:net_test/user_screen/user_view/detail/user_detail_screen_model.dart';
@@ -30,11 +30,13 @@ class _UserDetailScreenStateNotifier
     state = UserDetailScreenStateModelLoading();
     // await Future.delayed(Duration(seconds: 3));
     _userUseCase.getUser(userId: userId).then((value) {
-      state = UserDetailScreenStateModelSuccess(
-          viewModel: UserDetailScreenDataModel(model: value));
-    }).catchError((onError) {
-      debugPrint('에러 : ${onError.toString()}');
-      state = UserDetailScreenStateModelError();
+      switch (value) {
+        case ResultSuccess(data: final successData):
+          state = UserDetailScreenStateModelSuccess(
+              viewModel: UserDetailScreenDataModel(model: successData));
+        case ResultError(e: final error):
+          state = UserDetailScreenStateModelError();
+      }
     });
   }
 }

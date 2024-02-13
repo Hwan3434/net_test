@@ -1,3 +1,4 @@
+import 'package:domain/usecase/result/result.dart';
 import 'package:domain/usecase/user/user_usecase.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:net_test/manager/data_manager.dart';
@@ -29,9 +30,12 @@ class ProviderViewStateNotifier extends StateNotifier<UserListViewStateModel> {
     state = UserListViewStateLoading();
 
     await _loginUseCase.getUsers().then((value) {
-      state = UserListViewStateSuccess(value);
-    }).catchError((e) {
-      state = UserListViewStateError(errorMessage: e.toString());
+      switch (value) {
+        case ResultSuccess(data: final successData):
+          state = UserListViewStateSuccess(successData);
+        case ResultError(e: final error):
+          state = UserListViewStateError(errorMessage: error.toString());
+      }
     });
   }
 

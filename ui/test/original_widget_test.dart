@@ -12,7 +12,7 @@ import 'package:ui/ui/original/original_view.dart';
 void main() {
   testWidgets('오리지널 유저 가져오기 ing', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(ProviderScope(child: const OriginalView()));
+    await tester.pumpWidget(ProviderScope(child: OriginalView()));
 
     // Verify that our counter starts at 0.
     expect(find.text('wait'), findsOneWidget);

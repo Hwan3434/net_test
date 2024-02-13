@@ -11,7 +11,7 @@ class UserUseCaseImpl2 implements UserUseCase {
   UserUseCaseImpl2(this._repository);
 
   @override
-  Future<Result> getUser({
+  Future<Result<UserModel>> getUser({
     required int userId,
   }) {
     return _repository
@@ -24,11 +24,11 @@ class UserUseCaseImpl2 implements UserUseCase {
   }
 
   @override
-  Future<Result> getUsers() {
+  Future<Result<List<UserModel>>> getUsers() {
     return _repository.getUsers(request: UsersRReqModel()).then((value) {
       return ResultSuccess(value.map((e) => UserModel.fromUsers(e)).toList());
     }).catchError((error) {
-      throw error;
+      return ResultError(LocalError(error.toString()));
     });
   }
 

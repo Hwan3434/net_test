@@ -45,7 +45,7 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  void insert({required InsertDResModel request}) async {
+  Future<void> insert({required InsertDResModel request}) async {
     return await _dataSource
         .insert(
       UserDResModel(
@@ -63,7 +63,7 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  void update({required UpdateDResModel request}) async {
+  Future<void> update({required UpdateDResModel request}) async {
     return await _dataSource
         .insert(
       UserDResModel(
@@ -81,7 +81,7 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  void delete({required DeleteRReqModel request}) async {
+  Future<void> delete({required DeleteRReqModel request}) async {
     return await _dataSource.delete(request.userId).then((value) {
       return;
     }).catchError((onError) {

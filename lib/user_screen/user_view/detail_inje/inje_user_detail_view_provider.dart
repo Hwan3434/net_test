@@ -1,5 +1,5 @@
+import 'package:domain/usecase/result/result.dart';
 import 'package:domain/usecase/user/user_usecase.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:net_test/manager/data_manager.dart';
 
@@ -36,15 +36,17 @@ class _InjeUserDetailViewStateNotifier
         InjeUserDetailViewModel(state: InjeUserDetailViewModelState.loading);
     await Future.delayed(Duration(seconds: 3));
     _userUseCase.getUser(userId: userId).then((value) {
-      state = InjeUserDetailViewModel(
-        state: InjeUserDetailViewModelState.success,
-        name: value.name,
-        email: value.email,
-      );
-    }).catchError((onError) {
-      debugPrint('에러 : ${onError.toString()}');
-      state =
-          InjeUserDetailViewModel(state: InjeUserDetailViewModelState.error);
+      switch (value) {
+        case ResultSuccess(data: final successData):
+          state = InjeUserDetailViewModel(
+            state: InjeUserDetailViewModelState.success,
+            name: successData.name,
+            email: successData.email,
+          );
+        case ResultError(e: final error):
+          state = InjeUserDetailViewModel(
+              state: InjeUserDetailViewModelState.error);
+      }
     });
   }
 }

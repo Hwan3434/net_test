@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ui/test/user_use_case.dart';
 
 import 'original_view_model.dart';
-import 'original_view_provider.dart';
+import 'original_view_notifier.dart';
 
 class OriginalView extends ConsumerStatefulWidget {
-  const OriginalView({
+  OriginalView({
     super.key,
+  });
+
+  final _originalViewProvider = StateNotifierProvider.autoDispose<
+      OriginalViewNotifier, OriginalViewStateModel>((ref) {
+    final userUseCase = ref.read(userUsecaseProvider);
+    return OriginalViewNotifier(userUseCase);
   });
 
   @override
@@ -16,7 +23,7 @@ class OriginalView extends ConsumerStatefulWidget {
 class _OriginalViewState extends ConsumerState<OriginalView> {
   @override
   Widget build(BuildContext context) {
-    final testState = ref.watch(originalViewProvider);
+    final testState = ref.watch(widget._originalViewProvider);
     switch (testState) {
       case OriginalViewStateLoading():
         return const Center(
@@ -40,7 +47,7 @@ class _OriginalViewState extends ConsumerState<OriginalView> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  ref.read(originalViewProvider.notifier).fetchData();
+                  ref.read(widget._originalViewProvider.notifier).fetchData();
                 },
                 child: Text('유저 가져오기'),
               )

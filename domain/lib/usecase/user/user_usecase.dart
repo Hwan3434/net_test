@@ -1,4 +1,5 @@
 import 'package:domain/usecase/result/result.dart';
+import 'package:domain/usecase/user/model/response/user_model.dart';
 
 enum UserUseCaseKeys {
   getUser,
@@ -10,11 +11,11 @@ abstract interface class UserUseCase {
   //   required int userId,
   // });
   // Future<List<UserModel>> getUsers();
-  Future<Result> getUser({
+  Future<Result<UserModel>> getUser({
     required int userId,
   });
-  Future<Result> getUsers();
-  Future<Result> insert();
-  Future<Result> update();
-  Future<Result> delete(int userId);
+  Future<Result<List<UserModel>>> getUsers();
+  Future<void> insert();
+  Future<void> update();
+  Future<void> delete(int userId);
 }

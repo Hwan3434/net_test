@@ -1,3 +1,4 @@
+import 'package:domain/usecase/result/result.dart';
 import 'package:domain/usecase/user/user_usecase.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ui/test/user_data_provider.dart';
@@ -40,8 +41,14 @@ class _OrgNotifierViewNotifier2 extends StateNotifier<OrgNotifierViewModel> {
   void callUsers() async {
     state = state.copyWith(state: OrgNotifierViewState.loading);
     await Future.delayed(const Duration(seconds: 2));
-    final users = await _userUsecase.getUsers();
-    _userDataNotifier.addAll(users);
+    _userUsecase.getUsers().then((value) {
+      switch (value) {
+        case ResultSuccess(data: final successData):
+          _userDataNotifier.addAll(successData);
+        case ResultError(e: final error):
+          state = state.copyWith(state: OrgNotifierViewState.error);
+      }
+    });
   }
 
   void delete(int i) async {
