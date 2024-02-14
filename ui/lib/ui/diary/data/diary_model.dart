@@ -8,7 +8,7 @@ class DiaryModel {
   final bool fav;
   final bool selectedState;
   final List<DiaryUserModel> users;
-  final List<String> etc;
+  final List<DiaryEtcModel> etc;
 
   const DiaryModel({
     required this.id,
@@ -45,6 +45,33 @@ extension DiaryColorExtention on DiaryColor {
         return Colors.yellow;
     }
   }
+}
+
+int createKey = 4;
+
+class DiaryEtcModel {
+  final int id;
+  final String etc;
+  final DateTime date;
+
+  const DiaryEtcModel({
+    required this.id,
+    required this.etc,
+    required this.date,
+  });
+
+  factory DiaryEtcModel.create() =>
+      DiaryEtcModel(id: createKey++, etc: '', date: DateTime.now());
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DiaryEtcModel &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }
 
 class DiaryUserModel {

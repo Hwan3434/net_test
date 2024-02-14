@@ -25,9 +25,9 @@ final List<DiaryModel> allData = [
       DiaryUserModel.gb(),
     ],
     etc: [
-      '기타 1번이요',
-      '호놀롤로',
-      '후루루루루',
+      DiaryEtcModel(id: 1, etc: '기타 1번이요', date: DateTime.now()),
+      DiaryEtcModel(id: 2, etc: '호노노로로', date: DateTime.now()),
+      DiaryEtcModel(id: 3, etc: '차차차라차차', date: DateTime.now()),
     ],
   ),
   DiaryModel(

@@ -203,11 +203,25 @@ class _SelectedStateWidgetState extends State<_SelectedStateWidget> {
   }
 }
 
-class _UsersWidget extends StatelessWidget {
+class _UsersWidget extends StatefulWidget {
   final List<DiaryUserModel> selectedUsers;
   const _UsersWidget({
     required this.selectedUsers,
   });
+
+  @override
+  State<_UsersWidget> createState() => _UsersWidgetState();
+}
+
+class _UsersWidgetState extends State<_UsersWidget> {
+  late List<DiaryUserModel> _stateList;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _stateList = widget.selectedUsers;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -221,9 +235,19 @@ class _UsersWidget extends StatelessWidget {
               return Row(
                 children: [
                   Checkbox(
-                    value: selectedUsers.contains(e),
+                    value: widget.selectedUsers.contains(e),
                     onChanged: (value) {
                       debugPrint('사용자클릭 : ${e.name}');
+                      if (value != null) {
+                        setState(() {
+                          if (value) {
+                            _stateList.add(e);
+                          } else {
+                            _stateList
+                                .removeWhere((element) => element.id == e.id);
+                          }
+                        });
+                      }
                     },
                   ),
                   Text(e.name),
@@ -238,7 +262,7 @@ class _UsersWidget extends StatelessWidget {
 }
 
 class _EtcWidget extends StatefulWidget {
-  final List<String> data;
+  final List<DiaryEtcModel> data;
   const _EtcWidget({required this.data});
 
   @override
@@ -246,14 +270,16 @@ class _EtcWidget extends StatefulWidget {
 }
 
 class _EtcWidgetState extends State<_EtcWidget> {
+  late List<DiaryEtcModel> stateDataList;
   Map<int, TextEditingController> _TextControllers = {};
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    for (var entry in widget.data.asMap().entries) {
-      _TextControllers[entry.key] = TextEditingController(text: entry.value);
+    stateDataList = widget.data;
+    for (var entry in widget.data) {
+      _TextControllers[entry.id] = TextEditingController(text: entry.etc);
     }
   }
 
@@ -263,29 +289,52 @@ class _EtcWidgetState extends State<_EtcWidget> {
       children: [
         Flexible(
           child: ListView.builder(
-            itemCount: widget.data.length,
+            itemCount: stateDataList.length,
             itemBuilder: (context, index) {
+              final item = stateDataList[index];
+              final controller = _TextControllers[item.id];
               return Row(
                 children: [
-                  Text('기타 $index : '),
+                  Text('기타 ${index + 1} '),
                   Expanded(
                     child: TextField(
-                      controller: _TextControllers[index],
+                      controller: controller,
                     ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      debugPrint('기타 삭제 : $index');
+                      setState(() {
+                        stateDataList.removeAt(index);
+                        _TextControllers.remove(item.id);
+                      });
+                    },
+                    icon: Icon(Icons.delete),
                   ),
                 ],
               );
             },
           ),
         ),
-        Flexible(child: _AddEtc()),
+        _AddEtc(
+          onAddEtcPressed: () {
+            debugPrint('새로운 Etc 추가해줘');
+            setState(() {
+              final newEtc = DiaryEtcModel.create();
+              stateDataList.add(newEtc);
+              _TextControllers[newEtc.id] =
+                  TextEditingController(text: newEtc.etc);
+            });
+          },
+        ),
       ],
     );
   }
 }
 
 class _AddEtc extends StatelessWidget {
-  const _AddEtc({super.key});
+  final VoidCallback? onAddEtcPressed;
+  const _AddEtc({required this.onAddEtcPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -293,11 +342,7 @@ class _AddEtc extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(Icons.plus_one),
-        ElevatedButton(
-            onPressed: () {
-              debugPrint('새로운 Etc 추가해줘');
-            },
-            child: Text('새로운 Etc 추가하기'))
+        ElevatedButton(onPressed: onAddEtcPressed, child: Text('새로운 Etc 추가하기'))
       ],
     );
   }
