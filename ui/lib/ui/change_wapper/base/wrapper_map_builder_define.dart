@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ui/test/log.dart';
 
 typedef WrapperBaseFunction<VM> = Widget Function(VM, Orientation);
 
@@ -33,7 +34,7 @@ mixin WrapperMapBuilderDefine<VM> {
   }
 
   Widget runBuild(VM model, Orientation orientation) {
-    debugPrint('type : ${model.runtimeType}');
+    Log.d('type : ${model.runtimeType}');
     return _widgetMap[orientation]![model.runtimeType.toString()]!(
       model,
       orientation,

@@ -1,7 +1,7 @@
 import 'package:domain/usecase/result/result.dart';
 import 'package:domain/usecase/user/user_usecase.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ui/test/log.dart';
 import 'package:ui/test/user_data_provider.dart';
 import 'package:ui/test/user_use_case.dart';
 
@@ -42,7 +42,7 @@ class _OrgNotifierViewNotifier extends StateNotifier<OrgNotifierStateModel> {
         case ResultSuccess(data: final successData):
           _userDataNotifier.addAll(successData);
         case ResultError(e: final error):
-          debugPrint('error : $error');
+          Log.d('error : $error');
       }
     });
   }

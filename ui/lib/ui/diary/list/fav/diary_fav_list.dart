@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui/test/log.dart';
 import 'package:ui/ui/diary/common/diary_card.dart';
 import 'package:ui/ui/diary/data/diary_data.dart';
 import 'package:ui/ui/diary/data/diary_model.dart';
@@ -24,7 +25,7 @@ class DiaryFavList extends StatelessWidget {
 
 class _FavContainer extends StatelessWidget {
   final DiaryModel item;
-  const _FavContainer({super.key, required this.item});
+  const _FavContainer({required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class _FavContainer extends StatelessWidget {
       width: 120,
       child: DiaryCard(
         onTab: () {
-          debugPrint('즐겨찾기 List Item Click');
+          Log.d('즐겨찾기 List Item Click');
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -53,7 +54,7 @@ class _FavContainer extends StatelessWidget {
                 value: item.selectedState,
                 date: item.date,
                 onChanged: (value) {
-                  debugPrint('누름 : $value');
+                  Log.d('누름 : $value');
                 },
               ),
               Flexible(child: _FavContent(content: item.content)),
@@ -95,7 +96,6 @@ class _FavTop extends StatelessWidget {
 class _FavContent extends StatelessWidget {
   final String content;
   const _FavContent({
-    super.key,
     required this.content,
   });
 

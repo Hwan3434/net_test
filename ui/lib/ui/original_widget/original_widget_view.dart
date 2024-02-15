@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ui/test/log.dart';
 import 'package:ui/ui/original_widget/original_widget_view_notifier.dart';
 
 class OriginalWidgetView extends ConsumerWidget {
@@ -17,14 +18,12 @@ class OriginalWidgetView extends ConsumerWidget {
               child: InkWell(
                 onTap: () {
                   final test = e.controller.text;
-                  debugPrint('테텥 :: :${test}');
+                  Log.d('테텥 :: :${test}');
                 },
                 child: _TopCount(
                   provider: () {
-
                     return originalWidgetViewProvider
                         .select((value) => value.count);
-
                   },
                 ),
               )),
@@ -47,7 +46,7 @@ class _TopCount extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final count = ref.watch(provider.call());
-    debugPrint('화면 새로고침 {count}');
+    Log.d('화면 새로고침 {count}');
     return Text('count = ${count}');
   }
 }
@@ -59,7 +58,7 @@ class _MainContainer extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final text =
         ref.watch(originalWidgetViewProvider.select((value) => value.text));
-    debugPrint('화면 새로고침 {채팅내용}');
+    Log.d('화면 새로고침 {채팅내용}');
     return Center(child: Text('채팅 내용 : $text'));
   }
 }
@@ -100,7 +99,7 @@ class _EditContainerState extends ConsumerState<_EditContainer> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('화면 새로고침 { Edit }');
+    Log.d('화면 새로고침 { Edit }');
     return Container(
       child: Row(
         children: [
@@ -111,7 +110,7 @@ class _EditContainerState extends ConsumerState<_EditContainer> {
           )),
           ElevatedButton(
               onPressed: () {
-                debugPrint('controller : ${myController.text}');
+                Log.d('controller : ${myController.text}');
                 ref
                     .read(originalWidgetViewProvider.notifier)
                     .updateState(text: myController.text);

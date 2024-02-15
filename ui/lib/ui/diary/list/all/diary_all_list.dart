@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui/test/log.dart';
 import 'package:ui/ui/diary/common/diary_card.dart';
 import 'package:ui/ui/diary/data/diary_data.dart';
 import 'package:ui/ui/diary/data/diary_model.dart';
@@ -29,7 +30,7 @@ class _AllContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return DiaryCard(
       onTab: () {
-        debugPrint('List Item Click');
+        Log.d('List Item Click');
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -52,13 +53,13 @@ class _AllContainer extends StatelessWidget {
               fav: item.fav,
               selected: item.selectedState,
               onDeletePressed: () {
-                debugPrint('아이템 삭제 클릭');
+                Log.d('아이템 삭제 클릭');
               },
               onFavPressed: () {
-                debugPrint('아이템 즐겨찾기 클릭');
+                Log.d('아이템 즐겨찾기 클릭');
               },
               onSelectedPressed: (value) {
-                debugPrint('아이템 체크박스 클릭');
+                Log.d('아이템 체크박스 클릭');
               },
             ),
             _AllMid(

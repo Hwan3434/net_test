@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui/test/log.dart';
 import 'package:ui/ui/change_cls/cls_view.dart';
 import 'package:ui/ui/change_first/first_view.dart';
 import 'package:ui/ui/change_last/last_view.dart';
@@ -10,10 +11,19 @@ import 'package:ui/ui/original/original_view.dart';
 import 'package:ui/ui/original_widget/original_widget_view.dart';
 
 class SampleScreen extends StatelessWidget {
-  const SampleScreen({super.key});
+  SampleScreen({super.key}) {
+    Log.d('SampleScreen 생성자');
+  }
+
+  @override
+  StatelessElement createElement() {
+    Log.d('SampleScreen Element');
+    return super.createElement();
+  }
 
   @override
   Widget build(BuildContext context) {
+    Log.d('SampleScreen 빌드');
     return Scaffold(
       appBar: AppBar(
         title: Text('TestApp'),
@@ -46,7 +56,7 @@ class SampleScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return Scaffold(body: OriginalView());
+                      return Scaffold(body: WraaperOriginWidget());
                     },
                   ),
                 );

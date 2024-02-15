@@ -40,6 +40,7 @@ class UserRepositoryImpl implements UserRepository {
     return await _dataSource.users().then((value) {
       return value.map((e) => UsersRResModel(id: e.id, name: e.name)).toList();
     }).catchError((onError) {
+      // ignore: invalid_return_type_for_catch_error
       return List.empty();
     });
   }

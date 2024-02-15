@@ -5,8 +5,8 @@ import 'package:data/data/user/repository/impl/user_repository_impl.dart';
 import 'package:domain/usecase/user/cache_config/user_usecase_cache_config.dart';
 import 'package:domain/usecase/user/impl/user_usercase_impl.dart';
 import 'package:domain/usecase/user/user_usecase.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:net_test/common/log.dart';
 
 class DataManager {
   static final DataManager _singleton = DataManager._internal();
@@ -36,7 +36,7 @@ class DataManager {
     userUseCaseFactoryProvider =
         StateProvider.family<UserUseCase, String>((ref, serviceId) {
       final dioClient = ref.watch(dioClientProvider);
-      debugPrint('client가 다시만들어짐 ${dioClient.dio.options.baseUrl}');
+      Log.d('client가 다시만들어짐 ${dioClient.dio.options.baseUrl}');
       final remoteDataSource = RemoteUserDataSourceImpl(dioClient.dio);
       final repositoryImpl = UserRepositoryImpl(remoteDataSource);
       return UserUseCaseImpl(

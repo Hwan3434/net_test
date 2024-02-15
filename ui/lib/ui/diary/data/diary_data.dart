@@ -60,13 +60,17 @@ final List<DiaryModel> allData = [
     id: 4,
     color: DiaryColor.red,
     date: DateTime(2023, 3, 21),
-    content: '567',
+    content: '567\r\nsdsd\r\nfefefwef\r\n기어라',
     fav: true,
     selectedState: false,
     users: [
       DiaryUserModel.nb(),
     ],
-    etc: [],
+    etc: [
+      DiaryEtcModel(id: 4, etc: '구구우우', date: DateTime.now()),
+      DiaryEtcModel(id: 5, etc: '오늘은 모교일', date: DateTime.now()),
+      DiaryEtcModel(id: 6, etc: '누비가 오늘 많이 깝쳤다.', date: DateTime.now()),
+    ],
   ),
   DiaryModel(
     id: 5,

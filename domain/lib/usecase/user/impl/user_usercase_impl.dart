@@ -6,7 +6,6 @@ import 'package:domain/usecase/result/result.dart';
 import 'package:domain/usecase/user/cache_config/user_usecase_cache_config.dart';
 import 'package:domain/usecase/user/model/response/user_model.dart';
 import 'package:domain/usecase/user/user_usecase.dart';
-import 'package:flutter/widgets.dart';
 
 class UserUseCaseImpl implements UserUseCase {
   final UserRepository _repository;
@@ -54,7 +53,6 @@ class UserUseCaseImpl implements UserUseCase {
         .getUser(request: UserRReqModel(userId: userId))
         .then((value) {
       final result = UserModel.fromUser(value);
-      debugPrint('웹에서 가져옵니다.');
       _IsUseAddCache<UserModel>(cacheKey, paramKey, result);
       return ResultSuccess(result);
     }).catchError((error) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:net_test/common/log.dart';
 import 'package:net_test/user_screen/user_view/user_screen.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class Logger extends ProviderObserver {
   @override
   void didUpdateProvider(ProviderBase provider, Object? previousValue,
       Object? newValue, ProviderContainer container) {
-    debugPrint('''
+    Log.d('''
       "provider": "${provider.name ?? provider.runtimeType}"
     ''');
   }
@@ -25,7 +26,7 @@ class Logger extends ProviderObserver {
   @override
   void didAddProvider(
       ProviderBase provider, Object? value, ProviderContainer container) {
-    debugPrint('''
+    Log.d('''
     {
       "provider:" "${provider.name ?? provider.runtimeType}",
       "value": "$value"

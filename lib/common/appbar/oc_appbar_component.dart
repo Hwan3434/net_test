@@ -5,11 +5,9 @@ import 'package:net_test/common/appbar/oc_appbar_component_model.dart';
 import 'package:net_test/common/appbar/oc_appbar_component_provider.dart';
 import 'package:net_test/common/base/base_state_view.dart';
 
-/**
- * Appbar는 preferredSize로 직접 height를 강제 합니다.
- * 이때 Orientation은 width height의 비율에따라 portrait, landscape로 판단합니다.
- * appbar는 그래서 항상 landscape로 판단됩니다.
- */
+/// Appbar는 preferredSize로 직접 height를 강제 합니다.
+/// 이때 Orientation은 width height의 비율에따라 portrait, landscape로 판단합니다.
+/// appbar는 그래서 항상 landscape로 판단됩니다.
 class OcAppbarComponent extends BaseStateView<OcAppbarComponentModel>
     implements PreferredSizeWidget {
   final SystemUiOverlayStyle? systemUiOverlayStyle;

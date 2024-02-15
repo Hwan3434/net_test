@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui/test/log.dart';
 import 'package:ui/ui/diary/data/diary_data.dart';
 import 'package:ui/ui/diary/list/all/diary_all_list.dart';
 import 'package:ui/ui/diary/list/delete/diary_del_list.dart';
@@ -33,7 +34,7 @@ class _DiaryViewState extends State<DiaryView> {
 }
 
 class _AppBar extends StatefulWidget implements PreferredSizeWidget {
-  const _AppBar({super.key});
+  const _AppBar();
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight + 46.0);
@@ -54,7 +55,7 @@ class _AppBarState extends State<_AppBar> with SingleTickerProviderStateMixin {
   }
 
   void onTabChanged() {
-    debugPrint(
+    Log.d(
         'AppBar Tab Chagned ! ${_tabController.indexIsChanging} / ${_tabController.index}');
   }
 
@@ -65,12 +66,12 @@ class _AppBarState extends State<_AppBar> with SingleTickerProviderStateMixin {
       actions: [
         IconButton(
             onPressed: () {
-              debugPrint('모든 아이템 체크');
+              Log.d('모든 아이템 체크');
             },
             icon: Icon(Icons.check)),
         IconButton(
             onPressed: () {
-              debugPrint('체크된 아이템 삭제');
+              Log.d('체크된 아이템 삭제');
             },
             icon: Icon(Icons.delete)),
       ],
@@ -89,7 +90,7 @@ class _AppBarState extends State<_AppBar> with SingleTickerProviderStateMixin {
 }
 
 class _DeleteBody extends StatelessWidget {
-  const _DeleteBody({super.key});
+  const _DeleteBody();
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +102,7 @@ class _DeleteBody extends StatelessWidget {
 }
 
 class _DiaryBody extends StatelessWidget {
-  const _DiaryBody({super.key});
+  const _DiaryBody();
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +134,7 @@ class _BottomNavigationState extends State<_BottomNavigation> {
     return BottomNavigationBar(
       currentIndex: _selectedIndex,
       onTap: (value) {
-        debugPrint('탭 변경 클릭 : $value');
+        Log.d('탭 변경 클릭 : $value');
         setState(() {
           _selectedIndex = value;
           widget.onChangedTab?.call(value);

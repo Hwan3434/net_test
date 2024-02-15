@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui/test/log.dart';
 import 'package:ui/ui/diary/common/diary_card.dart';
 import 'package:ui/ui/diary/data/diary_data.dart';
 import 'package:ui/ui/diary/data/diary_model.dart';
@@ -31,7 +32,7 @@ class _DelContainer extends StatelessWidget {
     return DiaryCard(
       diaryColor: item.color,
       onTab: () {
-        debugPrint('삭제된 List Item Click');
+        Log.d('삭제된 List Item Click');
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -41,7 +42,7 @@ class _DelContainer extends StatelessWidget {
             _DelTop(
               date: item.date,
               onRevertPressed: () {
-                debugPrint('되돌리기');
+                Log.d('되돌리기');
               },
             ),
             _DelMid(content: item.content),
