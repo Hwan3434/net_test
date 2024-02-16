@@ -1,21 +1,20 @@
-sealed class LastStateModel {}
-
-class LastStateModelWait extends LastStateModel {}
-
-class LastStateModelLoading extends LastStateModel {}
-
-class LastStateModelSuccess extends LastStateModel {
-  final String data;
-
-  LastStateModelSuccess({
-    required this.data,
-  });
+enum LastTabs {
+  content,
+  setting,
 }
 
-class LastStateModelError extends LastStateModel {
-  final String errorMessage;
+class LastViewModel {
+  final LastTabs currentTab;
 
-  LastStateModelError({
-    this.errorMessage = '',
+  const LastViewModel({
+    required this.currentTab,
   });
+
+  LastViewModel copyWith({
+    LastTabs? currentTab,
+  }) {
+    return LastViewModel(
+      currentTab: currentTab ?? this.currentTab,
+    );
+  }
 }

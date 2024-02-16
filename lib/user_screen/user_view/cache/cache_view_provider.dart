@@ -44,7 +44,7 @@ class BufferPageStateNotifier extends StateNotifier<CacheViewModel> {
               data: successData,
             ),
           );
-        case ResultError(e: final error):
+        case ResultError():
           state = state.copyWith(
             data: state.data,
             bufferUserUpdateState: FailBufferUpdate(),

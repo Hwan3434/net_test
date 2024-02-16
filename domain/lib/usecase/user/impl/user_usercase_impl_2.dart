@@ -21,7 +21,7 @@ class UserUseCaseImpl2 implements UserUseCase {
         .then((value) {
       return ResultSuccess(UserModel.fromUser(value));
     }).catchError((error) {
-      return ResultError(LocalError(error.toString()));
+      return ResultError(LocalError(errorMessage: error.toString()));
     });
   }
 
@@ -30,7 +30,7 @@ class UserUseCaseImpl2 implements UserUseCase {
     return _repository.getUsers(request: UsersRReqModel()).then((value) {
       return ResultSuccess(value.map((e) => UserModel.fromUsers(e)).toList());
     }).catchError((error) {
-      return ResultError(LocalError(error.toString()));
+      return ResultError(LocalError(errorMessage: error.toString()));
     });
   }
 
@@ -41,7 +41,7 @@ class UserUseCaseImpl2 implements UserUseCase {
         .then((value) {
       return ResultSuccess<String>('');
     }).catchError((error, stackTrace) {
-      return ResultError<String>(LocalError(error.toString()));
+      return ResultError(LocalError(errorMessage: error.toString()));
     });
   }
 

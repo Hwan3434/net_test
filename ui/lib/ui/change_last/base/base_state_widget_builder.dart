@@ -1,0 +1,3 @@
+class WatchBaseStateWidgetBuilder {
+  const WatchBaseStateWidgetBuilder();
+}

@@ -34,7 +34,7 @@ class _UserDetailScreenStateNotifier
         case ResultSuccess(data: final successData):
           state = UserDetailScreenStateModelSuccess(
               viewModel: UserDetailScreenDataModel(model: successData));
-        case ResultError(e: final error):
+        case ResultError():
           state = UserDetailScreenStateModelError();
       }
     });

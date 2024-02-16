@@ -1,109 +1,79 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/src/consumer.dart';
 import 'package:riverpod/src/framework.dart';
-import 'package:ui/ui/change_last/base/last_state_view.dart';
+import 'package:ui/ui/change_last/setting/last_setting_view.dart';
+import 'package:ui/ui/change_last/setting/last_setting_view_notifier.dart';
 
+import 'base/base_watch_widget.dart';
+import 'content/last_content_view.dart';
 import 'last_view_model.dart';
-import 'last_view_provider.dart';
+import 'last_view_notifier.dart';
 
-class LastView extends LastStateView<LastStateModel> {
-  const LastView({super.key});
+class LastView extends BaseWatchStatelessWidget<LastViewModel> {
+  LastView({super.key});
 
   @override
-  ProviderListenable<LastStateModel> get viewProvider => lastViewProvider;
+  ProviderListenable<LastViewModel> get watchProvider => lastViewProvider;
+
+  final List<Widget> _widgetOptions = <Widget>[
+    LastContentView(),
+    LastSettingView(),
+  ];
 
   @override
   Widget build(
     BuildContext context,
     WidgetRef ref,
-    LastStateModel viewModel,
+    LastViewModel viewModel,
   ) {
-    switch (viewModel) {
-      case LastStateModelWait():
-        return _wait(ref);
-      case LastStateModelLoading():
-        return _loadding();
-      case LastStateModelSuccess(data: final name):
-        return OrientationBuilder(builder: (context, orientation) {
-          return switch (orientation) {
-            Orientation.portrait => _successPortrait(name),
-            Orientation.landscape => _successLandscape(name),
-          };
-        });
-      case LastStateModelError(errorMessage: final error):
-        return _error(error);
-    }
-  }
-
-  Widget _wait(WidgetRef ref) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            'wait',
-          ),
-          ElevatedButton(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('테스트앱'),
+        actions: [
+          IconButton(
             onPressed: () {
-              ref.read(lastViewProvider.notifier).fetchData();
+              ref.read(lastSettingViewProvider.notifier).removeDiaryData(1);
+              // ref.read(lastDiaryDataProvider.notifier).deleteItem(1);
             },
-            child: Text('유저 가져오기'),
-          )
+            icon: Icon(Icons.abc),
+          ),
         ],
+      ),
+      body: IndexedStack(
+        index: viewModel.currentTab.index,
+        children: _widgetOptions,
+      ),
+      bottomNavigationBar: LastBottomNavigationBar(
+        currentTab: viewModel.currentTab,
       ),
     );
   }
+}
 
-  Widget _loadding() {
-    return const Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            '사용자 데이터를 가져오는 중입니다.',
-          ),
-          CircularProgressIndicator()
-        ],
-      ),
-    );
-  }
+class LastBottomNavigationBar extends ConsumerWidget {
+  final LastTabs currentTab;
+  const LastBottomNavigationBar({super.key, required this.currentTab});
 
-  Widget _successPortrait(String name) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Center(
-          child: Text(
-            '가져온 사용자 : ${name} (가로)',
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _successLandscape(String name) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Center(
-          child: Text(
-            '가져온 사용자 : $name (세로)',
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _error(String error) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Center(
-          child: Text(
-            '유저를 불러오는데 실패하였습니다. $error',
-          ),
-        ),
-      ],
+  @override
+  Widget build(
+    BuildContext context,
+    WidgetRef ref,
+  ) {
+    return BottomNavigationBar(
+      currentIndex: currentTab.index,
+      onTap: (value) {
+        ref.read(lastViewProvider.notifier).update(LastTabs.values[value]);
+      },
+      items: LastTabs.values.map((e) {
+        switch (e) {
+          case LastTabs.content:
+            return BottomNavigationBarItem(
+                icon: Icon(Icons.note), label: e.name);
+          case LastTabs.setting:
+            return BottomNavigationBarItem(
+                icon: Icon(Icons.delete), label: e.name);
+        }
+      }).toList(),
     );
   }
 }

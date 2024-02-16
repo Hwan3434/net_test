@@ -1,28 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ui/test/screen/sample_screen.dart';
+import 'package:ui/ui/change_last/common/locator.dart';
 
 import 'test/log.dart';
 
 void main() {
+  initLocator();
   runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key}) {
-    Log.d('MyApp 생성자');
-  }
-
-  @override
-  StatelessElement createElement() {
-    Log.d('MyApp Element');
-    return super.createElement();
-  }
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    Log.d('MyApp 빌드');
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(

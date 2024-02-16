@@ -56,11 +56,9 @@ class Log {
     required bool isTime,
     required bool isFilePath,
   }) {
-    if (!kDebugMode) {
-      return;
+    if (kDebugMode) {
+      print("$tag${_getTime(isTime)}${_getClassPath(isFilePath)} $message");
     }
-
-    print("$tag${_getTime(isTime)}${_getClassPath(isFilePath)} $message");
   }
 
   static String _getTime(bool isTime) {

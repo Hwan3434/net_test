@@ -45,7 +45,7 @@ class _OrgNotifierViewNotifier2 extends StateNotifier<OrgNotifierViewModel> {
       switch (value) {
         case ResultSuccess(data: final successData):
           _userDataNotifier.addAll(successData);
-        case ResultError(e: final error):
+        case ResultError():
           state = state.copyWith(state: OrgNotifierViewState.error);
       }
     });

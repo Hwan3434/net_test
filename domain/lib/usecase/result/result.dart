@@ -10,11 +10,18 @@ class ResultError<T> extends Result<T> {
   ResultError(this.e);
 }
 
-sealed class Error {}
+sealed class Error {
+  final String errorMessage;
 
-class NetworkError extends Error {}
+  const Error({
+    required this.errorMessage,
+  });
+}
+
+class NetworkError extends Error {
+  NetworkError({required super.errorMessage});
+}
 
 class LocalError extends Error {
-  String errorMessage;
-  LocalError(this.errorMessage);
+  LocalError({required super.errorMessage});
 }

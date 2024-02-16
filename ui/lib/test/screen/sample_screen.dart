@@ -11,19 +11,10 @@ import 'package:ui/ui/original/original_view.dart';
 import 'package:ui/ui/original_widget/original_widget_view.dart';
 
 class SampleScreen extends StatelessWidget {
-  SampleScreen({super.key}) {
-    Log.d('SampleScreen 생성자');
-  }
-
-  @override
-  StatelessElement createElement() {
-    Log.d('SampleScreen Element');
-    return super.createElement();
-  }
+  const SampleScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Log.d('SampleScreen 빌드');
     return Scaffold(
       appBar: AppBar(
         title: Text('TestApp'),

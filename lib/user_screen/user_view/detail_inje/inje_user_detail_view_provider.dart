@@ -43,7 +43,7 @@ class _InjeUserDetailViewStateNotifier
             name: successData.name,
             email: successData.email,
           );
-        case ResultError(e: final error):
+        case ResultError():
           state = InjeUserDetailViewModel(
               state: InjeUserDetailViewModelState.error);
       }
