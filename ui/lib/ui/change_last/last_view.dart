@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/src/consumer.dart';
 import 'package:riverpod/src/framework.dart';
 import 'package:ui/ui/change_last/setting/last_setting_view.dart';
-import 'package:ui/ui/change_last/setting/last_setting_view_notifier.dart';
 
 import 'base/base_watch_widget.dart';
 import 'content/last_content_view.dart';
@@ -32,8 +31,7 @@ class LastView extends BaseWatchStatelessWidget<LastViewModel> {
         actions: [
           IconButton(
             onPressed: () {
-              ref.read(lastSettingViewProvider.notifier).removeDiaryData(1);
-              // ref.read(lastDiaryDataProvider.notifier).deleteItem(1);
+              ref.read(lastViewProvider.notifier).removeDiaryData(1, ref);
             },
             icon: Icon(Icons.abc),
           ),

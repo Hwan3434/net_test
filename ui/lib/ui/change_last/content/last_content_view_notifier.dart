@@ -1,11 +1,12 @@
 import 'package:domain/usecase/result/result.dart';
 import 'package:domain/usecase/user/user_usecase.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ui/ui/change_last/base/base_widget.dart';
 import 'package:ui/ui/change_last/common/locator.dart';
 import 'package:ui/ui/change_last/content/last_content_view_model.dart';
 import 'package:ui/ui/change_last/data/last_data.dart';
 
-final lastContentViewProvider = StateNotifierProvider.autoDispose<
+final lastContentViewProvider = CreateBaseProvider.createViewNotifierProvider<
     LastContentViewNotifier, LastContentViewModelState>((ref) {
   final item = ref.watch(lastDiaryDataProvider);
   final userUseCase = locator<UserUseCase>();

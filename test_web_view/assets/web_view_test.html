@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Website</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f2f2f2;
+			color: #333;
+			margin: 0;
+			padding: 0;
+		}
+	</style>
+  <script>
+	    function fromAppToWeb(msg) {
+	        document.querySelector("#flutterMessageTitle").innerText = msg;
+	    }
+	    function fromAppToWeb2(msg, msg2) {
+	        document.querySelector("#flutterMessageTitle").innerText = msg + msg2;
+	    }
+        function fromWebToAppAAA() {
+            toAppAAA.postMessage('{"dataA":"AAA","dataB":"6", "dataC":33}');
+            toAppAAA.postMessage('{"dataA":"AAA","dataB":"6"}');
+            toAppAAA.postMessage('{"dataA":"AAA"}');
+        }
+        function fromWebToAppBBB() {
+            toAppBBB.postMessage('{"dataA":"BBB","dataB":6}');
+        }
+    </script>
+</head>
+<body>
+<!-- Navigation bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="index.html">My Website</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="about.html">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="contact.html">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <br />
+  <div id="flutterMessageTitle" style="text-align:center;">
+  </div>
+  <br />
+  <div>
+    <button class="btn btn-primary" onclick="fromWebToAppAAA()">AAA</button>
+  </div>
+  <div>
+    <button class="btn btn-primary" onclick="fromWebToAppBBB()">BBB</button>
+  </div>
+</body>
+</html>
