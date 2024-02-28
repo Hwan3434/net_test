@@ -17,6 +17,7 @@ class DiaryListStateNotifier extends StateNotifier<DiaryListState> {
   }
 
   void add() {
+    Log.d('DiaryListStateNotifier Add');
     assert(state is! DiaryListWait);
     assert(state is! DiaryListLoading);
     assert(state is! DiaryListError);
@@ -43,7 +44,7 @@ class DiaryListStateNotifier extends StateNotifier<DiaryListState> {
   void fetch() async {
     Log.d('DiaryListStateNotifier Fetch');
     state = DiaryListLoading();
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 1));
     state = DiaryListSuccess(data: allData.toList());
   }
 

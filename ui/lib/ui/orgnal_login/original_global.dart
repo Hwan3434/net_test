@@ -10,31 +10,33 @@ import 'package:ui/ui/orgnal_login/provider/global/model/org_project.dart';
 import 'package:ui/ui/orgnal_login/provider/user_list_notifier.dart';
 
 final dataProvider = StateNotifierProvider.family<
-    _DataProviderContainerNotifier, DataContainer, OrgProject>((ref, project) {
-  Log.e('유저 유스케이스가 변경되었습니다.($project)');
-  final dio = ref.watch(dioUrlProvider(project.name));
+    _DataProviderContainerNotifier, DataContainer, String>((ref, orgName) {
+  Log.e('Data 프로바이더 생성');
+  final dio = ref.watch(dioUrlProvider(orgName));
   final dataSource = RemoteUserDataSourceImpl(dio);
   final repository = UserRepositoryImpl(dataSource);
   final userUseCase = UserUseCaseImpl2(repository);
-  final dataProviderContainer = DataContainer(userUseCase: userUseCase);
+  final dataProviderContainer = DataContainer(
+    userUseCase: userUseCase,
+  );
   return _DataProviderContainerNotifier(dataProviderContainer);
 });
 
 class _DataProviderContainerNotifier extends StateNotifier<DataContainer> {
-  late final StateNotifierProvider<UserListStateNotifier, UserListState>
-      userListNotifierProvider;
-  late final StateNotifierProvider<DiaryListStateNotifier, DiaryListState>
-      diaryListNotifierProvider;
+  late final StateNotifierProviderFamily<UserListStateNotifier, UserListState,
+      OrgProject> userListNotifierProvider;
+  late final StateNotifierProviderFamily<DiaryListStateNotifier, DiaryListState,
+      OrgProject> diaryListNotifierProvider;
 
   _DataProviderContainerNotifier(super.state) {
-    Log.e('Data 프로바이더 생성');
-    userListNotifierProvider =
-        StateNotifierProvider<UserListStateNotifier, UserListState>((ref) {
+    userListNotifierProvider = StateNotifierProvider.family<
+        UserListStateNotifier, UserListState, OrgProject>((ref, project) {
       return UserListStateNotifier(UserListWait(), state.userUseCase);
     });
 
-    diaryListNotifierProvider =
-        StateNotifierProvider<DiaryListStateNotifier, DiaryListState>((ref) {
+    diaryListNotifierProvider = StateNotifierProvider.family<
+        DiaryListStateNotifier, DiaryListState, OrgProject>((ref, project) {
+      Log.d('ddddddDDD ::::: ${project.hashCode}');
       return DiaryListStateNotifier(DiaryListWait(), state.userUseCase);
     });
   }

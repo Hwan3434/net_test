@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ui/ui/orgnal_login/provider/global/data/data_container.dart';
 import 'package:ui/ui/orgnal_login/provider/global/model/org_project.dart';
 
 final orgProvider = StateNotifierProvider<_OrgNotifier, OrgState>((ref) {
@@ -17,11 +18,21 @@ class _OrgNotifier extends StateNotifier<OrgState> {
       OrgProject(id: 1, name: 'project1'),
       OrgProject(id: 2, name: 'project2'),
     ];
-    success(orgName, projects);
+
+    save(projects);
+
+    success(orgName);
   }
 
-  void success(String orgName, List<OrgProject> projects) {
-    state = OrgLoginSuccess(orgName: orgName, project: projects);
+  void save(List<OrgProject> projects) {
+    /// 메모리 저장소에 저장해야지
+    for (var project in projects) {
+      LoginDataContainer.instance.getOrgProject().save(project);
+    }
+  }
+
+  void success(String orgName) {
+    state = OrgLoginSuccess(orgName: orgName);
   }
 
   void change(String changeName) {
@@ -51,10 +62,18 @@ class OrgLoading extends OrgState {
 
 class OrgLoginSuccess extends OrgState {
   final String orgName;
-  final List<OrgProject> project;
 
   OrgLoginSuccess({
     required this.orgName,
-    required this.project,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is OrgLoginSuccess &&
+          runtimeType == other.runtimeType &&
+          orgName == other.orgName;
+
+  @override
+  int get hashCode => orgName.hashCode;
 }

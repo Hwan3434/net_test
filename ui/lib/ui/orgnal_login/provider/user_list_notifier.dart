@@ -19,7 +19,7 @@ class UserListStateNotifier extends StateNotifier<UserListState> {
     assert(state is! UserListWait, '대기중일때 데이터를 조작 할 수 없습니다.');
     assert(state is! UserListLoading, '로딩중일때 데이터를 조작 할 수 없습니다.');
     assert(state is! UserListError, '에러일때 데이터를 조작 할 수 없습니다.');
-    Log.d('_UserListStateNotifier Add');
+    Log.d('UserListStateNotifier Add');
     state = UserListSuccess(data: [
       UserModel(id: 11, name: '나미', email: 'Na@naver.com', userName: 'nami'),
       ...(state as UserListSuccess).data,

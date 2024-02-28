@@ -1,13 +1,21 @@
+import 'package:data/common/log.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ui/ui/orgnal_login/original_global.dart';
+import 'package:ui/ui/orgnal_login/provider/global/data/data_container.dart';
 import 'package:ui/ui/orgnal_login/provider/global/org_provider.dart';
-import 'package:ui/ui/orgnal_login/widget/original_data_view.dart';
+import 'package:ui/ui/orgnal_login/widget/data/data_view_provider.dart';
+import 'package:ui/ui/orgnal_login/widget/data/original_data_view.dart';
+import 'package:ui/ui/orgnal_login/widget/dynamic_editor/original_dynamic_editor_view.dart';
+import 'package:ui/ui/orgnal_login/widget/editor/original_editor_view.dart';
 
 class OrgLoginWidget extends ConsumerWidget {
   const OrgLoginWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    debugPrint('kD : $kDebugMode');
     return Scaffold(
       body: OrgLoginStateWidget(),
     );
@@ -20,12 +28,13 @@ class OrgLoginStateWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final org = ref.watch(orgProvider);
+    Log.e('org = ${org.runtimeType}');
     switch (org) {
       case OrgNone():
         return Center(
           child: ElevatedButton(
               onPressed: () {
-                ref.read(orgProvider.notifier).login('로그인');
+                ref.read(orgProvider.notifier).login('조직1');
               },
               child: Text('로그인')),
         );
@@ -34,6 +43,8 @@ class OrgLoginStateWidget extends ConsumerWidget {
           child: CircularProgressIndicator(),
         );
       case OrgLoginSuccess():
+        final data = ref.watch(dataProvider(org.orgName));
+        Log.e('data = $data');
         return OrgProjectWidget(
           success: org,
         );
@@ -43,13 +54,13 @@ class OrgLoginStateWidget extends ConsumerWidget {
 
 class OrgProjectWidget extends ConsumerWidget {
   final OrgLoginSuccess success;
-
   const OrgProjectWidget({
     required this.success,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final projects = LoginDataContainer.instance.getOrgProject().getList();
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -60,37 +71,67 @@ class OrgProjectWidget extends ConsumerWidget {
           },
           child: Text('로그아웃'),
         ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                ref.read(orgProvider.notifier).change('조직1');
+              },
+              child: Text('조직변경(조직1)'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                ref.read(orgProvider.notifier).change('조직2');
+              },
+              child: Text('조직변경(조직2)'),
+            ),
+          ],
+        ),
+        if (projects.isNotEmpty)
+          Column(
+            children: projects.map((e) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('프로젝트 - ${e.name} 상세보기'),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      ref.read(currentProject.notifier).update((state) => e);
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return OriginalDataView();
+                        },
+                      ));
+                    },
+                    child: Text('이동'),
+                  ),
+                ],
+              );
+            }).toList(),
+          ),
         ElevatedButton(
           onPressed: () {
-            ref.read(orgProvider.notifier).change('로그인2');
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) {
+                return OriginalEditorView();
+              },
+            ));
           },
-          child: Text('조직변경'),
+          child: Text('에디터뷰'),
         ),
-        Column(
-          children: success.project.map((e) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('프로젝트 - ${e.name} 상세보기'),
-                SizedBox(
-                  width: 10,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {
-                        return OriginalDataView(
-                          org: success,
-                          initProjectId: e.id,
-                        );
-                      },
-                    ));
-                  },
-                  child: Text('이동'),
-                ),
-              ],
-            );
-          }).toList(),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) {
+                return OriginalDynamicEditorView();
+              },
+            ));
+          },
+          child: Text('동적 에디터뷰'),
         ),
       ],
     );

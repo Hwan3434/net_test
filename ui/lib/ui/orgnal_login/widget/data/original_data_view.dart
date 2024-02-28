@@ -3,55 +3,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ui/ui/orgnal_login/original_global.dart';
 import 'package:ui/ui/orgnal_login/provider/diary_list_notifier.dart';
+import 'package:ui/ui/orgnal_login/provider/global/data/data_container.dart';
 import 'package:ui/ui/orgnal_login/provider/global/model/org_project.dart';
-import 'package:ui/ui/orgnal_login/provider/global/org_project_provider.dart';
 import 'package:ui/ui/orgnal_login/provider/global/org_provider.dart';
 import 'package:ui/ui/orgnal_login/provider/user_list_notifier.dart';
+import 'package:ui/ui/orgnal_login/widget/data/data_view_provider.dart';
 
-class OriginalDataView extends ConsumerStatefulWidget {
-  final OrgLoginSuccess org;
-  final int initProjectId;
-  const OriginalDataView({
-    required this.org,
-    required this.initProjectId,
-  });
+class OriginalDataView extends ConsumerWidget {
+  const OriginalDataView();
 
   @override
-  ConsumerState<OriginalDataView> createState() => _OriginalUseCaseViewState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final projects = LoginDataContainer.instance.getOrgProject().getList();
+    final dataViewModel = ref.read(dataViewProvider);
 
-class _OriginalUseCaseViewState extends ConsumerState<OriginalDataView> {
-  /// todo 핵심과제 current를 어디서 누가 관리할것인가?
-  late int _currentProjectId;
-  @override
-  void initState() {
-    super.initState();
-    _currentProjectId = widget.initProjectId;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final projects = ref.read(orgProjectsProvider(widget.org));
-    final currentOrgProject = ref
-        .read(orgProjectsProvider(widget.org).notifier)
-        .getProject(_currentProjectId);
+    if (dataViewModel.project == null) {
+      return Scaffold(
+        body: Center(
+          child: Text('선택된 프로젝트가 없음'),
+        ),
+      );
+    }
 
     void changedProjectFunc() {
       showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('서비스변경'),
+            title: Text('프로젝트 변경'),
             content: Column(
               mainAxisSize: MainAxisSize.min,
-              children: projects.values.map((e) {
+              children: projects.map((e) {
                 return ElevatedButton(
                     onPressed: () {
-                      if (_currentProjectId != e.id) {
-                        setState(() {
-                          _currentProjectId = e.id;
-                        });
-                      }
+                      ref.read(currentProject.notifier).update((state) => e);
                       Navigator.pop(context);
                     },
                     child: Text(e.name));
@@ -71,11 +56,15 @@ class _OriginalUseCaseViewState extends ConsumerState<OriginalDataView> {
               },
               icon: Icon(Icons.refresh))
         ],
-        title: _AppBarTitleWidget(
-          projects: projects,
-          currentProject: currentOrgProject,
-          changedFunc: changedProjectFunc,
-        ),
+        title: Builder(builder: (context) {
+          final currentProject =
+              ref.watch(dataViewProvider.select((value) => value.project))!;
+          return _AppBarTitleWidget(
+            projects: projects,
+            currentProject: currentProject,
+            changedFunc: changedProjectFunc,
+          );
+        }),
       ),
       body: SafeArea(
         child: Column(
@@ -84,10 +73,15 @@ class _OriginalUseCaseViewState extends ConsumerState<OriginalDataView> {
               builder: (context, ref, child) {
                 return ElevatedButton(
                   onPressed: () {
+                    final org = ref.read(orgProvider);
+                    final pOrg = org as OrgLoginSuccess;
                     final diaryProvider = ref
-                        .read(dataProvider(currentOrgProject).notifier)
+                        .read(dataProvider(pOrg.orgName).notifier)
                         .diaryListNotifierProvider;
-                    ref.read(diaryProvider.notifier).add();
+
+                    ref
+                        .read(diaryProvider(dataViewModel.project!).notifier)
+                        .add();
                   },
                   child: Text('다이어리 추가'),
                 );
@@ -95,16 +89,20 @@ class _OriginalUseCaseViewState extends ConsumerState<OriginalDataView> {
             ),
             Expanded(
                 child: _DiaryListWidget(
-              project: currentOrgProject,
+              project: dataViewModel.project!,
             )),
             Consumer(
               builder: (context, ref, child) {
                 return ElevatedButton(
                   onPressed: () {
+                    final org = ref.read(orgProvider);
+                    final pOrg = org as OrgLoginSuccess;
                     final userProvider = ref
-                        .read(dataProvider(currentOrgProject).notifier)
+                        .read(dataProvider(pOrg.orgName).notifier)
                         .userListNotifierProvider;
-                    ref.read(userProvider.notifier).add();
+                    ref
+                        .read(userProvider(dataViewModel.project!).notifier)
+                        .add();
                   },
                   child: Text('사람 추가'),
                 );
@@ -112,7 +110,7 @@ class _OriginalUseCaseViewState extends ConsumerState<OriginalDataView> {
             ),
             Expanded(
                 child: _UserListWidget(
-              project: currentOrgProject,
+              project: dataViewModel.project!,
             )),
           ],
         ),
@@ -122,9 +120,10 @@ class _OriginalUseCaseViewState extends ConsumerState<OriginalDataView> {
 }
 
 class _AppBarTitleWidget extends StatelessWidget {
+  final List<OrgProject> projects;
   final OrgProject currentProject;
   final void Function() changedFunc;
-  final Map<int, OrgProject> projects;
+
   const _AppBarTitleWidget({
     required this.projects,
     required this.currentProject,
@@ -133,6 +132,7 @@ class _AppBarTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Log.e('앱바 갱신');
     return ElevatedButton(
       onPressed: () {
         changedFunc.call();
@@ -146,14 +146,18 @@ class _AppBarTitleWidget extends StatelessWidget {
 
 class _DiaryListWidget extends ConsumerWidget {
   final OrgProject project;
-  const _DiaryListWidget({required this.project});
+
+  const _DiaryListWidget({
+    required this.project,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Log.e('다이어리 갱신');
-    final diaryManagerProvider =
-        ref.read(dataProvider(project).notifier).diaryListNotifierProvider;
-    final diaryState = ref.watch(diaryManagerProvider);
+
+    final diaryState =
+        ref.watch(dataViewProvider.select((value) => value.diaryListState));
+
     switch (diaryState) {
       case DiaryListWait():
         return Text('UserListWait');
@@ -186,17 +190,17 @@ class _DiaryListWidget extends ConsumerWidget {
 
 class _UserListWidget extends ConsumerWidget {
   final OrgProject project;
+
   const _UserListWidget({
-    super.key,
     required this.project,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Log.e('유저 갱신');
-    final userListDataProvider =
-        ref.read(dataProvider(project).notifier).userListNotifierProvider;
-    final userListState = ref.watch(userListDataProvider);
+
+    final userListState =
+        ref.watch(dataViewProvider.select((value) => value.userListState));
 
     switch (userListState) {
       case UserListWait():
