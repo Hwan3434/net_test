@@ -1,8 +1,8 @@
-class OrgProject {
+class TempProject {
   final int id;
   final String name;
 
-  const OrgProject({
+  const TempProject({
     required this.id,
     required this.name,
   });
@@ -10,7 +10,9 @@ class OrgProject {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is OrgProject && runtimeType == other.runtimeType && id == other.id;
+      other is TempProject &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
 
   @override
   int get hashCode => id.hashCode;

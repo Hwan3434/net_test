@@ -2,8 +2,7 @@ import 'package:data/common/log.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ui/ui/orgnal_login/original_global.dart';
-import 'package:ui/ui/orgnal_login/provider/global/data/data_container.dart';
+import 'package:ui/ui/orgnal_login/provider/global/data/org_data_container.dart';
 import 'package:ui/ui/orgnal_login/provider/global/org_provider.dart';
 import 'package:ui/ui/orgnal_login/widget/data/data_view_provider.dart';
 import 'package:ui/ui/orgnal_login/widget/data/original_data_view.dart';
@@ -27,14 +26,14 @@ class OrgLoginStateWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final org = ref.watch(orgProvider);
+    final org = ref.watch(orgStateProvider);
     Log.e('org = ${org.runtimeType}');
     switch (org) {
       case OrgNone():
         return Center(
           child: ElevatedButton(
               onPressed: () {
-                ref.read(orgProvider.notifier).login('조직1');
+                ref.read(orgStateProvider.notifier).login('조직1');
               },
               child: Text('로그인')),
         );
@@ -43,8 +42,6 @@ class OrgLoginStateWidget extends ConsumerWidget {
           child: CircularProgressIndicator(),
         );
       case OrgLoginSuccess():
-        final data = ref.watch(dataProvider(org.orgName));
-        Log.e('data = $data');
         return OrgProjectWidget(
           success: org,
         );
@@ -60,14 +57,14 @@ class OrgProjectWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final projects = LoginDataContainer.instance.getOrgProject().getList();
+    final projects = OrgDataContainer.i.getOrgProject().getList();
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text('현재 조직 명 : ${success.orgName}'),
         ElevatedButton(
           onPressed: () {
-            ref.read(orgProvider.notifier).logout();
+            ref.read(orgStateProvider.notifier).logout();
           },
           child: Text('로그아웃'),
         ),
@@ -76,13 +73,13 @@ class OrgProjectWidget extends ConsumerWidget {
           children: [
             ElevatedButton(
               onPressed: () {
-                ref.read(orgProvider.notifier).change('조직1');
+                ref.read(orgStateProvider.notifier).change('조직1');
               },
               child: Text('조직변경(조직1)'),
             ),
             ElevatedButton(
               onPressed: () {
-                ref.read(orgProvider.notifier).change('조직2');
+                ref.read(orgStateProvider.notifier).change('조직2');
               },
               child: Text('조직변경(조직2)'),
             ),

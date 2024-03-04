@@ -16,12 +16,6 @@ class _OriginalEditorViewState extends State<OriginalEditorView> {
   final TextEditingController bottomController = TextEditingController();
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

@@ -16,7 +16,7 @@ class DiaryListStateNotifier extends StateNotifier<DiaryListState> {
     fetch();
   }
 
-  void add() {
+  void add(String content) {
     Log.d('DiaryListStateNotifier Add');
     assert(state is! DiaryListWait);
     assert(state is! DiaryListLoading);
@@ -28,7 +28,7 @@ class DiaryListStateNotifier extends StateNotifier<DiaryListState> {
             id: 11,
             color: DiaryColor.green,
             date: DateTime.now(),
-            content: 'ㅏㅇ여낭하센가',
+            content: content,
             fav: false,
             selectedState: false,
             users: [

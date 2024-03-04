@@ -1,11 +1,10 @@
 import 'package:data/common/log.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ui/ui/orgnal_login/original_global.dart';
 import 'package:ui/ui/orgnal_login/provider/diary_list_notifier.dart';
-import 'package:ui/ui/orgnal_login/provider/global/data/data_container.dart';
+import 'package:ui/ui/orgnal_login/provider/global/data/org_data_container.dart';
+import 'package:ui/ui/orgnal_login/provider/global/data/org_data_provider.dart';
 import 'package:ui/ui/orgnal_login/provider/global/model/org_project.dart';
-import 'package:ui/ui/orgnal_login/provider/global/org_provider.dart';
 import 'package:ui/ui/orgnal_login/provider/user_list_notifier.dart';
 import 'package:ui/ui/orgnal_login/widget/data/data_view_provider.dart';
 
@@ -14,11 +13,16 @@ class OriginalDataView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final projects = LoginDataContainer.instance.getOrgProject().getList();
-    final dataViewModel = ref.read(dataViewProvider);
+    final projects = OrgDataContainer.i.getOrgProject().getList();
 
-    if (dataViewModel.project == null) {
-      return Scaffold(
+    final orgName =
+        ref.watch(dataViewProvider.select((value) => value?.orgName));
+
+    final project =
+        ref.watch(dataViewProvider.select((value) => value?.project));
+
+    if (orgName == null || project == null) {
+      return const Scaffold(
         body: Center(
           child: Text('선택된 프로젝트가 없음'),
         ),
@@ -33,7 +37,17 @@ class OriginalDataView extends ConsumerWidget {
             title: Text('프로젝트 변경'),
             content: Column(
               mainAxisSize: MainAxisSize.min,
-              children: projects.map((e) {
+              children: [null, ...projects].map((e) {
+                if (e == null) {
+                  return ElevatedButton(
+                    onPressed: () {
+                      ref.read(currentProject.notifier).update((state) => null);
+                      Navigator.pop(context);
+                    },
+                    child: Text('선택해제'),
+                  );
+                }
+
                 return ElevatedButton(
                     onPressed: () {
                       ref.read(currentProject.notifier).update((state) => e);
@@ -56,53 +70,52 @@ class OriginalDataView extends ConsumerWidget {
               },
               icon: Icon(Icons.refresh))
         ],
-        title: Builder(builder: (context) {
-          final currentProject =
-              ref.watch(dataViewProvider.select((value) => value.project))!;
-          return _AppBarTitleWidget(
-            projects: projects,
-            currentProject: currentProject,
-            changedFunc: changedProjectFunc,
-          );
-        }),
+        title: _AppBarTitleWidget(
+          orgName: orgName,
+          projects: projects,
+          currentProject: project,
+          changedFunc: changedProjectFunc,
+        ),
       ),
       body: SafeArea(
         child: Column(
           children: [
-            Consumer(
-              builder: (context, ref, child) {
-                return ElevatedButton(
-                  onPressed: () {
-                    final org = ref.read(orgProvider);
-                    final pOrg = org as OrgLoginSuccess;
-                    final diaryProvider = ref
-                        .read(dataProvider(pOrg.orgName).notifier)
-                        .diaryListNotifierProvider;
-
-                    ref
-                        .read(diaryProvider(dataViewModel.project!).notifier)
-                        .add();
-                  },
-                  child: Text('다이어리 추가'),
-                );
-              },
-            ),
+            Builder(builder: (context) {
+              final controller = TextEditingController();
+              return Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: controller,
+                    ),
+                  ),
+                  Consumer(
+                    builder: (context, ref, child) {
+                      return ElevatedButton(
+                        onPressed: () {
+                          ref
+                              .read(orgDataProvider(orgName).notifier)
+                              .addDiary(project, controller.text);
+                          controller.clear();
+                        },
+                        child: Text('다이어리 추가'),
+                      );
+                    },
+                  ),
+                ],
+              );
+            }),
             Expanded(
                 child: _DiaryListWidget(
-              project: dataViewModel.project!,
+              project: project,
             )),
             Consumer(
               builder: (context, ref, child) {
                 return ElevatedButton(
                   onPressed: () {
-                    final org = ref.read(orgProvider);
-                    final pOrg = org as OrgLoginSuccess;
-                    final userProvider = ref
-                        .read(dataProvider(pOrg.orgName).notifier)
-                        .userListNotifierProvider;
                     ref
-                        .read(userProvider(dataViewModel.project!).notifier)
-                        .add();
+                        .read(orgDataProvider(orgName).notifier)
+                        .addUser(project, "UserA");
                   },
                   child: Text('사람 추가'),
                 );
@@ -110,7 +123,7 @@ class OriginalDataView extends ConsumerWidget {
             ),
             Expanded(
                 child: _UserListWidget(
-              project: dataViewModel.project!,
+              project: project,
             )),
           ],
         ),
@@ -120,11 +133,13 @@ class OriginalDataView extends ConsumerWidget {
 }
 
 class _AppBarTitleWidget extends StatelessWidget {
-  final List<OrgProject> projects;
-  final OrgProject currentProject;
+  final String orgName;
+  final List<TempProject> projects;
+  final TempProject? currentProject;
   final void Function() changedFunc;
 
   const _AppBarTitleWidget({
+    required this.orgName,
     required this.projects,
     required this.currentProject,
     required this.changedFunc,
@@ -132,20 +147,20 @@ class _AppBarTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Log.e('앱바 갱신');
+    Log.e('$orgName : 앱바 갱신');
     return ElevatedButton(
       onPressed: () {
         changedFunc.call();
       },
       child: Text(
-        currentProject.name,
+        '$orgName(${currentProject?.name})',
       ),
     );
   }
 }
 
 class _DiaryListWidget extends ConsumerWidget {
-  final OrgProject project;
+  final TempProject project;
 
   const _DiaryListWidget({
     required this.project,
@@ -156,7 +171,13 @@ class _DiaryListWidget extends ConsumerWidget {
     Log.e('다이어리 갱신');
 
     final diaryState =
-        ref.watch(dataViewProvider.select((value) => value.diaryListState));
+        ref.watch(dataViewProvider.select((value) => value?.diaryListState));
+
+    if (diaryState == null) {
+      return Center(
+        child: Text('다이어리 널'),
+      );
+    }
 
     switch (diaryState) {
       case DiaryListWait():
@@ -189,7 +210,7 @@ class _DiaryListWidget extends ConsumerWidget {
 }
 
 class _UserListWidget extends ConsumerWidget {
-  final OrgProject project;
+  final TempProject project;
 
   const _UserListWidget({
     required this.project,
@@ -200,7 +221,13 @@ class _UserListWidget extends ConsumerWidget {
     Log.e('유저 갱신');
 
     final userListState =
-        ref.watch(dataViewProvider.select((value) => value.userListState));
+        ref.watch(dataViewProvider.select((value) => value?.userListState));
+
+    if (userListState == null) {
+      return Center(
+        child: Text('유저 널'),
+      );
+    }
 
     switch (userListState) {
       case UserListWait():
