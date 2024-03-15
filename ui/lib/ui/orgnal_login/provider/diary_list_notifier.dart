@@ -1,5 +1,6 @@
 import 'package:domain/usecase/user/user_usecase.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ui/ui/orgnal_login/provider/global/data/org_data_provider.dart';
 
 import '../../../test/log.dart';
 import '../../diary/data/diary_data.dart';
@@ -7,7 +8,6 @@ import '../../diary/data/diary_model.dart';
 
 class DiaryListStateNotifier extends StateNotifier<DiaryListState> {
   final UserUseCase _userUseCase;
-
   DiaryListStateNotifier(super.state, this._userUseCase) {
     init();
   }

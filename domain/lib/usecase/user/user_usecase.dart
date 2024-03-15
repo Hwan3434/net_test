@@ -6,7 +6,9 @@ enum UserUseCaseKeys {
   getUsers,
 }
 
-abstract interface class UserUseCase {
+abstract interface class UseCase {}
+
+abstract interface class UserUseCase implements UseCase {
   // Future<UserModel> getUser({
   //   required int userId,
   // });

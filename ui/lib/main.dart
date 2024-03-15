@@ -5,7 +5,9 @@ import 'package:ui/ui/change_last/common/locator.dart';
 
 void main() {
   initLocator();
-  runApp(ProviderScope(child: MyApp()));
+  runApp(ProviderScope(
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

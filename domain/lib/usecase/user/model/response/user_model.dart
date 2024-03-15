@@ -35,8 +35,28 @@ class UserModel {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserModel && runtimeType == other.runtimeType && id == other.id;
+      other is UserModel &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          email == other.email &&
+          userName == other.userName;
 
   @override
-  int get hashCode => id.hashCode;
+  int get hashCode =>
+      id.hashCode ^ name.hashCode ^ email.hashCode ^ userName.hashCode;
+
+  UserModel copyWith({
+    int? id,
+    String? name,
+    String? email,
+    String? userName,
+  }) {
+    return UserModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      userName: userName ?? this.userName,
+    );
+  }
 }

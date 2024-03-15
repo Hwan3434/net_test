@@ -2,29 +2,41 @@ import 'package:data/common/log.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ui/ui/orgnal_login/provider/diary_list_notifier.dart';
-import 'package:ui/ui/orgnal_login/provider/global/data/org_data_container.dart';
 import 'package:ui/ui/orgnal_login/provider/global/data/org_data_provider.dart';
-import 'package:ui/ui/orgnal_login/provider/global/model/org_project.dart';
+import 'package:ui/ui/orgnal_login/provider/global/model/org_project_model.dart';
+import 'package:ui/ui/orgnal_login/provider/project_list_notifier.dart';
 import 'package:ui/ui/orgnal_login/provider/user_list_notifier.dart';
-import 'package:ui/ui/orgnal_login/widget/data/data_view_provider.dart';
+import 'package:ui/ui/orgnal_login/widget/original_login_view.dart';
 
 class OriginalDataView extends ConsumerWidget {
   const OriginalDataView();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final projects = OrgDataContainer.i.getOrgProject().getList();
-
-    final orgName =
-        ref.watch(dataViewProvider.select((value) => value?.orgName));
-
-    final project =
-        ref.watch(dataViewProvider.select((value) => value?.project));
-
-    if (orgName == null || project == null) {
+    final org = ref.read(currentOrgProvider);
+    if (org == null) {
       return const Scaffold(
         body: Center(
-          child: Text('선택된 프로젝트가 없음'),
+          child: Text('조직선택 안함'),
+        ),
+      );
+    }
+    final projectProvider = GlobalDataManager.i.getProjectListProvider();
+    final projects = ref.watch(projectProvider(org));
+
+    if (projects is! ProjectListSuccess) {
+      return const Scaffold(
+        body: Center(
+          child: Text('프로젝트가 존재하지 않음'),
+        ),
+      );
+    }
+
+    final currentProject = ref.watch(currentOrgProjectProvider);
+    if (currentProject == null) {
+      return const Scaffold(
+        body: Center(
+          child: Text('프로젝트 선택 안함'),
         ),
       );
     }
@@ -37,11 +49,10 @@ class OriginalDataView extends ConsumerWidget {
             title: Text('프로젝트 변경'),
             content: Column(
               mainAxisSize: MainAxisSize.min,
-              children: [null, ...projects].map((e) {
+              children: [null, ...projects.data].map((e) {
                 if (e == null) {
                   return ElevatedButton(
                     onPressed: () {
-                      ref.read(currentProject.notifier).update((state) => null);
                       Navigator.pop(context);
                     },
                     child: Text('선택해제'),
@@ -50,7 +61,6 @@ class OriginalDataView extends ConsumerWidget {
 
                 return ElevatedButton(
                     onPressed: () {
-                      ref.read(currentProject.notifier).update((state) => e);
                       Navigator.pop(context);
                     },
                     child: Text(e.name));
@@ -71,9 +81,9 @@ class OriginalDataView extends ConsumerWidget {
               icon: Icon(Icons.refresh))
         ],
         title: _AppBarTitleWidget(
-          orgName: orgName,
-          projects: projects,
-          currentProject: project,
+          orgName: org.name,
+          projects: projects.data.toList(),
+          currentProject: currentProject,
           changedFunc: changedProjectFunc,
         ),
       ),
@@ -93,9 +103,10 @@ class OriginalDataView extends ConsumerWidget {
                     builder: (context, ref, child) {
                       return ElevatedButton(
                         onPressed: () {
+                          final d = GlobalDataManager.i.getDiaryListProvider();
                           ref
-                              .read(orgDataProvider(orgName).notifier)
-                              .addDiary(project, controller.text);
+                              .read(d(currentProject).notifier)
+                              .add(controller.text);
                           controller.clear();
                         },
                         child: Text('다이어리 추가'),
@@ -107,23 +118,19 @@ class OriginalDataView extends ConsumerWidget {
             }),
             Expanded(
                 child: _DiaryListWidget(
-              project: project,
+              project: currentProject,
             )),
             Consumer(
               builder: (context, ref, child) {
                 return ElevatedButton(
-                  onPressed: () {
-                    ref
-                        .read(orgDataProvider(orgName).notifier)
-                        .addUser(project, "UserA");
-                  },
+                  onPressed: () {},
                   child: Text('사람 추가'),
                 );
               },
             ),
             Expanded(
                 child: _UserListWidget(
-              project: project,
+              project: currentProject,
             )),
           ],
         ),
@@ -134,8 +141,8 @@ class OriginalDataView extends ConsumerWidget {
 
 class _AppBarTitleWidget extends StatelessWidget {
   final String orgName;
-  final List<TempProject> projects;
-  final TempProject? currentProject;
+  final List<OrgProjectModel> projects;
+  final OrgProjectModel? currentProject;
   final void Function() changedFunc;
 
   const _AppBarTitleWidget({
@@ -160,7 +167,7 @@ class _AppBarTitleWidget extends StatelessWidget {
 }
 
 class _DiaryListWidget extends ConsumerWidget {
-  final TempProject project;
+  final OrgProjectModel project;
 
   const _DiaryListWidget({
     required this.project,
@@ -170,14 +177,8 @@ class _DiaryListWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     Log.e('다이어리 갱신');
 
-    final diaryState =
-        ref.watch(dataViewProvider.select((value) => value?.diaryListState));
-
-    if (diaryState == null) {
-      return Center(
-        child: Text('다이어리 널'),
-      );
-    }
+    final diaryProvider = GlobalDataManager.i.getDiaryListProvider();
+    final diaryState = ref.watch(diaryProvider(project));
 
     switch (diaryState) {
       case DiaryListWait():
@@ -210,7 +211,7 @@ class _DiaryListWidget extends ConsumerWidget {
 }
 
 class _UserListWidget extends ConsumerWidget {
-  final TempProject project;
+  final OrgProjectModel project;
 
   const _UserListWidget({
     required this.project,
@@ -220,14 +221,9 @@ class _UserListWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     Log.e('유저 갱신');
 
-    final userListState =
-        ref.watch(dataViewProvider.select((value) => value?.userListState));
+    final userProvider = GlobalDataManager.i.getUserListProvider();
 
-    if (userListState == null) {
-      return Center(
-        child: Text('유저 널'),
-      );
-    }
+    final userListState = ref.watch(userProvider(project));
 
     switch (userListState) {
       case UserListWait():

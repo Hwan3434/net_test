@@ -28,6 +28,7 @@ class UserListStateNotifier extends StateNotifier<UserListState> {
 
   void fetch() async {
     Log.d('UserListStateNotifier Fetch');
+    // _userUseCase.dio.options.baseUrl = 'https://${orgName}.nhn-cloud.com';
     state = UserListLoading();
     await Future.delayed(Duration(seconds: 3));
     final resultList = await _userUseCase.getUsers();
