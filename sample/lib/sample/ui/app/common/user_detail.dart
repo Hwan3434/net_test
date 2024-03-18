@@ -1,26 +1,25 @@
 import 'package:domain/usecase/user/model/response/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sample/sample/data/domain/global_state_storage.dart';
 import 'package:sample/sample/data/domain/project/model/project_model.dart';
 
 final userChildProvider =
     Provider.autoDispose.family<UserModel, PUModel>((ref, model) {
   final userState = ref.watch(
-    GlobalStateStorage().userStateProvider(model.pm).select(
-          (value) => value.data[model.index],
-        ),
+    model.searchProvider.select(
+      (value) => value.users.data[model.index],
+    ),
   );
   return userState;
 });
 
 class PUModel {
-  final ProjectDataModel pm;
   final int index;
+  final ProviderBase searchProvider;
 
   const PUModel({
-    required this.pm,
     required this.index,
+    required this.searchProvider,
   });
 
   @override
@@ -28,11 +27,10 @@ class PUModel {
       identical(this, other) ||
       other is PUModel &&
           runtimeType == other.runtimeType &&
-          pm.id == other.pm.id &&
           index == other.index;
 
   @override
-  int get hashCode => pm.id.hashCode ^ index.hashCode;
+  int get hashCode => index.hashCode;
 }
 
 typedef UserEmailEditCallBack = void Function(UserModel model);

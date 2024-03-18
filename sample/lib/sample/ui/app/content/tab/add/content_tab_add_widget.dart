@@ -38,7 +38,7 @@ class _CurrentAgentWidget extends ProviderStatelessWidget<
   @override
   Widget pBuild(BuildContext context, WidgetRef ref) {
     final agent = ref.watch(provider.select((value) => value.agentModel));
-    Log.e('_CurrentAgentWidget build {${agent.runtimeType}}');
+    Log.e('_CurrentAgentWidget 11111 build {${agent.runtimeType}}');
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -73,13 +73,17 @@ class _CurrentProjectWidget extends ProviderStatelessWidget<
     switch (projectState) {
       case ProjectState.wait:
         return Center(
-          child: BButton(
-              onPressed: () {
-                ref
-                    .read(GlobalStateStorage().projectProvider.notifier)
-                    .fetchData();
-              },
-              child: BTextWidget('프로젝트 가져오기')),
+          child: Column(
+            children: [
+              BButton(
+                  onPressed: () {
+                    ref
+                        .read(GlobalStateStorage().projectProvider.notifier)
+                        .fetchData();
+                  },
+                  child: BTextWidget('프로젝트 가져오기')),
+            ],
+          ),
         );
       case ProjectState.loading:
         return Center(
@@ -110,9 +114,7 @@ class _CurrentProjectWidget extends ProviderStatelessWidget<
             if (currentProject == null) Text('프로젝트 미선택'),
             if (currentProject != null)
               Flexible(
-                child: ProjectWidget(
-                  project: currentProject,
-                ),
+                child: Project2Widget(),
               ),
           ],
         );

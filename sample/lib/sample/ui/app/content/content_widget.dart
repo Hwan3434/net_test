@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample/sample/data/domain/agent/model/agent_model.dart';
 import 'package:sample/sample/data/domain/global_state_storage.dart';
+import 'package:sample/sample/data/domain/project/model/project_model.dart';
+import 'package:sample/sample/data/domain/user/model/user_model.dart';
 import 'package:sample/sample/data/shared/shared_data_manager.dart';
 import 'package:sample/sample/ui/app/content/content_view_model.dart';
 import 'package:sample/sample/widget/base/provider_widget.dart';
@@ -30,6 +32,10 @@ class ContentWidget extends StatelessWidget {
         organization: organization,
         agentModel: agent,
         project: project,
+        users: UserListModel(
+          state: UserListState.wait,
+          data: [],
+        ),
         currentProjectId: 0,
       ),
     );
@@ -57,6 +63,25 @@ class _ContentAgentCheckWidget extends ProviderStatelessWidget<
     ref.listen(GlobalStateStorage().projectProvider, (previous, next) {
       ref.read(provider.notifier).update(project: next);
     });
+
+    final projectState = ref.read(provider.select((value) => value.project));
+    final projectId =
+        ref.watch(provider.select((value) => value.currentProjectId));
+
+    if (projectState.state == ProjectState.success) {
+      final p = projectState.items.where((element) {
+        return element.id == projectId;
+      }).single;
+
+      ref.listen(
+        GlobalStateStorage().userStateProvider(p),
+        (previous, next) {
+          ref.read(provider.notifier).update(
+                users: next,
+              );
+        },
+      );
+    }
 
     return child;
   }

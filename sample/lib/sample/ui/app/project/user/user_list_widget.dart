@@ -1,18 +1,17 @@
 import 'package:domain/usecase/user/model/response/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sample/sample/data/domain/project/model/project_model.dart';
 import 'package:sample/sample/ui/app/common/user_detail.dart';
 import 'package:sample/sample/ui/app/project/user/user_widget.dart';
 
 class UserListWidget extends StatelessWidget {
-  final ProjectDataModel pm;
   final List<UserModel> userList;
+  final ProviderBase searchProvider;
   final UserEmailEditCallBack callBack;
   const UserListWidget({
     super.key,
-    required this.pm,
     required this.userList,
+    required this.searchProvider,
     required this.callBack,
   });
 
@@ -27,8 +26,8 @@ class UserListWidget extends StatelessWidget {
             final user = ref.watch(
               userChildProvider(
                 PUModel(
-                  pm: pm,
                   index: index,
+                  searchProvider: searchProvider,
                 ),
               ),
             );
