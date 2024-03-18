@@ -4,6 +4,7 @@ import 'package:riverpod/src/state_notifier_provider.dart';
 import 'package:sample/sample/ui/splash/splash_notifier.dart';
 import 'package:sample/sample/ui/splash/splash_widget.dart';
 import 'package:sample/sample/widget/base/provider_widget.dart';
+import 'package:sample/sample/widget/common/b_button.dart';
 import 'package:sample/sample/widget/common/b_text_widget.dart';
 
 import 'splash_model.dart';
@@ -24,12 +25,12 @@ class SplashBodyWidget
       children: [
         Text('splash :: $b'),
         _CountWidget(),
-        ElevatedButton(
+        BButton(
             onPressed: () {
               ref.read(provider.notifier).up();
             },
             child: Text('up')),
-        ElevatedButton(
+        BButton(
             onPressed: () {
               ref.read(provider.notifier).down();
             },

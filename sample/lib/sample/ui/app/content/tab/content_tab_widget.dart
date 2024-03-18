@@ -6,15 +6,15 @@ import 'package:sample/sample/ui/app/content/content_widget.dart';
 import 'package:sample/sample/ui/app/content/tab/abc/content_tab_abc_widget.dart';
 import 'package:sample/sample/ui/app/content/tab/ac/content_tab_ac_widget.dart';
 import 'package:sample/sample/ui/app/content/tab/add/content_tab_add_widget.dart';
-import 'package:sample/sample/util/log.dart';
 import 'package:sample/sample/widget/base/provider_widget.dart';
+import 'package:sample/sample/widget/common/b_tab_button.dart';
 
-import 'automatic_widget.dart';
+import 'keep_alive_widget.dart';
 
 final List<Widget> widgetBottomMenu = <Widget>[
-  AutomaticWidget(child: ContentTabAddWidget()),
-  AutomaticWidget(child: ContentTabAcWidget()),
-  AutomaticWidget(child: ContentTabAbcWidget()),
+  KeepAliveWidget(child: ContentTabAddWidget()),
+  KeepAliveWidget(child: ContentTabAcWidget()),
+  KeepAliveWidget(child: ContentTabAbcWidget()),
 ];
 
 class ContentTabWidget
@@ -105,9 +105,9 @@ class _CurrentContentBottomNavigationWidgetState
     return BottomNavigationBar(
       currentIndex: widget.controller.index,
       items: [
-        BottomNavigationBarItem(icon: Icon(Icons.add), label: 'add'),
-        BottomNavigationBarItem(icon: Icon(Icons.abc), label: 'abc'),
-        BottomNavigationBarItem(icon: Icon(Icons.ac_unit_rounded), label: 'ac'),
+        BTabButton.add(),
+        BTabButton.abc(),
+        BTabButton.ac(),
       ],
       onTap: (value) {
         setState(() {

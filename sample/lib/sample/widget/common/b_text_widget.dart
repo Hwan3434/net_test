@@ -7,7 +7,7 @@ class BTextWidget extends StatelessWidget {
   const BTextWidget(
     this.text, {
     this.overflow = TextOverflow.fade,
-    this.color = Colors.red,
+    this.color = Colors.blue,
   });
 
   @override

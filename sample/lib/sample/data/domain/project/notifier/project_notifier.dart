@@ -9,7 +9,7 @@ class ProjectStateNotifier extends StateNotifier<ProjectModel> {
   }
 
   void init() {
-    fetchData();
+    // fetchData(0);
   }
 
   void fetchData() async {
@@ -17,9 +17,7 @@ class ProjectStateNotifier extends StateNotifier<ProjectModel> {
       state: ProjectState.loading,
     );
     // final list = await agentUseCase.getProjects();
-
     await Future.delayed(Duration(seconds: 3));
-
     state = state.copyWith(
       state: ProjectState.success,
       items: [

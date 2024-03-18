@@ -31,8 +31,8 @@ class LastContentView extends BaseStatelessWidget<LastContentViewNotifier,
       children: [
         ElevatedButton(
           onPressed: () {
-            final users =
-                ref.read(lastContentViewProvider.notifier).fetchUserModels();
+            // final users =
+            //     ref.read(lastContentViewProvider.notifier).fetchUserModels();
           },
           child: Text("Content 유저 가져오기"),
         ),

@@ -34,7 +34,7 @@ class AgentNotifier extends StateNotifier<AgentModel> {
   }
 
   void downloadInit() async {
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 1));
     state = state.copyWith(
       state: AgentState.wait,
     );

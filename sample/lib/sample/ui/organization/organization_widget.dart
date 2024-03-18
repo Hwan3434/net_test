@@ -6,6 +6,8 @@ import 'package:sample/sample/ui/login/login_widget.dart';
 import 'package:sample/sample/ui/organization/organization_model.dart';
 import 'package:sample/sample/ui/organization/organization_notifier.dart';
 import 'package:sample/sample/widget/base/provider_widget.dart';
+import 'package:sample/sample/widget/common/b_button.dart';
+import 'package:sample/sample/widget/common/b_text_field.dart';
 
 class OrganizationWidget
     extends ProviderStatefulWidget<OrganizationNotifier, OrganizationModel> {
@@ -52,23 +54,54 @@ class _MyAppState extends ProviderState<OrganizationWidget,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          TextField(
+          BTextField(
             controller: controller,
           ),
-          ElevatedButton(
-              onPressed: () {
-                final org = controller.text;
-                if (org.isNotEmpty) {
-                  ref
-                      .read(GlobalStateStorage()
-                          .loginOrganizationProvider
-                          .notifier)
-                      .update((state) => controller.text);
-                }
-              },
-              child: Text('다음'))
+          BButton(
+            onPressed: () {
+              final org = controller.text;
+              if (org.isNotEmpty) {
+                ref
+                    .read(
+                        GlobalStateStorage().loginOrganizationProvider.notifier)
+                    .update((state) => controller.text);
+              }
+            },
+            child: Text('다음'),
+          )
         ],
       ),
     );
   }
 }
+
+// class _TempTopWidget extends StatelessWidget {
+//   const _TempTopWidget({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return BTextField(
+//       controller: controller,
+//     );
+//   }
+// }
+//
+// class _TempBottomWidget extends StatelessWidget {
+//   const _TempBottomWidget({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return BButton(
+//       onPressed: () {
+//         final org = controller.text;
+//         if (org.isNotEmpty) {
+//           ref
+//               .read(
+//               GlobalStateStorage().loginOrganizationProvider.notifier)
+//               .update((state) => controller.text);
+//         }
+//       },
+//       child: Text('다음'),
+//     );
+//   }
+// }

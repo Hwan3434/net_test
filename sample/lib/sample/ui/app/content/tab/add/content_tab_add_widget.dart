@@ -8,6 +8,8 @@ import 'package:sample/sample/ui/app/content/content_widget.dart';
 import 'package:sample/sample/ui/app/project/project_widget.dart';
 import 'package:sample/sample/util/log.dart';
 import 'package:sample/sample/widget/base/provider_widget.dart';
+import 'package:sample/sample/widget/common/b_button.dart';
+import 'package:sample/sample/widget/common/b_text_widget.dart';
 
 class ContentTabAddWidget extends StatelessWidget {
   const ContentTabAddWidget();
@@ -71,13 +73,13 @@ class _CurrentProjectWidget extends ProviderStatelessWidget<
     switch (projectState) {
       case ProjectState.wait:
         return Center(
-          child: ElevatedButton(
+          child: BButton(
               onPressed: () {
                 ref
                     .read(GlobalStateStorage().projectProvider.notifier)
                     .fetchData();
               },
-              child: Text('프로젝트 가져오기')),
+              child: BTextWidget('프로젝트 가져오기')),
         );
       case ProjectState.loading:
         return Center(

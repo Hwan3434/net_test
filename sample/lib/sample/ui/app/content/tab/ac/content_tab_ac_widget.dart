@@ -16,7 +16,6 @@ class ContentTabAcWidget extends ProviderStatelessWidget<
   }
 
   @override
-  // TODO: implement provider
   ProviderBase<ContentViewModel> get provider =>
       ContentWidget.contentViewModelProvider;
 }

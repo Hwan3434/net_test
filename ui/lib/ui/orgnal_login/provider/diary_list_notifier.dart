@@ -1,6 +1,5 @@
 import 'package:domain/usecase/user/user_usecase.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ui/ui/orgnal_login/provider/global/data/org_data_provider.dart';
 
 import '../../../test/log.dart';
 import '../../diary/data/diary_data.dart';

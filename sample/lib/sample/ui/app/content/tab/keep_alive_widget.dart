@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-class AutomaticWidget extends StatefulWidget {
+class KeepAliveWidget extends StatefulWidget {
   final Widget child;
-  const AutomaticWidget({
+  const KeepAliveWidget({
     required this.child,
   });
 
   @override
-  State<AutomaticWidget> createState() => _AutomaticWidgetState();
+  State<KeepAliveWidget> createState() => _KeepAliveWidgetState();
 }
 
-class _AutomaticWidgetState extends State<AutomaticWidget>
-    with AutomaticKeepAliveClientMixin<AutomaticWidget> {
+class _KeepAliveWidgetState extends State<KeepAliveWidget>
+    with AutomaticKeepAliveClientMixin<KeepAliveWidget> {
   @override
   bool get wantKeepAlive => true;
   @override

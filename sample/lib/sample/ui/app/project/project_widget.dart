@@ -4,6 +4,7 @@ import 'package:sample/sample/data/domain/global_state_storage.dart';
 import 'package:sample/sample/data/domain/project/model/project_model.dart';
 import 'package:sample/sample/data/domain/user/model/user_model.dart';
 import 'package:sample/sample/ui/app/project/user/user_list_widget.dart';
+import 'package:sample/sample/widget/common/b_button.dart';
 
 class ProjectWidget extends ConsumerWidget {
   final ProjectDataModel project;
@@ -20,7 +21,7 @@ class ProjectWidget extends ConsumerWidget {
     );
     switch (userState) {
       case UserListState.wait:
-        return ElevatedButton(
+        return BButton(
             onPressed: () {
               ref
                   .read(

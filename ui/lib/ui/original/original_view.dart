@@ -24,13 +24,13 @@ class OriginLifeTest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Log.d('OriginLifeTest 빌드');
-    return _LifeTestConsumerWidget();
+    return _lifeTestConsumerWidget();
   }
 }
 
-class _LifeTestConsumerWidget extends ConsumerWidget {
+class _lifeTestConsumerWidget extends ConsumerWidget {
   int i = 0;
-  _LifeTestConsumerWidget() {
+  _lifeTestConsumerWidget() {
     Log.d('_LifeTestConsumerWidget 생성자');
   }
 

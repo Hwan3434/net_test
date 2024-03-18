@@ -18,6 +18,7 @@ class UserStateNotifier extends StateNotifier<UserListModel> {
     state = state.copyWith(
       state: UserListState.loading,
     );
+    await Future.delayed(Duration(seconds: 3));
     await userUseCase.getUsers().then((value) {
       switch (value) {
         case ResultSuccess(data: final data):

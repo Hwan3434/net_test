@@ -10,6 +10,7 @@ import 'package:sample/sample/data/domain/global_state_storage.dart';
 import 'package:sample/sample/data/domain/project/model/project_model.dart';
 import 'package:sample/sample/data/flavor/enviroment.dart';
 import 'package:sample/sample/data/info/app_info_manager.dart';
+import 'package:sample/sample/util/log.dart';
 
 class UseCaseManager {
   static final UseCaseManager _singleton = UseCaseManager._internal();
@@ -24,6 +25,7 @@ class UseCaseManager {
     final String organization =
         ref.watch(GlobalStateStorage().loginOrganizationProvider);
     final String baseUrl = 'https://${env.mode}$organization.${env.url}';
+    Log.e('UserUseCaseProvider base URL : $baseUrl');
     final dio = Dio(
       BaseOptions(
         // baseUrl: baseUrl,
@@ -51,6 +53,7 @@ class UseCaseManager {
         ref.watch(GlobalStateStorage().loginOrganizationProvider);
     final String baseUrl =
         'https://${env.mode}$organization.${env.url}/${project.name}';
+    Log.e('UserUseCaseProvider base URL : $baseUrl');
     final dio = Dio(
       BaseOptions(
         // baseUrl: baseUrl,

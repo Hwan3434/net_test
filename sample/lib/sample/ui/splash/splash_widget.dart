@@ -41,7 +41,7 @@ class _SplashWidgetState
   }
 
   void initDownloadFile() async {
-    await Future.delayed(Duration(seconds: 5));
+    await Future.delayed(Duration(seconds: 1));
     ref.read(GlobalStateStorage().agentStateProvider.notifier).downloadInit();
   }
 

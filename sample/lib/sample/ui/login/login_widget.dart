@@ -7,8 +7,9 @@ import 'package:sample/sample/data/domain/global_state_storage.dart';
 import 'package:sample/sample/ui/app/content/content_widget.dart';
 import 'package:sample/sample/ui/login/login_text_widget.dart';
 import 'package:sample/sample/ui/login/login_view_model.dart';
-import 'package:sample/sample/util/log.dart';
 import 'package:sample/sample/widget/base/provider_widget.dart';
+import 'package:sample/sample/widget/common/b_button.dart';
+import 'package:sample/sample/widget/common/b_text_field.dart';
 
 class LoginWidget
     extends ProviderStatefulWidget<LoginStateNotifier, LoginViewModel> {
@@ -68,12 +69,11 @@ class _LoginWidgetState
     });
 
     final agent = ref.watch(GlobalStateStorage().agentStateProvider);
-    Log.d('agent : ${agent.runtimeType}');
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          TextField(
+          BTextField(
             controller: idController,
           ),
           Builder(
@@ -82,7 +82,7 @@ class _LoginWidgetState
               return Text('userID : $id');
             },
           ),
-          TextField(
+          BTextField(
             controller: pwController,
           ),
           Consumer(
@@ -115,16 +115,14 @@ class _LoginWidgetState
               child: CircularProgressIndicator(),
             ),
           if (agent.state == AgentState.wait)
-            ElevatedButton(
+            BButton(
               onPressed: () {
                 final validate =
                     ref.read(widget.provider.notifier).isValidate();
                 if (validate) {
-                  Log.d('삼번');
                   ref
                       .read(GlobalStateStorage().agentStateProvider.notifier)
                       .login(idController.text, pwController.text);
-                  Log.d('사번');
                 } else {
                   ScaffoldMessenger.of(context)
                       .showSnackBar(SnackBar(content: Text('에러')));

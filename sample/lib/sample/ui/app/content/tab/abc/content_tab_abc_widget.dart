@@ -6,6 +6,7 @@ import 'package:sample/sample/ui/app/content/content_view_model.dart';
 import 'package:sample/sample/ui/app/content/content_widget.dart';
 import 'package:sample/sample/util/log.dart';
 import 'package:sample/sample/widget/base/provider_widget.dart';
+import 'package:sample/sample/widget/common/b_button.dart';
 
 class ContentTabAbcWidget
     extends ProviderStatefulWidget<ContentViewModelNotifier, ContentViewModel> {
@@ -25,7 +26,7 @@ class _ContentTabAbcBodyWidgetState extends ProviderState<ContentTabAbcWidget,
   Widget pBuild(BuildContext context) {
     Log.i("ContentTabAbcWidget Build");
     return Center(
-      child: ElevatedButton(
+      child: BButton(
         onPressed: () {
           ref.read(GlobalStateStorage().agentStateProvider.notifier).logout();
           GlobalStateStorage().clear(ref);
