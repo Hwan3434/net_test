@@ -114,7 +114,7 @@ class _CurrentProjectWidget extends ProviderStatelessWidget<
             if (currentProject == null) Text('프로젝트 미선택'),
             if (currentProject != null)
               Flexible(
-                child: Project2Widget(),
+                child: ProjectWidget(),
               ),
           ],
         );

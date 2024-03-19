@@ -25,7 +25,7 @@ class UserStateNotifier extends StateNotifier<UserListModel> {
           {
             state = state.copyWith(
               state: UserListState.success,
-              data: [...data, ...data, ...data, ...data, ...data],
+              data: data,
             );
           }
         case ResultError():
@@ -45,5 +45,12 @@ class UserStateNotifier extends StateNotifier<UserListModel> {
         return e;
       }
     }).toList());
+  }
+
+  void addUser(UserModel userModel) {
+    state = state.copyWith(
+      state: state.state,
+      data: [userModel, ...state.data],
+    );
   }
 }

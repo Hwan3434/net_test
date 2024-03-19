@@ -11,17 +11,22 @@ class ContentViewModelNotifier extends StateNotifier<ContentViewModel> {
     String? organization,
     AgentModel? agentModel,
     ProjectModel? project,
-    UserListModel? users,
     int? currentProjectId,
+    Map<int, UserListModel>? users,
   }) {
     state = state.copyWith(
       currentTabIndex: currentTabIndex,
       organization: organization,
       agentModel: agentModel,
       project: project,
-      users: users,
       currentProjectId: currentProjectId,
+      users: users,
     );
+  }
+
+  void updateUsers(int projectId, UserListModel userListModel){
+    state.users.addAll({projectId: userListModel});
+    state = state.copyWith();
   }
 }
 
@@ -29,9 +34,9 @@ class ContentViewModel {
   final int currentTabIndex;
   final String organization;
   final AgentModel agentModel;
-  final ProjectModel project;
-  final UserListModel users;
   final int currentProjectId;
+  final ProjectModel project;
+  final Map<int, UserListModel> users;
 
   const ContentViewModel({
     required this.currentTabIndex,
@@ -47,7 +52,7 @@ class ContentViewModel {
     String? organization,
     AgentModel? agentModel,
     ProjectModel? project,
-    UserListModel? users,
+    Map<int, UserListModel>? users,
     int? currentProjectId,
   }) {
     return ContentViewModel(
