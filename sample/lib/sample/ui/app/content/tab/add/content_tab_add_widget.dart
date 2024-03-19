@@ -1,8 +1,10 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sample/sample/data/domain/global_state_storage.dart';
 import 'package:sample/sample/data/domain/project/model/project_model.dart';
+import 'package:sample/sample/ui/app/common/test_sample_widget.dart';
 import 'package:sample/sample/ui/app/content/content_view_model.dart';
 import 'package:sample/sample/ui/app/content/content_widget.dart';
 import 'package:sample/sample/ui/app/project/project_widget.dart';
@@ -63,12 +65,13 @@ class _CurrentProjectWidget extends ProviderStatelessWidget<
 
   @override
   Widget pBuild(BuildContext context, WidgetRef ref) {
-    Log.w('_CurrentProjectWidget build');
     final projectId =
         ref.watch(provider.select((value) => value.currentProjectId));
 
     final projectState =
         ref.watch(provider.select((value) => value.project.state));
+
+    Log.w('_CurrentProjectWidget build : $projectId / ${projectState.name}');
 
     switch (projectState) {
       case ProjectState.wait:
@@ -76,12 +79,26 @@ class _CurrentProjectWidget extends ProviderStatelessWidget<
           child: Column(
             children: [
               BButton(
+                onPressed: () {
+                  ref
+                      .read(GlobalStateStorage().projectProvider.notifier)
+                      .fetchData();
+                },
+                child: BTextWidget('프로젝트 가져오기'),
+              ),
+              Builder(builder: (context) {
+                Log.w('Test Switching Btn Build');
+
+                return BButton(
                   onPressed: () {
-                    ref
-                        .read(GlobalStateStorage().projectProvider.notifier)
-                        .fetchData();
+                    GoRouter.of(context).pushNamed(
+                      TestSampleWidget.name,
+                      params: {'ts': 'ttt'},
+                    );
                   },
-                  child: BTextWidget('프로젝트 가져오기')),
+                  child: BTextWidget('테스트 화면전환'),
+                );
+              }),
             ],
           ),
         );
@@ -106,6 +123,7 @@ class _CurrentProjectWidget extends ProviderStatelessWidget<
                 );
               }).toList(),
               onChanged: (value) {
+                Log.d('value?.id :: ${value?.id}');
                 ref.read(provider.notifier).update(
                       currentProjectId: value?.id ?? 0,
                     );

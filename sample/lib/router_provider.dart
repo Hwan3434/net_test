@@ -1,8 +1,12 @@
-import 'package:flutter/cupertino.dart';
+import 'package:domain/usecase/user/model/response/user_model.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sample/sample/data/domain/agent/model/agent_model.dart';
 import 'package:sample/sample/data/domain/global_state_storage.dart';
+import 'package:sample/sample/data/domain/project/model/project_model.dart';
+import 'package:sample/sample/ui/app/common/test_sample_widget.dart';
+import 'package:sample/sample/ui/app/common/user_detail.dart';
 import 'package:sample/sample/ui/app/content/content_widget.dart';
 import 'package:sample/sample/ui/common/loading_widget.dart';
 import 'package:sample/sample/ui/login/login_widget.dart';
@@ -47,24 +51,22 @@ class _DomainStateNotifier extends ChangeNotifier {
     GoRoute(
       path: SplashWidget.path,
       name: SplashWidget.name,
-      builder: (context, state) {
-        return SplashWidget(
-          nextWidgetName: OrganizationWidget.name,
-        );
+      pageBuilder: (context, state) {
+        return const MaterialPage(child: SplashWidget());
       },
     ),
     GoRoute(
       path: OrganizationWidget.path,
       name: OrganizationWidget.name,
-      builder: (context, state) {
-        return OrganizationWidget();
+      pageBuilder: (context, state) {
+        return const MaterialPage(child: OrganizationWidget());
       },
       routes: [
         GoRoute(
           path: LoginWidget.path,
           name: LoginWidget.name,
-          builder: (context, state) {
-            return LoginWidget();
+          pageBuilder: (context, state) {
+            return const MaterialPage(child: LoginWidget());
           },
         ),
       ],
@@ -72,25 +74,40 @@ class _DomainStateNotifier extends ChangeNotifier {
     GoRoute(
       path: LoginLoadingWidget.path,
       name: LoginLoadingWidget.name,
-      builder: (context, state) {
-        return LoginLoadingWidget(
-          callback: (state) {
-            if (state == AgentState.wait) {
-              context.goNamed(SplashWidget.name);
-            }
-            if (state == AgentState.success) {
-              context.goNamed(ContentWidget.name);
-            }
-          },
-        );
+      pageBuilder: (context, state) {
+        return const MaterialPage(child: LoginLoadingWidget());
       },
     ),
     GoRoute(
-      path: ContentWidget.path,
-      name: ContentWidget.name,
-      builder: (context, state) {
-        return ContentWidget();
-      },
-    ),
+        path: ContentWidget.path,
+        name: ContentWidget.name,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: ContentWidget());
+        },
+        routes: [
+          GoRoute(
+            path: UserDetail.path,
+            name: UserDetail.name,
+            pageBuilder: (context, state) {
+              final ProjectDataModel project = (state.extra as List)[0];
+              final UserModel userModel = (state.extra as List)[1];
+              return MaterialPage(
+                  child: UserDetail(
+                project: project,
+                userModel: userModel,
+              ));
+            },
+          ),
+          GoRoute(
+            path: TestSampleWidget.path,
+            name: TestSampleWidget.name,
+            pageBuilder: (context, state) {
+              return MaterialPage(
+                  child: TestSampleWidget(
+                ts: state.params['ts']!,
+              ));
+            },
+          ),
+        ]),
   ];
 }

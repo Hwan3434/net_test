@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sample/sample/data/domain/agent/model/agent_model.dart';
 import 'package:sample/sample/data/domain/global_state_storage.dart';
+import 'package:sample/sample/ui/organization/organization_widget.dart';
 import 'package:sample/sample/ui/splash/splash_body_widget.dart';
 import 'package:sample/sample/widget/base/provider_widget.dart';
 
@@ -15,8 +16,8 @@ import 'splash_notifier.dart';
 class SplashWidget extends ProviderStatefulWidget<SplashNotifier, SplashModel> {
   static String get path => '/';
   static String get name => 'SplashWidget';
-  final String nextWidgetName;
-  const SplashWidget({required this.nextWidgetName});
+
+  const SplashWidget();
 
   static final splashLoadingProvider =
       StateNotifierProvider.autoDispose<SplashNotifier, SplashModel>((ref) {
@@ -55,7 +56,7 @@ class _SplashWidgetState
     ref.listen(widget.provider.select((value) => value.splashLoading),
         (previous, next) {
       if (next) {
-        context.goNamed(widget.nextWidgetName);
+        context.goNamed(OrganizationWidget.name);
       }
     });
 

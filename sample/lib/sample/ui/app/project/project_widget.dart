@@ -83,15 +83,7 @@ class ProjectWidget extends ProviderStatelessWidget<ContentViewModelNotifier,
             Expanded(
               child: UserListWidget(
                 userList: data,
-                projectId: projectId,
-                searchProvider: provider,
-                callBack: (model) {
-                  ref
-                      .read(GlobalStateStorage()
-                          .userStateProvider(project)
-                          .notifier)
-                      .update(model);
-                },
+                project: project,
               ),
             ),
           ],

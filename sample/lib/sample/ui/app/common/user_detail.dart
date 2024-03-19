@@ -1,49 +1,20 @@
 import 'package:domain/usecase/user/model/response/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-final userChildProvider =
-    Provider.autoDispose.family<UserModel, PUModel>((ref, model) {
-  final userState = ref.watch(
-    model.searchProvider.select(
-      (value) => value.users[model.projectId].data[model.index],
-    ),
-  );
-  return userState;
-});
-
-class PUModel {
-  final int projectId;
-  final int index;
-  final ProviderBase searchProvider;
-
-  const PUModel({
-    required this.projectId,
-    required this.index,
-    required this.searchProvider,
-  });
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PUModel &&
-          runtimeType == other.runtimeType &&
-          projectId == other.projectId &&
-          index == other.index;
-
-  @override
-  int get hashCode => projectId.hashCode ^ index.hashCode;
-}
-
-typedef UserEmailEditCallBack = void Function(UserModel model);
+import 'package:go_router/go_router.dart';
+import 'package:sample/sample/data/domain/global_state_storage.dart';
+import 'package:sample/sample/data/domain/project/model/project_model.dart';
 
 class UserDetail extends ConsumerStatefulWidget {
+  static String get path => 'UserDetail';
+  static String get name => 'UserDetail';
+
+  final ProjectDataModel project;
   final UserModel userModel;
-  final UserEmailEditCallBack callBack;
   const UserDetail({
     super.key,
+    required this.project,
     required this.userModel,
-    required this.callBack,
   });
 
   @override
@@ -62,6 +33,9 @@ class _UserDetailState extends ConsumerState<UserDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('디테일'),
+      ),
       body: SafeArea(
         child: Row(
           children: [
@@ -73,9 +47,13 @@ class _UserDetailState extends ConsumerState<UserDetail> {
             ),
             ElevatedButton(
               onPressed: () {
-                widget.callBack(
-                    widget.userModel.copyWith(email: controller.text));
-                Navigator.pop(context);
+                ref
+                    .read(GlobalStateStorage()
+                        .userStateProvider(widget.project)
+                        .notifier)
+                    .update(widget.userModel.copyWith(email: controller.text));
+
+                context.pop();
               },
               child: Text('저장'),
             )

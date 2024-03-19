@@ -12,9 +12,9 @@ import 'package:sample/sample/widget/common/b_tab_button.dart';
 import 'keep_alive_widget.dart';
 
 final List<Widget> widgetBottomMenu = <Widget>[
-  KeepAliveWidget(child: ContentTabAddWidget()),
-  KeepAliveWidget(child: ContentTabAcWidget()),
-  KeepAliveWidget(child: ContentTabAbcWidget()),
+  const KeepAliveWidget(child: ContentTabAddWidget()),
+  const KeepAliveWidget(child: ContentTabAcWidget()),
+  const KeepAliveWidget(child: ContentTabAbcWidget()),
 ];
 
 class ContentTabWidget

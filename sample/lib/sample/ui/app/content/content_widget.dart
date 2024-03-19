@@ -49,6 +49,7 @@ class ContentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Log.w('ContentWidget Build');
     return _ContentAgentCheckWidget(
       child: ContentTabWidget(),
     );
