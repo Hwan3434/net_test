@@ -1,7 +1,7 @@
 import 'package:data/data/user/datasource/impl/remote_user_datasource_impl.dart';
 import 'package:data/data/user/repository/impl/user_repository_impl.dart';
 import 'package:dio/dio.dart';
-import 'package:domain/usecase/user/impl/user_usercase_impl_2.dart';
+import 'package:domain/usecase/user/impl/mock_usercase_impl_3.dart';
 import 'package:domain/usecase/user/user_usecase.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample/sample/aaa_test/agent_usecase.dart';
@@ -68,7 +68,7 @@ class UseCaseManager {
     );
     final dataSource = RemoteUserDataSourceImpl(dio);
     final repository = UserRepositoryImpl(dataSource);
-    final userUseCaseImpl = UserUseCaseImpl2(repository);
+    final userUseCaseImpl = MockUserCaseImpl3();
     return userUseCaseImpl;
   });
 }
