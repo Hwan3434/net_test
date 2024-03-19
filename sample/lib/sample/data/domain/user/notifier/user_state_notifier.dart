@@ -50,7 +50,7 @@ class UserStateNotifier extends StateNotifier<UserListModel> {
   void addUser(UserModel userModel) {
     state = state.copyWith(
       state: state.state,
-      data: [userModel, ...state.data],
+      data: [...state.data, userModel],
     );
   }
 }

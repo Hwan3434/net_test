@@ -38,7 +38,7 @@ class _CurrentAgentWidget extends ProviderStatelessWidget<
   @override
   Widget pBuild(BuildContext context, WidgetRef ref) {
     final agent = ref.watch(provider.select((value) => value.agentModel));
-    Log.e('_CurrentAgentWidget 11111 build {${agent.runtimeType}}');
+    Log.w('_CurrentAgentWidget build {${agent.runtimeType}}');
     return SingleChildScrollView(
       child: Column(
         children: [

@@ -58,8 +58,10 @@ class ProjectWidget extends ProviderStatelessWidget<ContentViewModelNotifier,
           child: CircularProgressIndicator(),
         );
       case UserListState.success:
+        final count = ref.watch(
+            provider.select((value) => value.users[project.id]!.data.length));
         final data =
-            ref.read(provider.select((value) => value.users[project.id]!));
+            ref.read(provider.select((value) => value.users[project.id]!.data));
         return Column(
           children: [
             ElevatedButton(
@@ -80,7 +82,7 @@ class ProjectWidget extends ProviderStatelessWidget<ContentViewModelNotifier,
                 child: BTextWidget('사용자 하나 추가')),
             Expanded(
               child: UserListWidget(
-                userList: data.data,
+                userList: data,
                 projectId: projectId,
                 searchProvider: provider,
                 callBack: (model) {

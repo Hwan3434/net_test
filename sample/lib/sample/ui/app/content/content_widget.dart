@@ -18,7 +18,7 @@ class ContentWidget extends StatelessWidget {
 
   static final contentViewModelProvider = StateNotifierProvider.autoDispose<
       ContentViewModelNotifier, ContentViewModel>((ref) {
-    Log.w('contentViewModelPrvider CreateFn');
+    Log.i('contentViewModelPrvider CreateFn');
     final organization =
         ref.read(GlobalStateStorage().loginOrganizationProvider);
     final agent = ref.read(GlobalStateStorage().agentStateProvider);
