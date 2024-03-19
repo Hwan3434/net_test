@@ -66,15 +66,16 @@ class _ContentAgentCheckWidget extends ProviderStatelessWidget<
 
   @override
   Widget pBuild(BuildContext context, WidgetRef ref) {
+    Log.w('_ContentAgentCheckWidget Build');
     ref.listen(GlobalStateStorage().projectProvider, (previous, next) {
       ref.read(provider.notifier).update(project: next);
     });
 
-    final projectState = ref.read(provider.select((value) => value.project));
     final projectId =
         ref.watch(provider.select((value) => value.currentProjectId));
+    final projectState = ref.read(provider.select((value) => value.project));
 
-    if (projectState.state == ProjectState.success) {
+    if (projectId != 0 && projectState.state == ProjectState.success) {
       final p = projectState.items.where((element) {
         return element.id == projectId;
       }).single;

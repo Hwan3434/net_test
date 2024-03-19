@@ -32,6 +32,10 @@ class UserModel {
     );
   }
 
+  /// todo 전체를 ==에 사용한 이유는
+  /// id만 유니크키로 잡으면 provider에서 watch가 동작하지않게됩니다.
+  /// 예를들어 A사용자의 email을 변경하면 copyWith로 하면 id, name, userName은 동일하고 email만
+  /// 변경되는데 이때 id가 같기으면 같은객체기때문에 provider는 변화감지를 하지못합니다.
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

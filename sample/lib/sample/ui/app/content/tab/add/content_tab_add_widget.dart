@@ -63,7 +63,7 @@ class _CurrentProjectWidget extends ProviderStatelessWidget<
 
   @override
   Widget pBuild(BuildContext context, WidgetRef ref) {
-    Log.i('_CurrentProjectWidget build');
+    Log.w('_CurrentProjectWidget build');
     final projectId =
         ref.watch(provider.select((value) => value.currentProjectId));
 
