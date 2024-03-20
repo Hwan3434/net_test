@@ -24,22 +24,27 @@ import 'package:domain/usecase/user/model/response/user_model.dart';
 //
 // class UserStateError extends UserState {}
 
-enum UserListState { wait, loading, error, success }
+enum UserState { wait, loading, error, success }
 
-class UserListModel {
-  final UserListState state;
+class UserStateModel {
+  final UserState state;
   final List<UserModel> data;
 
-  const UserListModel({
+  const UserStateModel({
     required this.state,
     required this.data,
   });
 
-  UserListModel copyWith({
-    UserListState? state,
+  factory UserStateModel.create() => const UserStateModel(
+        state: UserState.wait,
+        data: [],
+      );
+
+  UserStateModel copyWith({
+    UserState? state,
     List<UserModel>? data,
   }) {
-    return UserListModel(
+    return UserStateModel(
       state: state ?? this.state,
       data: data ?? this.data,
     );

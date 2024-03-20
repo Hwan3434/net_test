@@ -8,7 +8,7 @@ import 'package:sample/sample/util/log.dart';
 import 'package:sample/sample/widget/common/b_text_widget.dart';
 
 class UserWidget extends ConsumerWidget {
-  final ProjectDataModel project;
+  final ProjectModel project;
   final UserModel user;
   const UserWidget({
     required this.project,

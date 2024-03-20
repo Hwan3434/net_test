@@ -22,57 +22,75 @@ class ProjectView
   @override
   Widget pBuild(BuildContext context, WidgetRef ref) {
     final projectId =
-        ref.read(provider.select((value) => value.currentProjectId));
-    final projects = ref.read(provider.select((value) => value.project));
-    final project =
-        projects.items.where((element) => element.id == projectId).single;
+        ref.watch(provider.select((value) => value.currentProjectId));
 
     Log.w('ProjectWidget Build - $projectId');
 
-    final userState = ref.watch(
-      provider.select(
-        (value) {
-          return value.users[projectId]!.state;
-        },
-      ),
-    );
+    ref.listen(GlobalStateStorage().currentProjectIdProvider, (previous, next) {
+      ref.read(provider.notifier).update(currentProjectId: next);
+    });
 
-    ref.listen(GlobalStateStorage().userStateProvider(project),
-        (previous, next) {
+    ref.listen(
+        GlobalStateStorage().projectProvider.select(
+              (value) => value.projectStateModel.items
+                  .singleWhere((element) => element.id == projectId)
+                  .userStateModel,
+            ), (previous, next) {
+      Log.d('안녕하싱가.');
       ref.read(provider.notifier).updateUsers(
             projectId,
             next,
           );
     });
 
+    final userState = ref.watch(
+      provider.select(
+        (value) {
+          return value.project.projectStateModel.items
+              .singleWhere((element) => element.id == projectId)
+              .userStateModel
+              .state;
+        },
+      ),
+    );
+
+    final projects = ref.read(provider.select((value) => value.project));
+    final project = projects.projectStateModel.items
+        .where((element) => element.id == projectId)
+        .single;
+
     switch (userState) {
-      case UserListState.wait:
+      case UserState.wait:
         return BButton(
             onPressed: () {
               ref
-                  .read(
-                      GlobalStateStorage().userStateProvider(project).notifier)
-                  .fetch();
+                  .read(GlobalStateStorage().projectProvider.notifier)
+                  .fetchUser(project: project);
             },
             child: BTextWidget('${project.name} - 유저 가져오기'));
-      case UserListState.loading:
+      case UserState.loading:
         return Center(
           child: CircularProgressIndicator(),
         );
-      case UserListState.success:
-        ref.watch(
-            provider.select((value) => value.users[project.id]!.data.length));
-        final data =
-            ref.read(provider.select((value) => value.users[project.id]!.data));
+      case UserState.success:
+        ref.watch(provider.select(
+          (value) => value.project.projectStateModel.items
+              .singleWhere((element) => element.id == projectId)
+              .userStateModel
+              .data
+              .length,
+        ));
+        final data = ref.read(provider.select((value) => value
+            .project.projectStateModel.items
+            .singleWhere((element) => element.id == projectId)
+            .userStateModel
+            .data));
         return Column(
           children: [
             ElevatedButton(
               onPressed: () {
-                ref
-                    .read(GlobalStateStorage()
-                        .userStateProvider(project)
-                        .notifier)
-                    .addUser(
+                ref.read(GlobalStateStorage().projectProvider.notifier).addUser(
+                      project,
                       UserModel(
                         id: 33,
                         name: '정환',
@@ -91,7 +109,7 @@ class ProjectView
             ),
           ],
         );
-      case UserListState.error:
+      case UserState.error:
         return Center(
           child: Text('유저 에러'),
         );

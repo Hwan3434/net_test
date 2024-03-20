@@ -6,7 +6,7 @@ class UserDetailNotifier extends StateNotifier<UserDetailModel> {
   UserDetailNotifier(super.state);
 
   void update({
-    ProjectDataModel? project,
+    ProjectModel? project,
     UserModel? userModel,
   }) {
     state = state.copyWith(
@@ -17,7 +17,7 @@ class UserDetailNotifier extends StateNotifier<UserDetailModel> {
 }
 
 class UserDetailModel {
-  final ProjectDataModel project;
+  final ProjectModel project;
   final UserModel userModel;
 
   const UserDetailModel({
@@ -26,7 +26,7 @@ class UserDetailModel {
   });
 
   UserDetailModel copyWith({
-    ProjectDataModel? project,
+    ProjectModel? project,
     UserModel? userModel,
   }) {
     return UserDetailModel(

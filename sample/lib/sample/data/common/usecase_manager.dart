@@ -47,7 +47,7 @@ class UseCaseManager {
   /// todo watch loginOrganizationProvider 하면 사실 존재하던 project도 다 날아가고 없어야할겁니다.
   /// todo 그럼 조직이 변경되었을때 userUseCaseProvider 도 famly들이 모두 초기화되는지 확인해보자.(초기화되어야한다.)
   final userUseCaseProvider =
-      Provider.family<UserUseCase, ProjectDataModel>((ref, project) {
+      Provider.family<UserUseCase, ProjectModel>((ref, project) {
     final Environment env = AppInfoManger().getEnvironment();
     final String organization =
         ref.watch(GlobalStateStorage().loginOrganizationProvider);

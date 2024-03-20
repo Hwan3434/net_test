@@ -29,7 +29,7 @@ class AgentNotifier extends StateNotifier<AgentModel> {
     );
   }
 
-  Future<List<ProjectDataModel>> getProjects() async {
+  Future<List<ProjectModel>> getProjects() async {
     return [];
   }
 

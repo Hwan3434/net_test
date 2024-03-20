@@ -67,17 +67,17 @@ class _CurrentProjectWidget
     final projectId =
         ref.watch(provider.select((value) => value.currentProjectId));
 
-    final projectState =
-        ref.watch(provider.select((value) => value.project.state));
+    final projectState = ref.watch(
+        provider.select((value) => value.project.projectStateModel.state));
 
     Log.w('_CurrentProjectWidget build : $projectId / ${projectState.name}');
 
     ref.listen(GlobalStateStorage().projectProvider, (previous, next) {
-      for (var project in next.items) {
+      for (var project in next.projectStateModel.items) {
         ref.read(provider.notifier).updateUsers(
               project.id,
-              const UserListModel(
-                state: UserListState.wait,
+              const UserStateModel(
+                state: UserState.wait,
                 data: [],
               ),
             );
@@ -93,7 +93,7 @@ class _CurrentProjectWidget
                 onPressed: () {
                   ref
                       .read(GlobalStateStorage().projectProvider.notifier)
-                      .fetchData();
+                      .fetchProject();
                 },
                 child: BTextWidget('프로젝트 가져오기'),
               ),
@@ -105,8 +105,8 @@ class _CurrentProjectWidget
           child: CircularProgressIndicator(),
         );
       case ProjectState.success:
-        final myProjects =
-            ref.read(provider.select((value) => value.project.items));
+        final myProjects = ref.read(
+            provider.select((value) => value.project.projectStateModel.items));
         final currentProject =
             myProjects.singleWhereOrNull((element) => projectId == element.id);
 
@@ -121,8 +121,8 @@ class _CurrentProjectWidget
             DropdownButton(
               value: currentProject,
               items: [null, ...myProjects]
-                  .map<DropdownMenuItem<ProjectDataModel?>>((e) {
-                return DropdownMenuItem<ProjectDataModel?>(
+                  .map<DropdownMenuItem<ProjectModel?>>((e) {
+                return DropdownMenuItem<ProjectModel?>(
                   value: e,
                   child: Text(e?.name ?? '미선택'),
                 );

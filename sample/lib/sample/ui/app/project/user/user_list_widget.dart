@@ -7,7 +7,7 @@ import 'package:sample/sample/ui/app/project/user/user_widget.dart';
 import 'package:sample/sample/util/log.dart';
 
 class UserListWidget extends StatelessWidget {
-  final ProjectDataModel project;
+  final ProjectModel project;
   final List<UserModel> userList;
   const UserListWidget({
     required this.project,
@@ -26,7 +26,10 @@ class UserListWidget extends StatelessWidget {
             Log.w('UserListWidget Consumer Build!');
             final user = ref.watch(
               ContentView.contentViewModelProvider.select((value) {
-                return value.users[project.id]!.data[index];
+                return value.project.projectStateModel.items
+                    .singleWhere((element) => element.id == project.id)
+                    .userStateModel
+                    .data[index];
               }),
             );
             return UserWidget(

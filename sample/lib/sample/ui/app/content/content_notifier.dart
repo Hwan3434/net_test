@@ -10,9 +10,8 @@ class ContentNotifier extends StateNotifier<ContentViewModel> {
     int? currentTabIndex,
     String? organization,
     AgentModel? agentModel,
-    ProjectModel? project,
+    ProjectProviderModel? project,
     int? currentProjectId,
-    Map<int, UserListModel>? users,
   }) {
     state = state.copyWith(
       currentTabIndex: currentTabIndex,
@@ -20,13 +19,23 @@ class ContentNotifier extends StateNotifier<ContentViewModel> {
       agentModel: agentModel,
       project: project,
       currentProjectId: currentProjectId,
-      users: users,
     );
   }
 
-  void updateUsers(int projectId, UserListModel userListModel) {
-    state.users.addAll({projectId: userListModel});
-    state = state.copyWith();
+  void updateUsers(int projectId, UserStateModel userStateModel) {
+    state = state.copyWith(
+      project: state.project.copyWith(
+        projectStateModel: state.project.projectStateModel.copyWith(
+            items: state.project.projectStateModel.items.map((e) {
+          if (e.id == projectId) {
+            return e.copyWith(
+              userStateModel: userStateModel,
+            );
+          }
+          return e;
+        }).toList()),
+      ),
+    );
   }
 }
 
@@ -35,15 +44,13 @@ class ContentViewModel {
   final String organization;
   final AgentModel agentModel;
   final int currentProjectId;
-  final ProjectModel project;
-  final Map<int, UserListModel> users;
+  final ProjectProviderModel project;
 
   const ContentViewModel({
     required this.currentTabIndex,
     required this.organization,
     required this.agentModel,
     required this.project,
-    required this.users,
     required this.currentProjectId,
   });
 
@@ -51,8 +58,7 @@ class ContentViewModel {
     int? currentTabIndex,
     String? organization,
     AgentModel? agentModel,
-    ProjectModel? project,
-    Map<int, UserListModel>? users,
+    ProjectProviderModel? project,
     int? currentProjectId,
   }) {
     return ContentViewModel(
@@ -60,7 +66,6 @@ class ContentViewModel {
       organization: organization ?? this.organization,
       agentModel: agentModel ?? this.agentModel,
       project: project ?? this.project,
-      users: users ?? this.users,
       currentProjectId: currentProjectId ?? this.currentProjectId,
     );
   }

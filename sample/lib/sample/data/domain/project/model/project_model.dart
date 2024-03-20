@@ -1,3 +1,5 @@
+import 'package:sample/sample/data/domain/user/model/user_model.dart';
+
 enum ProjectState {
   wait,
   loading,
@@ -5,42 +7,77 @@ enum ProjectState {
   fail;
 }
 
-class ProjectModel {
-  final ProjectState state;
-  final List<ProjectDataModel> items;
+class ProjectProviderModel {
+  final ProjectStateModel projectStateModel;
 
-  const ProjectModel({
+  const ProjectProviderModel({
+    required this.projectStateModel,
+  });
+
+  factory ProjectProviderModel.init() => ProjectProviderModel(
+        projectStateModel:
+            ProjectStateModel(state: ProjectState.wait, items: []),
+      );
+
+  ProjectProviderModel copyWith({
+    ProjectStateModel? projectStateModel,
+  }) {
+    return ProjectProviderModel(
+      projectStateModel: projectStateModel ?? this.projectStateModel,
+    );
+  }
+}
+
+class ProjectStateModel {
+  final ProjectState state;
+  final List<ProjectModel> items;
+
+  const ProjectStateModel({
     required this.state,
     required this.items,
   });
 
-  ProjectModel copyWith({
+  ProjectStateModel copyWith({
     ProjectState? state,
-    List<ProjectDataModel>? items,
+    List<ProjectModel>? items,
   }) {
-    return ProjectModel(
+    return ProjectStateModel(
       state: state ?? this.state,
       items: items ?? this.items,
     );
   }
 }
 
-class ProjectDataModel {
+class ProjectModel {
   final int id;
   final String name;
+  final UserStateModel userStateModel;
 
-  const ProjectDataModel({
+  const ProjectModel({
     required this.id,
     required this.name,
+    required this.userStateModel,
   });
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ProjectDataModel &&
+      other is ProjectModel &&
           runtimeType == other.runtimeType &&
           id == other.id;
 
   @override
   int get hashCode => id.hashCode;
+
+  ProjectModel copyWith({
+    int? id,
+    String? name,
+    UserStateModel? userStateModel,
+  }) {
+    return ProjectModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      userStateModel: userStateModel ?? this.userStateModel,
+    );
+  }
 }

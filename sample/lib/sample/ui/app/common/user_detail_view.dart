@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sample/sample/data/domain/global_state_storage.dart';
+import 'package:sample/sample/data/domain/project/model/project_model.dart';
 import 'package:sample/sample/ui/app/common/user_detail_notifier.dart';
 import 'package:sample/sample/util/log.dart';
 import 'package:sample/sample/widget/base/provider_widget.dart';
@@ -11,17 +12,20 @@ class UserDetailView extends StatelessWidget {
   static String get path => 'UserDetailView';
   static String get name => 'UserDetailView';
   final int userId;
-  const UserDetailView({required this.userId});
+  const UserDetailView({
+    required this.userId,
+  });
 
   static final userDetailViewModelProvider = StateNotifierProvider.autoDispose
       .family<UserDetailNotifier, UserDetailModel, int>((ref, userId) {
     final projectId = ref.read(GlobalStateStorage().currentProjectIdProvider);
     assert(projectId != 0);
-    final project =
-        ref.read(GlobalStateStorage().projectProvider.notifier).get(projectId);
+    final project = ref
+        .read(GlobalStateStorage().projectProvider.notifier)
+        .getProjectById(projectId);
     final user = ref
-        .read(GlobalStateStorage().userStateProvider(project).notifier)
-        .get(userId);
+        .read(GlobalStateStorage().projectProvider.notifier)
+        .getUserById(projectId, userId);
 
     return UserDetailNotifier(UserDetailModel(
       project: project,
@@ -31,16 +35,28 @@ class UserDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return UserDetailBody(
-      userId: userId,
+    return Consumer(
+      builder: (context, ref, child) {
+        final projectId =
+            ref.read(GlobalStateStorage().currentProjectIdProvider);
+        final project = ref
+            .read(GlobalStateStorage().projectProvider.notifier)
+            .getProjectById(projectId);
+        return UserDetailBody(
+          projectModel: project,
+          userId: userId,
+        );
+      },
     );
   }
 }
 
 class UserDetailBody
     extends ProviderStatefulWidget<UserDetailNotifier, UserDetailModel> {
+  final ProjectModel projectModel;
   final int userId;
   const UserDetailBody({
+    required this.projectModel,
     required this.userId,
   });
 
@@ -99,11 +115,13 @@ class _UserDetailBodyState
             ElevatedButton(
               onPressed: () {
                 ref
-                    .read(GlobalStateStorage()
-                        .userStateProvider(viewModel.project)
-                        .notifier)
-                    .update(
-                        viewModel.userModel.copyWith(email: controller.text));
+                    .read(GlobalStateStorage().projectProvider.notifier)
+                    .updateUser(
+                      widget.projectModel,
+                      viewModel.userModel.copyWith(
+                        email: controller.text,
+                      ),
+                    );
 
                 context.pop();
               },

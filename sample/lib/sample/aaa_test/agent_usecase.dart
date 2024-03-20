@@ -13,7 +13,7 @@ class AgentUseCaseImpl extends AgentUseCase {
   }
 
   @override
-  Future<Result<List<ProjectDataModel>>> getProjects() {
+  Future<Result<List<ProjectModel>>> getProjects() {
     throw UnimplementedError();
   }
 }
@@ -23,7 +23,7 @@ abstract interface class AgentUseCase implements UseCase {
     required int id,
     required int pw,
   });
-  Future<Result<List<ProjectDataModel>>> getProjects();
+  Future<Result<List<ProjectModel>>> getProjects();
 }
 
 class AgentRepository {
