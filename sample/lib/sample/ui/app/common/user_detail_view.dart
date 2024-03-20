@@ -123,6 +123,10 @@ class _WatchTestWidget extends ProviderStatelessWidget {
   });
 
   @override
+  AutoDisposeStateNotifierProvider<UserDetailNotifier, UserDetailModel>
+      get provider => UserDetailView.userDetailViewModelProvider(userId);
+
+  @override
   Widget pBuild(BuildContext context, WidgetRef ref) {
     Log.i('_WatchTestWidget build');
     final email = ref.watch(provider.select((value) => value.userModel.email));
@@ -132,8 +136,4 @@ class _WatchTestWidget extends ProviderStatelessWidget {
       maxLines: null,
     );
   }
-
-  @override
-  AutoDisposeStateNotifierProvider<UserDetailNotifier, UserDetailModel>
-      get provider => UserDetailView.userDetailViewModelProvider(userId);
 }

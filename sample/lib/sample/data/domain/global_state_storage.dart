@@ -22,6 +22,7 @@ class GlobalStateStorage {
     // ref.invalidate(agentStateProvider);
     ref.invalidate(loginOrganizationProvider);
     ref.invalidate(projectProvider);
+    ref.invalidate(currentProjectIdProvider);
     ref.invalidate(userStateProvider);
   }
 
