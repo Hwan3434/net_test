@@ -7,7 +7,6 @@ import 'package:sample/sample/ui/app/content/content_view.dart';
 import 'package:sample/sample/ui/app/content/tab/abc/content_tab_abc_view.dart';
 import 'package:sample/sample/ui/app/content/tab/ac/content_tab_ac_view.dart';
 import 'package:sample/sample/ui/app/content/tab/add/content_tab_add_view.dart';
-import 'package:sample/sample/util/log.dart';
 import 'package:sample/sample/widget/base/provider_widget.dart';
 import 'package:sample/sample/widget/common/b_tab_button.dart';
 
