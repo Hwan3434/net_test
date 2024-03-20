@@ -53,4 +53,8 @@ class UserStateNotifier extends StateNotifier<UserListModel> {
       data: [...state.data, userModel],
     );
   }
+
+  UserModel get(int userId) {
+    return state.data.singleWhere((element) => element.id == userId);
+  }
 }

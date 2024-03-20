@@ -3,8 +3,8 @@ import 'package:sample/sample/data/domain/agent/model/agent_model.dart';
 import 'package:sample/sample/data/domain/project/model/project_model.dart';
 import 'package:sample/sample/data/domain/user/model/user_model.dart';
 
-class ContentViewModelNotifier extends StateNotifier<ContentViewModel> {
-  ContentViewModelNotifier(super.state);
+class ContentNotifier extends StateNotifier<ContentViewModel> {
+  ContentNotifier(super.state);
 
   void update({
     int? currentTabIndex,
@@ -24,7 +24,7 @@ class ContentViewModelNotifier extends StateNotifier<ContentViewModel> {
     );
   }
 
-  void updateUsers(int projectId, UserListModel userListModel){
+  void updateUsers(int projectId, UserListModel userListModel) {
     state.users.addAll({projectId: userListModel});
     state = state.copyWith();
   }

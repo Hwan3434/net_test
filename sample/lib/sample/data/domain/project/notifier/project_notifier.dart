@@ -26,4 +26,9 @@ class ProjectStateNotifier extends StateNotifier<ProjectModel> {
       ],
     );
   }
+
+  ProjectDataModel get(int projectId) {
+    assert(state.state == ProjectState.success);
+    return state.items.singleWhere((element) => element.id == projectId);
+  }
 }

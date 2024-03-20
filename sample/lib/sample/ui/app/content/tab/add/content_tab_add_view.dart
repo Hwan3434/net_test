@@ -1,20 +1,19 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:sample/sample/data/domain/global_state_storage.dart';
 import 'package:sample/sample/data/domain/project/model/project_model.dart';
-import 'package:sample/sample/ui/app/common/test_sample_widget.dart';
-import 'package:sample/sample/ui/app/content/content_view_model.dart';
-import 'package:sample/sample/ui/app/content/content_widget.dart';
-import 'package:sample/sample/ui/app/project/project_widget.dart';
+import 'package:sample/sample/data/domain/user/model/user_model.dart';
+import 'package:sample/sample/ui/app/content/content_notifier.dart';
+import 'package:sample/sample/ui/app/content/content_view.dart';
+import 'package:sample/sample/ui/app/project/project_view.dart';
 import 'package:sample/sample/util/log.dart';
 import 'package:sample/sample/widget/base/provider_widget.dart';
 import 'package:sample/sample/widget/common/b_button.dart';
 import 'package:sample/sample/widget/common/b_text_widget.dart';
 
-class ContentTabAddWidget extends StatelessWidget {
-  const ContentTabAddWidget();
+class ContentTabAddView extends StatelessWidget {
+  const ContentTabAddView();
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +28,13 @@ class ContentTabAddWidget extends StatelessWidget {
   }
 }
 
-class _CurrentAgentWidget extends ProviderStatelessWidget<
-    ContentViewModelNotifier, ContentViewModel> {
+class _CurrentAgentWidget
+    extends ProviderStatelessWidget<ContentNotifier, ContentViewModel> {
   const _CurrentAgentWidget();
 
   @override
-  AutoDisposeStateNotifierProvider<ContentViewModelNotifier, ContentViewModel>
-      get provider => ContentWidget.contentViewModelProvider;
+  AutoDisposeStateNotifierProvider<ContentNotifier, ContentViewModel>
+      get provider => ContentView.contentViewModelProvider;
 
   @override
   Widget pBuild(BuildContext context, WidgetRef ref) {
@@ -55,13 +54,13 @@ class _CurrentAgentWidget extends ProviderStatelessWidget<
   }
 }
 
-class _CurrentProjectWidget extends ProviderStatelessWidget<
-    ContentViewModelNotifier, ContentViewModel> {
+class _CurrentProjectWidget
+    extends ProviderStatelessWidget<ContentNotifier, ContentViewModel> {
   const _CurrentProjectWidget();
 
   @override
-  AutoDisposeStateNotifierProvider<ContentViewModelNotifier, ContentViewModel>
-      get provider => ContentWidget.contentViewModelProvider;
+  AutoDisposeStateNotifierProvider<ContentNotifier, ContentViewModel>
+      get provider => ContentView.contentViewModelProvider;
 
   @override
   Widget pBuild(BuildContext context, WidgetRef ref) {
@@ -72,6 +71,18 @@ class _CurrentProjectWidget extends ProviderStatelessWidget<
         ref.watch(provider.select((value) => value.project.state));
 
     Log.w('_CurrentProjectWidget build : $projectId / ${projectState.name}');
+
+    ref.listen(GlobalStateStorage().projectProvider, (previous, next) {
+      for (var project in next.items) {
+        ref.read(provider.notifier).updateUsers(
+              project.id,
+              const UserListModel(
+                state: UserListState.wait,
+                data: [],
+              ),
+            );
+      }
+    });
 
     switch (projectState) {
       case ProjectState.wait:
@@ -86,19 +97,6 @@ class _CurrentProjectWidget extends ProviderStatelessWidget<
                 },
                 child: BTextWidget('프로젝트 가져오기'),
               ),
-              Builder(builder: (context) {
-                Log.w('Test Switching Btn Build');
-
-                return BButton(
-                  onPressed: () {
-                    GoRouter.of(context).pushNamed(
-                      TestSampleWidget.name,
-                      params: {'ts': 'ttt'},
-                    );
-                  },
-                  child: BTextWidget('테스트 화면전환'),
-                );
-              }),
             ],
           ),
         );
@@ -111,6 +109,13 @@ class _CurrentProjectWidget extends ProviderStatelessWidget<
             ref.read(provider.select((value) => value.project.items));
         final currentProject =
             myProjects.singleWhereOrNull((element) => projectId == element.id);
+
+        ref.listen(GlobalStateStorage().currentProjectIdProvider,
+            (previous, next) {
+          ref.read(provider.notifier).update(
+                currentProjectId: next,
+              );
+        });
         return Column(
           children: [
             DropdownButton(
@@ -123,16 +128,16 @@ class _CurrentProjectWidget extends ProviderStatelessWidget<
                 );
               }).toList(),
               onChanged: (value) {
-                Log.d('value?.id :: ${value?.id}');
-                ref.read(provider.notifier).update(
-                      currentProjectId: value?.id ?? 0,
-                    );
+                ref
+                    .read(
+                        GlobalStateStorage().currentProjectIdProvider.notifier)
+                    .update((state) => value?.id ?? 0);
               },
             ),
             if (currentProject == null) Text('프로젝트 미선택'),
             if (currentProject != null)
               Flexible(
-                child: ProjectWidget(),
+                child: ProjectView(),
               ),
           ],
         );

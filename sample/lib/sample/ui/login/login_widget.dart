@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sample/sample/data/common/usecase_manager.dart';
 import 'package:sample/sample/data/domain/agent/model/agent_model.dart';
 import 'package:sample/sample/data/domain/global_state_storage.dart';
-import 'package:sample/sample/ui/app/content/content_widget.dart';
+import 'package:sample/sample/ui/app/content/content_view.dart';
 import 'package:sample/sample/ui/login/login_text_widget.dart';
 import 'package:sample/sample/ui/login/login_view_model.dart';
 import 'package:sample/sample/widget/base/provider_widget.dart';
@@ -64,7 +64,7 @@ class _LoginWidgetState
   Widget pBuild(BuildContext context) {
     ref.listen(GlobalStateStorage().agentStateProvider, (previous, next) {
       if (next.state == AgentState.success) {
-        context.goNamed(ContentWidget.name);
+        context.goNamed(ContentView.name);
       }
     });
 

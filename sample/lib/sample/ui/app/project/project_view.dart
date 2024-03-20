@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample/sample/data/domain/global_state_storage.dart';
 import 'package:sample/sample/data/domain/user/model/user_model.dart';
-import 'package:sample/sample/ui/app/content/content_view_model.dart';
-import 'package:sample/sample/ui/app/content/content_widget.dart';
+import 'package:sample/sample/ui/app/content/content_notifier.dart';
+import 'package:sample/sample/ui/app/content/content_view.dart';
 import 'package:sample/sample/ui/app/project/user/user_list_widget.dart';
 import 'package:sample/sample/util/log.dart';
 import 'package:sample/sample/widget/base/provider_widget.dart';
 import 'package:sample/sample/widget/common/b_button.dart';
 import 'package:sample/sample/widget/common/b_text_widget.dart';
 
-class ProjectWidget extends ProviderStatelessWidget<ContentViewModelNotifier,
-    ContentViewModel> {
-  const ProjectWidget();
+class ProjectView
+    extends ProviderStatelessWidget<ContentNotifier, ContentViewModel> {
+  const ProjectView();
 
   @override
-  AutoDisposeStateNotifierProvider<ContentViewModelNotifier, ContentViewModel>
-      get provider => ContentWidget.contentViewModelProvider;
+  AutoDisposeStateNotifierProvider<ContentNotifier, ContentViewModel>
+      get provider => ContentView.contentViewModelProvider;
 
   @override
   Widget pBuild(BuildContext context, WidgetRef ref) {
@@ -26,6 +26,9 @@ class ProjectWidget extends ProviderStatelessWidget<ContentViewModelNotifier,
     final projects = ref.read(provider.select((value) => value.project));
     final project =
         projects.items.where((element) => element.id == projectId).single;
+
+    Log.w('ProjectWidget Build - $projectId');
+
     final userState = ref.watch(
       provider.select(
         (value) {
@@ -34,7 +37,6 @@ class ProjectWidget extends ProviderStatelessWidget<ContentViewModelNotifier,
       ),
     );
 
-    Log.w('ProjectWidget Build - $projectId');
     ref.listen(GlobalStateStorage().userStateProvider(project),
         (previous, next) {
       ref.read(provider.notifier).updateUsers(
@@ -58,28 +60,29 @@ class ProjectWidget extends ProviderStatelessWidget<ContentViewModelNotifier,
           child: CircularProgressIndicator(),
         );
       case UserListState.success:
-        final count = ref.watch(
+        ref.watch(
             provider.select((value) => value.users[project.id]!.data.length));
         final data =
             ref.read(provider.select((value) => value.users[project.id]!.data));
         return Column(
           children: [
             ElevatedButton(
-                onPressed: () {
-                  ref
-                      .read(GlobalStateStorage()
-                          .userStateProvider(project)
-                          .notifier)
-                      .addUser(
-                        UserModel(
-                          id: 33,
-                          name: '정환',
-                          email: 'abc',
-                          userName: '구웃',
-                        ),
-                      );
-                },
-                child: BTextWidget('사용자 하나 추가')),
+              onPressed: () {
+                ref
+                    .read(GlobalStateStorage()
+                        .userStateProvider(project)
+                        .notifier)
+                    .addUser(
+                      UserModel(
+                        id: 33,
+                        name: '정환',
+                        email: 'abc',
+                        userName: '구웃',
+                      ),
+                    );
+              },
+              child: BTextWidget('사용자 하나 추가'),
+            ),
             Expanded(
               child: UserListWidget(
                 userList: data,

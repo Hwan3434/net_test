@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sample/sample/data/domain/project/model/project_model.dart';
-import 'package:sample/sample/ui/app/common/user_detail.dart';
+import 'package:sample/sample/ui/app/common/user_detail_view.dart';
 import 'package:sample/sample/util/log.dart';
 import 'package:sample/sample/widget/common/b_text_widget.dart';
 
@@ -26,8 +26,8 @@ class UserWidget extends ConsumerWidget {
         return InkWell(
           onTap: () {
             context.pushNamed(
-              UserDetail.path,
-              extra: [project, user],
+              UserDetailView.name,
+              extra: user.id,
             );
 
             // Navigator.push(

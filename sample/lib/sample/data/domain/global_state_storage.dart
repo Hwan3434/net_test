@@ -37,6 +37,8 @@ class GlobalStateStorage {
     );
   });
 
+  final currentProjectIdProvider = StateProvider<int>((ref) => 0);
+
   final projectProvider =
       StateNotifierProvider<ProjectStateNotifier, ProjectModel>((ref) {
     final agentUseCase = ref.read(UseCaseManager().agentUseCaseProvider);

@@ -1,38 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample/sample/data/shared/shared_data_manager.dart';
-import 'package:sample/sample/ui/app/content/content_view_model.dart';
-import 'package:sample/sample/ui/app/content/content_widget.dart';
-import 'package:sample/sample/ui/app/content/tab/abc/content_tab_abc_widget.dart';
-import 'package:sample/sample/ui/app/content/tab/ac/content_tab_ac_widget.dart';
-import 'package:sample/sample/ui/app/content/tab/add/content_tab_add_widget.dart';
+import 'package:sample/sample/ui/app/content/content_notifier.dart';
+import 'package:sample/sample/ui/app/content/content_view.dart';
+import 'package:sample/sample/ui/app/content/tab/abc/content_tab_abc_view.dart';
+import 'package:sample/sample/ui/app/content/tab/ac/content_tab_ac_view.dart';
+import 'package:sample/sample/ui/app/content/tab/add/content_tab_add_view.dart';
 import 'package:sample/sample/widget/base/provider_widget.dart';
 import 'package:sample/sample/widget/common/b_tab_button.dart';
 
 import 'keep_alive_widget.dart';
 
 final List<Widget> widgetBottomMenu = <Widget>[
-  const KeepAliveWidget(child: ContentTabAddWidget()),
-  const KeepAliveWidget(child: ContentTabAcWidget()),
-  const KeepAliveWidget(child: ContentTabAbcWidget()),
+  const KeepAliveWidget(child: ContentTabAddView()),
+  const KeepAliveWidget(child: ContentTabAcView()),
+  const KeepAliveWidget(child: ContentTabAbcView()),
 ];
 
-class ContentTabWidget
-    extends ProviderStatefulWidget<ContentViewModelNotifier, ContentViewModel> {
-  const ContentTabWidget();
+class ContentTabView
+    extends ProviderStatefulWidget<ContentNotifier, ContentViewModel> {
+  const ContentTabView();
 
   @override
   ProviderState createState() => _ContentTabWidgetState();
 
   @override
-  AutoDisposeStateNotifierProvider<ContentViewModelNotifier, ContentViewModel>
-      get provider => ContentWidget.contentViewModelProvider;
+  AutoDisposeStateNotifierProvider<ContentNotifier, ContentViewModel>
+      get provider => ContentView.contentViewModelProvider;
 }
 
-class _ContentTabWidgetState extends ProviderState<
-    ContentTabWidget,
-    ContentViewModelNotifier,
-    ContentViewModel> with SingleTickerProviderStateMixin {
+class _ContentTabWidgetState
+    extends ProviderState<ContentTabView, ContentNotifier, ContentViewModel>
+    with SingleTickerProviderStateMixin {
   late final TabController tabController;
 
   @override
