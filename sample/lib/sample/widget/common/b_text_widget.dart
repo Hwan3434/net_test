@@ -4,10 +4,12 @@ class BTextWidget extends StatelessWidget {
   final String text;
   final TextOverflow overflow;
   final Color? color;
+  final int? maxLines;
   const BTextWidget(
     this.text, {
     this.overflow = TextOverflow.fade,
     this.color,
+    this.maxLines = 1,
   });
 
   @override
@@ -19,7 +21,7 @@ class BTextWidget extends StatelessWidget {
         fontWeight: FontWeight.bold,
         color: color,
       ),
-      maxLines: 1,
+      maxLines: maxLines,
     );
   }
 }

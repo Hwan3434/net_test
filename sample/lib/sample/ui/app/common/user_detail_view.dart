@@ -81,15 +81,19 @@ class _UserDetailBodyState
       body: SafeArea(
         child: Row(
           children: [
-            _WatchTestWidget(
-              userId: widget.userId,
-            ),
-            SizedBox(
-              width: 20,
-            ),
             Expanded(
-              child: TextField(
-                controller: controller,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                    child: _WatchTestWidget(
+                      userId: widget.userId,
+                    ),
+                  ),
+                  TextField(
+                    controller: controller,
+                  ),
+                ],
               ),
             ),
             ElevatedButton(
@@ -122,7 +126,11 @@ class _WatchTestWidget extends ProviderStatelessWidget {
   Widget pBuild(BuildContext context, WidgetRef ref) {
     Log.i('_WatchTestWidget build');
     final email = ref.watch(provider.select((value) => value.userModel.email));
-    return BTextWidget('email : $email');
+    return BTextWidget(
+      'email : $email',
+      overflow: TextOverflow.visible,
+      maxLines: null,
+    );
   }
 
   @override
