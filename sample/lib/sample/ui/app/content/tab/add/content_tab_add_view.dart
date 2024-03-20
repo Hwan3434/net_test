@@ -11,6 +11,7 @@ import 'package:sample/sample/util/log.dart';
 import 'package:sample/sample/widget/base/provider_widget.dart';
 import 'package:sample/sample/widget/common/b_button.dart';
 import 'package:sample/sample/widget/common/b_text_widget.dart';
+import 'package:sample/sample/widget/dialog/dialog_project_selector_body.dart';
 
 class ContentTabAddView extends StatelessWidget {
   const ContentTabAddView();
@@ -133,6 +134,30 @@ class _CurrentProjectWidget
                         GlobalStateStorage().currentProjectIdProvider.notifier)
                     .update((state) => value?.id ?? 0);
               },
+            ),
+            ElevatedButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  barrierDismissible: true, //바깥 영역 터치시 닫을지 여부 결정
+                  builder: ((context) {
+                    return AlertDialog(
+                      title: Text("프로젝트 변경"),
+                      content: DialogProjectSelectorBody(
+                        projects: myProjects,
+                        onTab: (projectModel) {
+                          ref
+                              .read(GlobalStateStorage()
+                                  .currentProjectIdProvider
+                                  .notifier)
+                              .update((state) => projectModel.id);
+                        },
+                      ),
+                    );
+                  }),
+                );
+              },
+              child: Text('프로젝트 변경'),
             ),
             if (currentProject == null) Text('프로젝트 미선택'),
             if (currentProject != null)

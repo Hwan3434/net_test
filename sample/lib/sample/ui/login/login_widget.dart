@@ -5,11 +5,12 @@ import 'package:sample/sample/data/common/usecase_manager.dart';
 import 'package:sample/sample/data/domain/agent/model/agent_model.dart';
 import 'package:sample/sample/data/domain/global_state_storage.dart';
 import 'package:sample/sample/ui/app/content/content_view.dart';
-import 'package:sample/sample/ui/login/login_text_widget.dart';
 import 'package:sample/sample/ui/login/login_view_model.dart';
+import 'package:sample/sample/util/log.dart';
 import 'package:sample/sample/widget/base/provider_widget.dart';
 import 'package:sample/sample/widget/common/b_button.dart';
 import 'package:sample/sample/widget/common/b_text_field.dart';
+import 'package:sample/sample/widget/common/login_text_widget.dart';
 
 class LoginWidget
     extends ProviderStatefulWidget<LoginStateNotifier, LoginViewModel> {
@@ -69,6 +70,7 @@ class _LoginWidgetState
     });
 
     final agent = ref.watch(GlobalStateStorage().agentStateProvider);
+    Log.w('LoginWidget Builder 갱신 ');
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -76,12 +78,7 @@ class _LoginWidgetState
           BTextField(
             controller: idController,
           ),
-          Builder(
-            builder: (context) {
-              final id = ref.watch(widget.provider.select((value) => value.id));
-              return Text('userID : $id');
-            },
-          ),
+          _UserIdTextBuilderTestWidget(),
           BTextField(
             controller: pwController,
           ),
@@ -89,6 +86,7 @@ class _LoginWidgetState
             builder: (context, ref, child) {
               final text =
                   ref.watch(widget.provider.select((value) => value.pw));
+              Log.w('Consumer Password Bulder !!');
               return LoginTextWidget(
                 text,
                 validateFn: (text) {
@@ -117,9 +115,10 @@ class _LoginWidgetState
           if (agent.state == AgentState.wait)
             BButton(
               onPressed: () {
+                final id = idController.text;
                 final validate =
                     ref.read(widget.provider.notifier).isValidate();
-                if (validate) {
+                if (id.isNotEmpty && validate) {
                   ref
                       .read(GlobalStateStorage().agentStateProvider.notifier)
                       .login(idController.text, pwController.text);
@@ -133,5 +132,21 @@ class _LoginWidgetState
         ],
       ),
     );
+  }
+}
+
+class _UserIdTextBuilderTestWidget
+    extends ProviderStatelessWidget<LoginStateNotifier, LoginViewModel> {
+  const _UserIdTextBuilderTestWidget({super.key});
+
+  @override
+  ProviderBase<LoginViewModel> get provider =>
+      LoginWidget.loginViewModelProvider;
+
+  @override
+  Widget pBuild(BuildContext context, WidgetRef ref) {
+    Log.w('_UserIdTextBuilderTestWidget Bulder !!');
+    final id = ref.watch(provider.select((value) => value.id));
+    return Text('userID : $id');
   }
 }

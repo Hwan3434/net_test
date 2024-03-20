@@ -8,6 +8,7 @@ import 'package:sample/sample/ui/organization/organization_notifier.dart';
 import 'package:sample/sample/widget/base/provider_widget.dart';
 import 'package:sample/sample/widget/common/b_button.dart';
 import 'package:sample/sample/widget/common/b_text_field.dart';
+import 'package:sample/sample/widget/dialog/dialog_organization_body.dart';
 
 class OrganizationWidget
     extends ProviderStatefulWidget<OrganizationNotifier, OrganizationModel> {
@@ -68,6 +69,48 @@ class _MyAppState extends ProviderState<OrganizationWidget,
               }
             },
             child: Text('다음'),
+          ),
+          BButton(
+            onPressed: () {
+              final org = controller.text;
+              if (org.isEmpty) {
+                return;
+              }
+              showDialog(
+                context: context,
+                barrierDismissible: true, //바깥 영역 터치시 닫을지 여부 결정
+                builder: ((context) {
+                  return AlertDialog(
+                    title: Text("조직 로그인"),
+                    content: DialogOrganizationBody(
+                      organization: controller.text,
+                    ),
+                    actions: <Widget>[
+                      ElevatedButton(
+                        onPressed: () {
+                          if (org.isNotEmpty) {
+                            ref
+                                .read(GlobalStateStorage()
+                                    .loginOrganizationProvider
+                                    .notifier)
+                                .update((state) => controller.text);
+                          }
+                          context.pop();
+                        },
+                        child: Text("네"),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.pop();
+                        },
+                        child: Text("아니요"),
+                      ),
+                    ],
+                  );
+                }),
+              );
+            },
+            child: Text('팝업'),
           )
         ],
       ),
