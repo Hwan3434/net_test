@@ -10,9 +10,6 @@ import 'package:sample/sample/widget/base/provider_widget.dart';
 import 'splash_model.dart';
 import 'splash_notifier.dart';
 
-/// false로 바꾸면 router에 의해 splash화면으로 전환된다.
-///
-
 class SplashWidget extends ProviderStatefulWidget<SplashNotifier, SplashModel> {
   static String get path => '/';
   static String get name => 'SplashWidget';

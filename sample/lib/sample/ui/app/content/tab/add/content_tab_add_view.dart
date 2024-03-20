@@ -135,7 +135,7 @@ class _CurrentProjectWidget
                     .update((state) => value?.id ?? 0);
               },
             ),
-            ElevatedButton(
+            BButton(
               onPressed: () {
                 showDialog(
                   context: context,

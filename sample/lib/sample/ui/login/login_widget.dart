@@ -21,9 +21,11 @@ class LoginWidget
   static final loginViewModelProvider =
       StateNotifierProvider.autoDispose<LoginStateNotifier, LoginViewModel>(
           (ref) {
+    final agent = ref.read(GlobalStateStorage().agentStateProvider);
     final agentUseCase = ref.read(UseCaseManager().agentUseCaseProvider);
     return LoginStateNotifier(
         LoginViewModel(
+          state: agent.state,
           id: '',
           pw: '',
         ),
@@ -64,12 +66,20 @@ class _LoginWidgetState
   @override
   Widget pBuild(BuildContext context) {
     ref.listen(GlobalStateStorage().agentStateProvider, (previous, next) {
-      if (next.state == AgentState.success) {
+      Log.d('이번');
+      ref.read(widget.provider.notifier).login(state: next.state);
+    });
+
+    ref.listen(widget.provider.select((value) => value.state),
+        (previous, next) {
+      Log.d('일번');
+      if (next == AgentState.success) {
         context.goNamed(ContentView.name);
       }
     });
 
-    final agent = ref.watch(GlobalStateStorage().agentStateProvider);
+    final agentState =
+        ref.watch(widget.provider.select((value) => value.state));
     Log.w('LoginWidget Builder 갱신 ');
     return Scaffold(
       body: Column(
@@ -108,17 +118,19 @@ class _LoginWidgetState
           SizedBox(
             height: 50,
           ),
-          if (agent.state == AgentState.loading)
+          if (agentState == AgentState.loading)
             Center(
               child: CircularProgressIndicator(),
             ),
-          if (agent.state == AgentState.wait)
+          if (agentState == AgentState.wait)
             BButton(
               onPressed: () {
                 final id = idController.text;
                 final validate =
                     ref.read(widget.provider.notifier).isValidate();
+                Log.d('사번');
                 if (id.isNotEmpty && validate) {
+                  Log.d('오번');
                   ref
                       .read(GlobalStateStorage().agentStateProvider.notifier)
                       .login(idController.text, pwController.text);

@@ -6,7 +6,7 @@ import 'package:sample/sample/util/log.dart';
 
 final dioProvider = Provider.family<Dio, String>((ref, org) {
   final Environment env = AppInfoManger().getEnvironment();
-  final String baseUrl = 'https://${env.mode}$org.${env.url}';
+  final String baseUrl = 'https://${env.mode}$org${env.url}';
   Log.e('UserUseCaseProvider base URL : $baseUrl');
   return Dio(
     BaseOptions(

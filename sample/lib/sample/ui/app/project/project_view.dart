@@ -87,7 +87,7 @@ class ProjectView
             .data));
         return Column(
           children: [
-            ElevatedButton(
+            BButton(
               onPressed: () {
                 ref.read(GlobalStateStorage().projectProvider.notifier).addUser(
                       project,

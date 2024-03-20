@@ -24,8 +24,8 @@ class UseCaseManager {
     final Environment env = AppInfoManger().getEnvironment();
     final String organization =
         ref.watch(GlobalStateStorage().loginOrganizationProvider);
-    final String baseUrl = 'https://${env.mode}$organization.${env.url}';
-    Log.e('UserUseCaseProvider base URL : $baseUrl');
+    final String baseUrl = 'https://${env.mode}$organization${env.url}';
+    Log.e('UserUseCaseProvider base URL 1: $baseUrl');
     final dio = Dio(
       BaseOptions(
         // baseUrl: baseUrl,
