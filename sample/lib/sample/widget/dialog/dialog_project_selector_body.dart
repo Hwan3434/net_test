@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sample/sample/data/domain/project/model/project_model.dart';
-import 'package:sample/sample/util/log.dart';
 
 typedef ProjectCallBack = void Function(ProjectModel projectModel);
 

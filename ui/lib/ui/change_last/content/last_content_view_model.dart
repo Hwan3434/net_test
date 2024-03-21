@@ -33,7 +33,7 @@ class LastContentViewUserModelWait extends LastContentViewUserModelState {}
 class LastContentViewUserModelLoading extends LastContentViewUserModelState {}
 
 class LastContentViewUserModelSuccess extends LastContentViewUserModelState {
-  final List<UserModel> users;
+  final List<UserDataModel> users;
 
   LastContentViewUserModelSuccess({
     required this.users,

@@ -56,7 +56,7 @@ class LastSettingsViewUserModelWait extends LastSettingsViewUserModelState {}
 class LastSettingsViewUserModelLoading extends LastSettingsViewUserModelState {}
 
 class LastSettingsViewUserModelSuccess extends LastSettingsViewUserModelState {
-  final List<UserModel> users;
+  final List<UserDataModel> users;
 
   LastSettingsViewUserModelSuccess({
     required this.users,

@@ -8,12 +8,12 @@ import 'package:flutter/material.dart';
 /// 문제점 3. 초기화가 필요한 모델을 가질때 null로 처리 할 것인가 ?(final은 빼도된다. 상관없다.)
 /// 문제점 4. 데이터 삽입, 삭제, 초기화 등은 어디에서 진행 할 것인가?
 class UserDataNotifier extends ChangeNotifier {
-  final Set<UserModel> data = {};
+  final Set<UserDataModel> data = {};
 
   int get size => _size;
   int _size = 0;
 
-  void add(UserModel model) {
+  void add(UserDataModel model) {
     if (data.contains(model)) {
       delete(model.id);
     }
@@ -27,7 +27,7 @@ class UserDataNotifier extends ChangeNotifier {
   /// 요녀석 clear는 아니고... add이긴한데
   /// 없음 insert 있으면 delete 후 insert 혹은 update
   /// 근데 그럼 1개 할때마다 notifyListeners(); 호출됨
-  void addAll(List<UserModel> model) {
+  void addAll(List<UserDataModel> model) {
     data.addAll(model);
     _size = data.length;
     notifyListeners();

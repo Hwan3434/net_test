@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sample/sample/data/domain/agent/model/agent_model.dart';
+import 'package:sample/sample/data/domain/agent/model/agent_state_model.dart';
 import 'package:sample/sample/data/domain/global_state_storage.dart';
 import 'package:sample/sample/ui/organization/organization_widget.dart';
 import 'package:sample/sample/ui/splash/splash_body_widget.dart';

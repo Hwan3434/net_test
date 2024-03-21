@@ -8,7 +8,20 @@ class AgentUseCaseImpl extends AgentUseCase {
   final AgentRepository repository;
   AgentUseCaseImpl({required this.repository});
   @override
-  Future<Result<UserModel>> login({required int id, required int pw}) {
+  Future<Result<UserDataModel>> login({required int id, required int pw}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Result<List<ProjectModel>>> getProjects() {
+    throw UnimplementedError();
+  }
+}
+
+class AgentUseCaseTestImpl extends AgentUseCase {
+  AgentUseCaseTestImpl();
+  @override
+  Future<Result<UserDataModel>> login({required int id, required int pw}) {
     throw UnimplementedError();
   }
 
@@ -19,7 +32,7 @@ class AgentUseCaseImpl extends AgentUseCase {
 }
 
 abstract interface class AgentUseCase implements UseCase {
-  Future<Result<UserModel>> login({
+  Future<Result<UserDataModel>> login({
     required int id,
     required int pw,
   });

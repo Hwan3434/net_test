@@ -6,12 +6,12 @@ class MockUserCaseImpl3 implements UserUseCase {
   MockUserCaseImpl3();
 
   @override
-  Future<Result<UserModel>> getUser({
+  Future<Result<UserDataModel>> getUser({
     required int userId,
   }) {
     return Future.value(
       ResultSuccess(
-        UserModel(
+        UserDataModel(
           id: userId,
           name: 'mock_s',
           email: 'mock_email',
@@ -22,21 +22,21 @@ class MockUserCaseImpl3 implements UserUseCase {
   }
 
   @override
-  Future<Result<List<UserModel>>> getUsers() {
+  Future<Result<List<UserDataModel>>> getUsers() {
     return Future.value(ResultSuccess([
-      UserModel(
+      UserDataModel(
         id: 1,
         name: 'mock_s',
         email: 'mock_email',
         userName: 'mock_userName',
       ),
-      UserModel(
+      UserDataModel(
         id: 2,
         name: 'mock_s2',
         email: 'mock_email2',
         userName: 'mock_userName2',
       ),
-      UserModel(
+      UserDataModel(
         id: 3,
         name: 'mock_s3',
         email: 'mock_email3',

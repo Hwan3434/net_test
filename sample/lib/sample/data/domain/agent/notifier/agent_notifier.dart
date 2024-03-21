@@ -1,26 +1,24 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample/sample/aaa_test/agent_usecase.dart';
 import 'package:sample/sample/data/domain/agent/model/agent_model.dart';
-import 'package:sample/sample/data/domain/project/model/project_model.dart';
-import 'package:sample/sample/util/log.dart';
+import 'package:sample/sample/data/domain/agent/model/agent_state_model.dart';
 
-class AgentNotifier extends StateNotifier<AgentModel> {
+class AgentNotifier extends StateNotifier<AgentStateModel> {
   final AgentUseCase agentUseCase;
   AgentNotifier(
     super.state, {
     required this.agentUseCase,
   });
 
-  void login(String id, String pw) async {
-    Log.d('륙번');
+  Future<void> login(String id, String pw) async {
     state = state.copyWith(
       state: AgentState.loading,
     );
     // final AgentModel = await agentUseCase.login(id: id, pw: pw);
     await Future.delayed(Duration(seconds: 1));
-    state = AgentModel(
+    state = AgentStateModel(
       state: AgentState.success,
-      data: AgentDataModel(
+      data: AgentModel(
         id: id,
         pw: pw,
         name: '정환',
@@ -29,10 +27,6 @@ class AgentNotifier extends StateNotifier<AgentModel> {
         refreshToken: 'RERERERERERREFERESHTOKEN',
       ),
     );
-  }
-
-  Future<List<ProjectModel>> getProjects() async {
-    return [];
   }
 
   void downloadInit() async {
@@ -44,7 +38,7 @@ class AgentNotifier extends StateNotifier<AgentModel> {
 
   void logout() {
     state = state.copyWith(
-      state: AgentState.init,
+      state: AgentState.logout,
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sample/sample/data/domain/agent/model/agent_model.dart';
+import 'package:sample/sample/data/domain/agent/model/agent_state_model.dart';
 import 'package:sample/sample/data/domain/global_state_storage.dart';
 import 'package:sample/sample/ui/app/common/user_detail_view.dart';
 import 'package:sample/sample/ui/app/content/content_view.dart';
@@ -30,7 +30,7 @@ class _DomainStateNotifier extends ChangeNotifier {
     required this.ref,
   }) {
     ref.listen(GlobalStateStorage().agentStateProvider, (previous, next) {
-      if (next.state == AgentState.init) {
+      if (next.state == AgentState.logout) {
         notifyListeners();
       }
     });
@@ -38,7 +38,7 @@ class _DomainStateNotifier extends ChangeNotifier {
 
   Future<String?> _redirect(BuildContext context, GoRouterState state) async {
     final agent = ref.read(GlobalStateStorage().agentStateProvider);
-    if (agent.state == AgentState.init) {
+    if (agent.state == AgentState.logout) {
       return SplashWidget.path;
     }
     return null;

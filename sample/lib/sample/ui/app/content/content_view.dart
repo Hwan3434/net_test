@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sample/sample/data/domain/agent/model/agent_model.dart';
+import 'package:sample/sample/data/domain/agent/model/agent_state_model.dart';
 import 'package:sample/sample/data/domain/global_state_storage.dart';
 import 'package:sample/sample/data/shared/shared_data_manager.dart';
 import 'package:sample/sample/ui/app/content/content_notifier.dart';

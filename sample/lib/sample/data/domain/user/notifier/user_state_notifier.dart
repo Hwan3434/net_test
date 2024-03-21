@@ -1,9 +1,9 @@
 // import 'package:domain/usecase/result/result.dart';
-// import 'package:domain/usecase/user/model/response/user_model.dart';
+// import 'package:domain/usecase/user/model/response/user_state_model.dart';
 // import 'package:domain/usecase/user/user_usecase.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:sample/sample/aaa_test/agent_usecase.dart';
-// import 'package:sample/sample/data/domain/user/model/user_model.dart';
+// import 'package:sample/sample/data/domain/user/model/user_state_model.dart';
 //
 // class UserStateNotifier extends StateNotifier<UserStateModel> {
 //   final AgentUseCase agentUseCase;

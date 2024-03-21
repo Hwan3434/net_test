@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sample/sample/data/common/usecase_manager.dart';
-import 'package:sample/sample/data/domain/agent/model/agent_model.dart';
+import 'package:sample/sample/data/domain/agent/model/agent_state_model.dart';
 import 'package:sample/sample/data/domain/global_state_storage.dart';
 import 'package:sample/sample/ui/app/content/content_view.dart';
 import 'package:sample/sample/ui/login/login_view_model.dart';
@@ -66,13 +66,11 @@ class _LoginWidgetState
   @override
   Widget pBuild(BuildContext context) {
     ref.listen(GlobalStateStorage().agentStateProvider, (previous, next) {
-      Log.d('이번');
       ref.read(widget.provider.notifier).login(state: next.state);
     });
 
     ref.listen(widget.provider.select((value) => value.state),
         (previous, next) {
-      Log.d('일번');
       if (next == AgentState.success) {
         context.goNamed(ContentView.name);
       }

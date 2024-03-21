@@ -21,7 +21,8 @@ class UserListStateNotifier extends StateNotifier<UserListState> {
     assert(state is! UserListError, '에러일때 데이터를 조작 할 수 없습니다.');
     Log.d('UserListStateNotifier Add');
     state = UserListSuccess(data: [
-      UserModel(id: 11, name: '나미', email: 'Na@naver.com', userName: 'nami'),
+      UserDataModel(
+          id: 11, name: '나미', email: 'Na@naver.com', userName: 'nami'),
       ...(state as UserListSuccess).data,
     ]);
   }
@@ -55,7 +56,7 @@ class UserListWait extends UserListState {}
 class UserListLoading extends UserListState {}
 
 class UserListSuccess extends UserListState {
-  final List<UserModel> data;
+  final List<UserDataModel> data;
 
   UserListSuccess({
     required this.data,

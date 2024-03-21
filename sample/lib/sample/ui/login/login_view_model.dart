@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample/sample/aaa_test/agent_usecase.dart';
-import 'package:sample/sample/data/domain/agent/model/agent_model.dart';
+import 'package:sample/sample/data/domain/agent/model/agent_state_model.dart';
 
 class LoginStateNotifier extends StateNotifier<LoginViewModel> {
   final AgentUseCase _agentUseCase;

@@ -1,32 +1,4 @@
-enum AgentState {
-  init,
-  wait,
-  loading,
-  success,
-  error,
-}
-
 class AgentModel {
-  final AgentState state;
-  final AgentDataModel? data;
-
-  const AgentModel({
-    required this.state,
-    this.data,
-  });
-
-  AgentModel copyWith({
-    AgentState? state,
-    AgentDataModel? model,
-  }) {
-    return AgentModel(
-      state: state ?? this.state,
-      data: model,
-    );
-  }
-}
-
-class AgentDataModel {
   final String id;
   final String pw;
   final String name;
@@ -37,14 +9,12 @@ class AgentDataModel {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AgentDataModel &&
-          runtimeType == other.runtimeType &&
-          id == other.id;
+      other is AgentModel && runtimeType == other.runtimeType && id == other.id;
 
   @override
   int get hashCode => id.hashCode;
 
-  const AgentDataModel({
+  const AgentModel({
     required this.id,
     required this.pw,
     required this.name,
@@ -53,7 +23,7 @@ class AgentDataModel {
     required this.accessToken,
   });
 
-  AgentDataModel copyWith({
+  AgentModel copyWith({
     String? id,
     String? pw,
     String? name,
@@ -61,7 +31,7 @@ class AgentDataModel {
     String? refreshToken,
     String? accessToken,
   }) {
-    return AgentDataModel(
+    return AgentModel(
       id: id ?? this.id,
       pw: pw ?? this.pw,
       name: name ?? this.name,

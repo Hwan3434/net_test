@@ -1,8 +1,8 @@
-import 'package:domain/usecase/user/model/response/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample/sample/data/domain/global_state_storage.dart';
 import 'package:sample/sample/data/domain/user/model/user_model.dart';
+import 'package:sample/sample/data/domain/user/model/user_state_model.dart';
 import 'package:sample/sample/ui/app/content/content_notifier.dart';
 import 'package:sample/sample/ui/app/content/content_view.dart';
 import 'package:sample/sample/ui/app/project/user/user_list_widget.dart';
@@ -32,11 +32,10 @@ class ProjectView
 
     ref.listen(
         GlobalStateStorage().projectProvider.select(
-              (value) => value.projectStateModel.items
+              (value) => value.items
                   .singleWhere((element) => element.id == projectId)
                   .userStateModel,
             ), (previous, next) {
-      Log.d('안녕하싱가.');
       ref.read(provider.notifier).updateUsers(
             projectId,
             next,
@@ -46,7 +45,7 @@ class ProjectView
     final userState = ref.watch(
       provider.select(
         (value) {
-          return value.project.projectStateModel.items
+          return value.project.items
               .singleWhere((element) => element.id == projectId)
               .userStateModel
               .state;
@@ -55,9 +54,8 @@ class ProjectView
     );
 
     final projects = ref.read(provider.select((value) => value.project));
-    final project = projects.projectStateModel.items
-        .where((element) => element.id == projectId)
-        .single;
+    final project =
+        projects.items.where((element) => element.id == projectId).single;
 
     switch (userState) {
       case UserState.wait:
@@ -74,14 +72,13 @@ class ProjectView
         );
       case UserState.success:
         ref.watch(provider.select(
-          (value) => value.project.projectStateModel.items
+          (value) => value.project.items
               .singleWhere((element) => element.id == projectId)
               .userStateModel
               .data
               .length,
         ));
-        final data = ref.read(provider.select((value) => value
-            .project.projectStateModel.items
+        final data = ref.read(provider.select((value) => value.project.items
             .singleWhere((element) => element.id == projectId)
             .userStateModel
             .data));

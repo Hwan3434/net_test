@@ -21,6 +21,6 @@ class UserDetailScreenStateModelError extends UserDetailScreenStateModel {
 }
 
 class UserDetailScreenDataModel {
-  final UserModel model;
+  final UserDataModel model;
   UserDetailScreenDataModel({required this.model});
 }

@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample/sample/data/domain/global_state_storage.dart';
 import 'package:sample/sample/data/domain/project/model/project_model.dart';
-import 'package:sample/sample/data/domain/user/model/user_model.dart';
+import 'package:sample/sample/data/domain/project/model/project_state_model.dart';
+import 'package:sample/sample/data/domain/user/model/user_state_model.dart';
 import 'package:sample/sample/ui/app/content/content_notifier.dart';
 import 'package:sample/sample/ui/app/content/content_view.dart';
 import 'package:sample/sample/ui/app/project/project_view.dart';
@@ -68,13 +69,13 @@ class _CurrentProjectWidget
     final projectId =
         ref.watch(provider.select((value) => value.currentProjectId));
 
-    final projectState = ref.watch(
-        provider.select((value) => value.project.projectStateModel.state));
+    final projectState =
+        ref.watch(provider.select((value) => value.project.state));
 
     Log.w('_CurrentProjectWidget build : $projectId / ${projectState.name}');
 
     ref.listen(GlobalStateStorage().projectProvider, (previous, next) {
-      for (var project in next.projectStateModel.items) {
+      for (var project in next.items) {
         ref.read(provider.notifier).updateUsers(
               project.id,
               const UserStateModel(
@@ -106,8 +107,8 @@ class _CurrentProjectWidget
           child: CircularProgressIndicator(),
         );
       case ProjectState.success:
-        final myProjects = ref.read(
-            provider.select((value) => value.project.projectStateModel.items));
+        final myProjects =
+            ref.read(provider.select((value) => value.project.items));
         final currentProject =
             myProjects.singleWhereOrNull((element) => projectId == element.id);
 

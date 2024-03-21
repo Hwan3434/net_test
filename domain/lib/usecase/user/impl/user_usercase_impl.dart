@@ -13,8 +13,8 @@ class UserUseCaseImpl implements UserUseCase {
   final UserRepository _repository;
   final UserUseCaseCacheConfig cacheConfig;
   final Map<UserUseCaseKeys, DataCache> userCache = {
-    UserUseCaseKeys.getUser: DataCache<UserModel>(),
-    UserUseCaseKeys.getUsers: DataCache<List<UserModel>>(),
+    UserUseCaseKeys.getUser: DataCache<UserDataModel>(),
+    UserUseCaseKeys.getUsers: DataCache<List<UserDataModel>>(),
   };
 
   UserUseCaseImpl(this._repository, this.cacheConfig);
@@ -39,14 +39,14 @@ class UserUseCaseImpl implements UserUseCase {
   }
 
   @override
-  Future<Result<UserModel>> getUser({
+  Future<Result<UserDataModel>> getUser({
     required int userId,
   }) {
     const cacheKey = UserUseCaseKeys.getUser;
     final paramKey = _createParamKey([userId]);
     assert(cacheConfig.cache.containsKey(cacheKey));
 
-    final cache = _getCacheOrNull<UserModel>(cacheKey, paramKey);
+    final cache = _getCacheOrNull<UserDataModel>(cacheKey, paramKey);
     if (cache != null) {
       return Future.value(ResultSuccess(cache));
     }
@@ -54,8 +54,8 @@ class UserUseCaseImpl implements UserUseCase {
     return _repository
         .getUser(request: UserRReqModel(userId: userId))
         .then((value) {
-      final result = UserModel.fromUser(value);
-      _IsUseAddCache<UserModel>(cacheKey, paramKey, result);
+      final result = UserDataModel.fromUser(value);
+      _IsUseAddCache<UserDataModel>(cacheKey, paramKey, result);
       return ResultSuccess(result);
     }).catchError((error) {
       return ResultError(error);
@@ -63,18 +63,18 @@ class UserUseCaseImpl implements UserUseCase {
   }
 
   @override
-  Future<Result<List<UserModel>>> getUsers() {
+  Future<Result<List<UserDataModel>>> getUsers() {
     const cacheKey = UserUseCaseKeys.getUsers;
     final paramKey = _createParamKey([]);
     assert(cacheConfig.cache.containsKey(cacheKey));
 
-    final cache = _getCacheOrNull<List<UserModel>>(cacheKey, paramKey);
+    final cache = _getCacheOrNull<List<UserDataModel>>(cacheKey, paramKey);
     if (cache != null) {
       return Future.value(ResultSuccess(cache));
     }
     return _repository.getUsers(request: UsersRReqModel()).then((value) {
-      final result = value.map((e) => UserModel.fromUsers(e)).toList();
-      _IsUseAddCache<List<UserModel>>(cacheKey, paramKey, result);
+      final result = value.map((e) => UserDataModel.fromUsers(e)).toList();
+      _IsUseAddCache<List<UserDataModel>>(cacheKey, paramKey, result);
       return ResultSuccess(result);
     }).catchError((error) {
       return ResultError(error);

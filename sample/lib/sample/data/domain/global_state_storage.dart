@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample/sample/data/common/usecase_manager.dart';
-import 'package:sample/sample/data/domain/agent/model/agent_model.dart';
+import 'package:sample/sample/data/domain/agent/model/agent_state_model.dart';
 import 'package:sample/sample/data/domain/agent/notifier/agent_notifier.dart';
-import 'package:sample/sample/data/domain/project/model/project_model.dart';
+import 'package:sample/sample/data/domain/project/model/project_state_model.dart';
 import 'package:sample/sample/data/domain/project/notifier/project_notifier.dart';
 
 class GlobalStateStorage {
@@ -28,10 +28,10 @@ class GlobalStateStorage {
 
   /// 로그인 상태
   final agentStateProvider =
-      StateNotifierProvider<AgentNotifier, AgentModel>((ref) {
+      StateNotifierProvider<AgentNotifier, AgentStateModel>((ref) {
     final agentUseCase = ref.read(UseCaseManager().agentUseCaseProvider);
     return AgentNotifier(
-      AgentModel(state: AgentState.wait),
+      AgentStateModel(state: AgentState.logout),
       agentUseCase: agentUseCase,
     );
   });
@@ -39,11 +39,11 @@ class GlobalStateStorage {
   final currentProjectIdProvider = StateProvider<int>((ref) => 0);
 
   final projectProvider =
-      StateNotifierProvider<ProjectStateNotifier, ProjectProviderModel>((ref) {
+      StateNotifierProvider<ProjectStateNotifier, ProjectStateModel>((ref) {
     final agentUseCase = ref.read(UseCaseManager().agentUseCaseProvider);
 
     return ProjectStateNotifier(
-      ProjectProviderModel.init(),
+      ProjectStateModel.init(),
       ref: ref,
       agentUseCase: agentUseCase,
     );

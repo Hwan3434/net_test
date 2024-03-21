@@ -55,7 +55,7 @@ class WaitBufferUpdate extends CacheUserUpdateState {
 
 class SuccessBufferUpdate extends CacheUserUpdateState {
   final String stateSuccess = "SuccessBufferUpdate";
-  final List<UserModel> data;
+  final List<UserDataModel> data;
   SuccessBufferUpdate({required this.data});
 }
 

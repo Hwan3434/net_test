@@ -7,12 +7,12 @@ class OrgNotifierStateModelWait extends OrgNotifierStateModel {}
 class OrgNotifierStateModelLoading extends OrgNotifierStateModel {}
 
 class OrgNotifierStateModelSuccess extends OrgNotifierStateModel {
-  final Set<UserModel> data;
+  final Set<UserDataModel> data;
 
   OrgNotifierStateModelSuccess({required this.data});
 
   OrgNotifierStateModelSuccess copyWith({
-    Set<UserModel>? data,
+    Set<UserDataModel>? data,
   }) {
     return OrgNotifierStateModelSuccess(
       data: data ?? this.data,

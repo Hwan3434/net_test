@@ -4,7 +4,7 @@ enum OrgNotifierViewState { wait, loading, success, error }
 
 class OrgNotifierViewModel {
   final OrgNotifierViewState state;
-  final Set<UserModel> data;
+  final Set<UserDataModel> data;
 
   OrgNotifierViewModel({
     required this.state,
@@ -13,7 +13,7 @@ class OrgNotifierViewModel {
 
   OrgNotifierViewModel copyWith({
     OrgNotifierViewState? state,
-    Set<UserModel>? data,
+    Set<UserDataModel>? data,
   }) {
     return OrgNotifierViewModel(
       state: state ?? this.state,

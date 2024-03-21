@@ -1,6 +1,6 @@
-import 'package:domain/usecase/user/model/response/user_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample/sample/data/domain/project/model/project_model.dart';
+import 'package:sample/sample/data/domain/user/model/user_model.dart';
 
 class UserDetailNotifier extends StateNotifier<UserDetailModel> {
   UserDetailNotifier(super.state);

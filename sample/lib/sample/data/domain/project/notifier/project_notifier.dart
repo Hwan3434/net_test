@@ -1,12 +1,13 @@
 import 'package:domain/usecase/result/result.dart';
-import 'package:domain/usecase/user/model/response/user_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample/sample/aaa_test/agent_usecase.dart';
 import 'package:sample/sample/data/common/usecase_manager.dart';
 import 'package:sample/sample/data/domain/project/model/project_model.dart';
+import 'package:sample/sample/data/domain/project/model/project_state_model.dart';
 import 'package:sample/sample/data/domain/user/model/user_model.dart';
+import 'package:sample/sample/data/domain/user/model/user_state_model.dart';
 
-class ProjectStateNotifier extends StateNotifier<ProjectProviderModel> {
+class ProjectStateNotifier extends StateNotifier<ProjectStateModel> {
   final Ref ref;
   final AgentUseCase agentUseCase;
   ProjectStateNotifier(
@@ -22,13 +23,10 @@ class ProjectStateNotifier extends StateNotifier<ProjectProviderModel> {
   }
 
   void fetchProject() async {
-    state = state.copyWith(
-        projectStateModel:
-            state.projectStateModel.copyWith(state: ProjectState.loading));
+    state = state.copyWith(state: ProjectState.loading);
     // final list = await agentUseCase.getProjects();
     await Future.delayed(Duration(seconds: 3));
     state = state.copyWith(
-        projectStateModel: state.projectStateModel.copyWith(
       state: ProjectState.success,
       items: [
         ProjectModel(
@@ -36,31 +34,28 @@ class ProjectStateNotifier extends StateNotifier<ProjectProviderModel> {
         ProjectModel(
             id: 2, name: 'p2', userStateModel: UserStateModel.create()),
       ],
-    ));
+    );
   }
 
   ProjectModel getProjectById(int projectId) {
-    assert(state.projectStateModel.state == ProjectState.success);
-    return state.projectStateModel.items
-        .singleWhere((element) => element.id == projectId);
+    assert(state.state == ProjectState.success);
+    return state.items.singleWhere((element) => element.id == projectId);
   }
 
   void fetchUser({required ProjectModel project}) async {
     final userUseCase = ref.read(UseCaseManager().userUseCaseProvider(project));
 
     state = state.copyWith(
-      projectStateModel: state.projectStateModel.copyWith(
-        items: state.projectStateModel.items.map((e) {
-          if (e.id == project.id) {
-            return e.copyWith(
-              userStateModel: e.userStateModel.copyWith(
-                state: UserState.loading,
-              ),
-            );
-          }
-          return e;
-        }).toList(),
-      ),
+      items: state.items.map((e) {
+        if (e.id == project.id) {
+          return e.copyWith(
+            userStateModel: e.userStateModel.copyWith(
+              state: UserState.loading,
+            ),
+          );
+        }
+        return e;
+      }).toList(),
     );
 
     await Future.delayed(Duration(seconds: 3));
@@ -69,36 +64,34 @@ class ProjectStateNotifier extends StateNotifier<ProjectProviderModel> {
         case ResultSuccess(data: final data):
           {
             state = state.copyWith(
-              projectStateModel: state.projectStateModel.copyWith(
-                items: state.projectStateModel.items.map((e) {
-                  if (project.id == e.id) {
-                    return e.copyWith(
-                      userStateModel: UserStateModel(
-                        state: UserState.success,
-                        data: data,
-                      ),
-                    );
-                  }
-                  return e;
-                }).toList(),
-              ),
+              items: state.items.map((e) {
+                if (project.id == e.id) {
+                  return e.copyWith(
+                    userStateModel: UserStateModel(
+                      state: UserState.success,
+                      data: data
+                          .map((e) => UserModel.fromUserDataModel(e))
+                          .toList(),
+                    ),
+                  );
+                }
+                return e;
+              }).toList(),
             );
           }
         case ResultError():
           {
             state = state.copyWith(
-              projectStateModel: state.projectStateModel.copyWith(
-                items: state.projectStateModel.items.map((e) {
-                  if (project.id == e.id) {
-                    return e.copyWith(
-                      userStateModel: e.userStateModel.copyWith(
-                        state: UserState.error,
-                      ),
-                    );
-                  }
-                  return e;
-                }).toList(),
-              ),
+              items: state.items.map((e) {
+                if (project.id == e.id) {
+                  return e.copyWith(
+                    userStateModel: e.userStateModel.copyWith(
+                      state: UserState.error,
+                    ),
+                  );
+                }
+                return e;
+              }).toList(),
             );
           }
       }
@@ -107,49 +100,45 @@ class ProjectStateNotifier extends StateNotifier<ProjectProviderModel> {
 
   void updateUser(ProjectModel project, UserModel userModel) {
     state = state.copyWith(
-      projectStateModel: state.projectStateModel.copyWith(
-        items: state.projectStateModel.items.map(
-          (e) {
-            if (e.id == project.id) {
-              return e.copyWith(
-                userStateModel: e.userStateModel.copyWith(
-                  data: e.userStateModel.data.map((e) {
-                    if (e.id == userModel.id) {
-                      return userModel;
-                    }
-                    return e;
-                  }).toList(),
-                ),
-              );
-            }
-            return e;
-          },
-        ).toList(),
-      ),
+      items: state.items.map(
+        (e) {
+          if (e.id == project.id) {
+            return e.copyWith(
+              userStateModel: e.userStateModel.copyWith(
+                data: e.userStateModel.data.map((e) {
+                  if (e.id == userModel.id) {
+                    return userModel;
+                  }
+                  return e;
+                }).toList(),
+              ),
+            );
+          }
+          return e;
+        },
+      ).toList(),
     );
   }
 
   void addUser(ProjectModel project, UserModel userModel) {
     state = state.copyWith(
-      projectStateModel: state.projectStateModel.copyWith(
-        items: state.projectStateModel.items.map(
-          (e) {
-            if (e.id == project.id) {
-              return e.copyWith(
-                userStateModel: e.userStateModel.copyWith(
-                  data: [...e.userStateModel.data, userModel],
-                ),
-              );
-            }
-            return e;
-          },
-        ).toList(),
-      ),
+      items: state.items.map(
+        (e) {
+          if (e.id == project.id) {
+            return e.copyWith(
+              userStateModel: e.userStateModel.copyWith(
+                data: [...e.userStateModel.data, userModel],
+              ),
+            );
+          }
+          return e;
+        },
+      ).toList(),
     );
   }
 
   UserModel getUserById(int projectId, int userId) {
-    return state.projectStateModel.items
+    return state.items
         .singleWhere((element) => element.id == projectId)
         .userStateModel
         .data

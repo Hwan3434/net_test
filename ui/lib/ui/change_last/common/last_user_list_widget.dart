@@ -4,7 +4,7 @@ import 'package:domain/usecase/user/model/response/user_model.dart';
 import 'package:flutter/material.dart';
 
 class LastUserListWidget extends StatelessWidget {
-  final List<UserModel> data;
+  final List<UserDataModel> data;
 
   const LastUserListWidget({
     required this.data,
@@ -23,7 +23,7 @@ class LastUserListWidget extends StatelessWidget {
 }
 
 class _LastUserItemWidget extends StatelessWidget {
-  final UserModel data;
+  final UserDataModel data;
   const _LastUserItemWidget({required this.data});
 
   @override

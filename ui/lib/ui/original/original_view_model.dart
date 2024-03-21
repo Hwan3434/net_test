@@ -7,7 +7,7 @@ class OriginalViewStateLoading extends OriginalViewStateModel {}
 class OriginalViewStateWait extends OriginalViewStateModel {}
 
 class OriginalViewStateSuccess extends OriginalViewStateModel {
-  final List<UserModel> data;
+  final List<UserDataModel> data;
   OriginalViewStateSuccess({required this.data});
 }
 

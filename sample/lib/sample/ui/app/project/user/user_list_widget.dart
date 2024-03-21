@@ -1,7 +1,7 @@
-import 'package:domain/usecase/user/model/response/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sample/sample/data/domain/project/model/project_model.dart';
+import 'package:sample/sample/data/domain/user/model/user_model.dart';
 import 'package:sample/sample/ui/app/content/content_view.dart';
 import 'package:sample/sample/ui/app/project/user/user_widget.dart';
 import 'package:sample/sample/util/log.dart';
@@ -26,7 +26,7 @@ class UserListWidget extends StatelessWidget {
             Log.w('UserListWidget Consumer Build!');
             final user = ref.watch(
               ContentView.contentViewModelProvider.select((value) {
-                return value.project.projectStateModel.items
+                return value.project.items
                     .singleWhere((element) => element.id == project.id)
                     .userStateModel
                     .data[index];

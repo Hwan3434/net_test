@@ -1,8 +1,8 @@
-import 'package:domain/usecase/user/model/response/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sample/sample/data/domain/project/model/project_model.dart';
+import 'package:sample/sample/data/domain/user/model/user_model.dart';
 import 'package:sample/sample/ui/app/common/user_detail_view.dart';
 import 'package:sample/sample/util/log.dart';
 import 'package:sample/sample/widget/common/b_text_widget.dart';

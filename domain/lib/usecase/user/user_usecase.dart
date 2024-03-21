@@ -13,10 +13,10 @@ abstract interface class UserUseCase implements UseCase {
   //   required int userId,
   // });
   // Future<List<UserModel>> getUsers();
-  Future<Result<UserModel>> getUser({
+  Future<Result<UserDataModel>> getUser({
     required int userId,
   });
-  Future<Result<List<UserModel>>> getUsers();
+  Future<Result<List<UserDataModel>>> getUsers();
   Future<void> insert();
   Future<void> update();
   Future<void> delete(int userId);

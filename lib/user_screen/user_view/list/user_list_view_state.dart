@@ -7,7 +7,7 @@ class UserListViewStateWait extends UserListViewStateModel {}
 class UserListViewStateLoading extends UserListViewStateModel {}
 
 class UserListViewStateSuccess extends UserListViewStateModel {
-  final List<UserModel> loginUserList;
+  final List<UserDataModel> loginUserList;
   UserListViewStateSuccess(this.loginUserList);
 }
 
