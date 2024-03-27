@@ -1,6 +1,6 @@
 import 'package:test_web_view/web/base/models/js_request_model.dart';
 
-class InjeJsToWebModel extends JsRequestModel {
+class InjeJsToWebModel extends JsRequestBaseModel {
   final String name;
   final String email;
 
@@ -13,13 +13,9 @@ class InjeJsToWebModel extends JsRequestModel {
       : name = json['name'],
         email = json['email'];
 
+  @override
   Map<String, dynamic> toJson() => {
         'name': name,
         'email': email,
       };
-
-  @override
-  String getParam() {
-    return '\'${toJson().toString()}\'';
-  }
 }

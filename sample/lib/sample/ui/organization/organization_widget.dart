@@ -5,6 +5,7 @@ import 'package:sample/sample/data/domain/global_state_storage.dart';
 import 'package:sample/sample/ui/login/login_widget.dart';
 import 'package:sample/sample/ui/organization/organization_model.dart';
 import 'package:sample/sample/ui/organization/organization_notifier.dart';
+import 'package:sample/sample/ui/state_test/state_test_widget.dart';
 import 'package:sample/sample/widget/base/provider_widget.dart';
 import 'package:sample/sample/widget/common/b_button.dart';
 import 'package:sample/sample/widget/common/b_text_field.dart';
@@ -59,13 +60,21 @@ class _MyAppState extends ProviderState<OrganizationWidget,
           ),
           BButton(
             onPressed: () {
-              final org = controller.text;
-              if (org.isNotEmpty) {
-                ref
-                    .read(
-                        GlobalStateStorage().loginOrganizationProvider.notifier)
-                    .update((state) => controller.text);
-              }
+              ref
+                  .read(GlobalStateStorage().loginOrganizationProvider.notifier)
+                  .update((state) => 'oooggg');
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) {
+                  return StateTestWidget();
+                },
+              ));
+              // final org = controller.text;
+              // if (org.isNotEmpty) {
+              //   ref
+              //       .read(
+              //           GlobalStateStorage().loginOrganizationProvider.notifier)
+              //       .update((state) => controller.text);
+              // }
             },
             child: Text('다음'),
           )

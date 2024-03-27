@@ -2,6 +2,8 @@ enum InjeJsRequestType { fromAppToWeb, fromAppToWeb2 }
 
 enum InjeJsResponseType { toAppAAA, toAppBBB }
 
+const String lazyFunctionName = 'lazy';
+
 extension FuncResponseInfo on InjeJsResponseType {
   String get funcName {
     switch (this) {

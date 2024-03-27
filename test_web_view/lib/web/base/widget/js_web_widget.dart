@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:test_web_view/web/base/controller/js_web_controller.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class OjsWebWidget extends StatefulWidget {
+class JsWebWidget extends StatefulWidget {
   final bool canPop;
   final JsWebController controller;
 
-  const OjsWebWidget({
+  const JsWebWidget({
     super.key,
     this.canPop = true,
     required this.controller,
   });
 
   @override
-  State<OjsWebWidget> createState() => _OjsWebWidgetState();
+  State<JsWebWidget> createState() => _JsWebWidgetState();
 }
 
-class _OjsWebWidgetState extends State<OjsWebWidget> {
+class _JsWebWidgetState extends State<JsWebWidget> {
   @override
   Widget build(BuildContext context) {
     return _AndroidBackWidget(

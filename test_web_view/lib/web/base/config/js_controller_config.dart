@@ -1,9 +1,9 @@
 import 'package:webview_flutter/webview_flutter.dart';
 
-class ControllerConfig {
+class JsControllerConfig {
   final JavaScriptMode javaScriptMode;
 
-  const ControllerConfig({
+  const JsControllerConfig({
     this.javaScriptMode = JavaScriptMode.disabled,
   });
 }

@@ -17,23 +17,30 @@
 			padding: 0;
 		}
 	</style>
-  <script>
+</head>
+<script>
+        window.addEventListener('message', function(event) {
+        document.querySelector("#flutterMessageTitle").innerText = "?";
+          if (event.data.type === 'message_from_flutter') {
+            document.querySelector("#flutterMessageTitle").innerText = event.data.data;
+          }
+        });
+
+        setTimeout(() => lazy.postMessage('{"lazyComplete" : true}'), 2000);
+
 	    function fromAppToWeb(msg) {
-	        document.querySelector("#flutterMessageTitle").innerText = msg;
+	        document.querySelector("#flutterMessageTitle").innerText = msg + 's';
 	    }
 	    function fromAppToWeb2(msg, msg2) {
 	        document.querySelector("#flutterMessageTitle").innerText = msg + msg2;
 	    }
         function fromWebToAppAAA() {
-            toAppAAA.postMessage('{"dataA":"AAA","dataB":"6", "dataC":33}');
-            toAppAAA.postMessage('{"dataA":"AAA","dataB":"6"}');
             toAppAAA.postMessage('{"dataA":"AAA"}');
         }
         function fromWebToAppBBB() {
             toAppBBB.postMessage('{"dataA":"BBB","dataB":6}');
         }
     </script>
-</head>
 <body>
 <!-- Navigation bar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -58,6 +65,7 @@
   <br />
   <div id="flutterMessageTitle" style="text-align:center;">
   </div>
+<div id="flutterMessageTitle2"></div>
   <br />
   <div>
     <button class="btn btn-primary" onclick="fromWebToAppAAA()">AAA</button>

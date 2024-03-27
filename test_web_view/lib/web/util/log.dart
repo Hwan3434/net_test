@@ -29,7 +29,7 @@ class Log {
   static void e(
     String message, {
     bool time = true,
-    bool filePath = false,
+    bool filePath = true,
   }) {
     _print('[Error]', message, isTime: time, isFilePath: filePath);
   }

@@ -1,10 +1,15 @@
 import 'dart:typed_data';
 
+import 'package:test_web_view/web/base/models/js_request_model.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 mixin JsController {
   final WebViewController _nativeController = WebViewController();
   WebViewController get nativeController => _nativeController;
+
+  void setAgent(String? agent) {
+    _nativeController.setUserAgent(agent);
+  }
 
   Future<String?> currentUrl() {
     return _nativeController.currentUrl();
@@ -51,4 +56,32 @@ mixin JsController {
   Future<void> loadFlutterAsset(String key) {
     return _nativeController.loadFlutterAsset(key);
   }
+
+  void sendJavascript<T extends JsRequestBaseModel>({
+    required String funcName,
+    required T requestModel,
+  });
+  Future<JsCallbackResult>
+      sendJavascriptCallback<T extends JsRequestBaseModel>({
+    required String funcName,
+    required T requestModel,
+  });
+}
+
+sealed class JsCallbackResult<T> {}
+
+class JsSuccess<T> extends JsCallbackResult<T> {
+  final T data;
+
+  JsSuccess({
+    required this.data,
+  });
+}
+
+class JsError extends JsCallbackResult {
+  final Exception e;
+
+  JsError({
+    required this.e,
+  });
 }

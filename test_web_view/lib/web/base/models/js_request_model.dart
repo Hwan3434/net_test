@@ -1,11 +1,3 @@
-abstract class JsRequestModel {
-  String getParam();
-
-  String getStringParam(String param) {
-    return '\'$param\'';
-  }
-
-  String getIntParam(int param) {
-    return '$param';
-  }
+abstract class JsRequestBaseModel {
+  Map<String, dynamic> toJson();
 }
