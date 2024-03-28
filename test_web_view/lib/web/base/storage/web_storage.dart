@@ -1,3 +1,4 @@
+import 'package:test_web_view/web/base/observer/js_observer.dart';
 import 'package:test_web_view/web/util/log.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -8,7 +9,11 @@ const _getLocalStorage = 'window.localStorage.getItem';
 
 class WebStorage implements JsStorage {
   final WebViewController _nativeController;
-  WebStorage(this._nativeController);
+  final JsObserver? observer;
+  WebStorage(
+    this._nativeController, {
+    this.observer,
+  });
 
   @override
   Future<void> setInt({required String key, required int value}) async {
@@ -30,6 +35,7 @@ class WebStorage implements JsStorage {
       return int.parse(result as String);
     } catch (e) {
       Log.e('e : $e');
+      observer?.onStorageError(key, e);
       return null;
     }
   }
@@ -41,6 +47,7 @@ class WebStorage implements JsStorage {
           .runJavaScriptReturningResult('$_getLocalStorage("$key")') as String;
     } catch (e) {
       Log.e('e : $e');
+      observer?.onStorageError(key, e);
       return null;
     }
   }

@@ -1,6 +1,6 @@
-import 'package:test_web_view/web/base/models/js_request_model.dart';
+import 'package:test_web_view/web/base/models/js_script_model.dart';
 
-class InjeJsToWebModel extends JsRequestBaseModel {
+class InjeJsToWebModel extends JsScriptModel {
   final String name;
   final String email;
 

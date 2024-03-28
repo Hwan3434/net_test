@@ -1,26 +1,26 @@
-enum InjeJsRequestType { fromAppToWeb, fromAppToWeb2 }
+enum InjeJsRequestChannel { fromAppToWeb, fromAppToWeb2 }
 
-enum InjeJsResponseType { toAppAAA, toAppBBB }
+enum InjeJsResponseChannel { toAppAAA, toAppBBB }
 
-const String lazyFunctionName = 'lazy';
+const String lazyChannel = 'lazy';
 
-extension FuncResponseInfo on InjeJsResponseType {
-  String get funcName {
+extension FuncResponseInfo on InjeJsResponseChannel {
+  String get channelName {
     switch (this) {
-      case InjeJsResponseType.toAppAAA:
+      case InjeJsResponseChannel.toAppAAA:
         return 'toAppAAA';
-      case InjeJsResponseType.toAppBBB:
+      case InjeJsResponseChannel.toAppBBB:
         return 'toAppBBB';
     }
   }
 }
 
-extension FuncRequestInfo on InjeJsRequestType {
-  String get funcName {
+extension FuncRequestInfo on InjeJsRequestChannel {
+  String get channelName {
     switch (this) {
-      case InjeJsRequestType.fromAppToWeb:
+      case InjeJsRequestChannel.fromAppToWeb:
         return 'fromAppToWeb';
-      case InjeJsRequestType.fromAppToWeb2:
+      case InjeJsRequestChannel.fromAppToWeb2:
         return 'fromAppToWeb2';
     }
   }

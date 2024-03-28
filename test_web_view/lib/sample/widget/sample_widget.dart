@@ -6,7 +6,7 @@ import 'package:test_web_view/web/base/config/js_controller_config.dart';
 import 'package:test_web_view/web/base/controller/lazy/js_lazy.dart';
 import 'package:test_web_view/web/base/controller/lazy/js_lazy_web_controller.dart';
 import 'package:test_web_view/web/base/event/device_events.dart';
-import 'package:test_web_view/web/base/models/js_response_function.dart';
+import 'package:test_web_view/web/base/models/js_channel.dart';
 import 'package:test_web_view/web/util/log.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -33,8 +33,8 @@ class _SampleWidgetState extends State<SampleWidget> {
     super.initState();
 
     controller = JsLazyWebController(
-      const JsLazy(
-        responseFunctionName: lazyFunctionName,
+      const JsLazyChannel(
+        name: lazyChannel,
       ),
       JsControllerConfig(
         javaScriptMode: JavaScriptMode.unrestricted,
@@ -45,9 +45,9 @@ class _SampleWidgetState extends State<SampleWidget> {
           debugPrint('android back button click : $didPop');
         },
       ),
-      sendJsFormDelegate: (funcName, paramJson) {
-        return '''$funcName('$paramJson')''';
-        // return '''window.postMessage({type: "message_from_flutter",data: "{action:$funcName, data:$paramJson}"});''';
+      sendJsFormDelegate: (channel, paramJson) {
+        return '''$channel('$paramJson')''';
+        // return '''window.postMessage({type: "message_from_flutter",data: "{action:$channel, data:$paramJson}"});''';
       },
     )
       ..setNavigation(
@@ -60,21 +60,21 @@ class _SampleWidgetState extends State<SampleWidget> {
           },
         ),
       )
-      ..addJsLazyRequestScriptName(InjeJsRequestType.fromAppToWeb.funcName)
-      ..setJsResponseFunction<InjeJsAAAModel>(
-        funcName: InjeJsResponseType.toAppAAA.funcName,
-        function: JsFunction(
-          createModelFunc: (jsonMap) => InjeJsAAAModel.fromJson(jsonMap),
-          jsResponseCallBack: (controller, model) {
+      ..addJsLazyScript(InjeJsRequestChannel.fromAppToWeb.channelName)
+      ..addChannel<InjeJsAAAModel>(
+        channelName: InjeJsResponseChannel.toAppAAA.channelName,
+        channel: JsChannel(
+          createChannelModel: (jsonMap) => InjeJsAAAModel.fromJson(jsonMap),
+          channelCallBack: (controller, model) {
             Log.w('First callback :: ${model.dataA} / ${model.dataB}');
           },
         ),
       )
-      ..setJsResponseFunction<InjeJsBBBModel>(
-        funcName: InjeJsResponseType.toAppBBB.funcName,
-        function: JsFunction(
-          createModelFunc: (jsonMap) => InjeJsBBBModel.fromJson(jsonMap),
-          jsResponseCallBack: (controller, model) {
+      ..addChannel<InjeJsBBBModel>(
+        channelName: InjeJsResponseChannel.toAppBBB.channelName,
+        channel: JsChannel(
+          createChannelModel: (jsonMap) => InjeJsBBBModel.fromJson(jsonMap),
+          channelCallBack: (controller, model) {
             Log.w('First callback :: ${model.dataA} / ${model.dataB}');
           },
         ),
@@ -102,8 +102,8 @@ class _SampleWidgetState extends State<SampleWidget> {
                 return;
               }
               controller.sendJavascript<InjeJsToWebModel>(
-                funcName: InjeJsRequestType.fromAppToWeb.funcName,
-                requestModel: InjeJsToWebModel(
+                scriptName: InjeJsRequestChannel.fromAppToWeb.channelName,
+                scriptModel: InjeJsToWebModel(
                   name: _textController.text,
                   email: s.toString(),
                 ),

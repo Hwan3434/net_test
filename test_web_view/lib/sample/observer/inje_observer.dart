@@ -4,28 +4,33 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class InjeObserver extends JsObserver {
   @override
-  void onRequest(String funcName, model) {
-    Log.w('JSObserver OnRequest Function : $funcName / ${model.toString()}');
+  void onRequest(String script, model) {
+    Log.w('JSObserver OnRequest : $script / ${model.toString()}');
   }
 
   @override
-  void onResponse(String funcName, model) {
-    Log.w('JSObserver OnResponse Function : $funcName / ${model.toString()}');
+  void onResponse(String channelName, model) {
+    Log.w('JSObserver OnResponse : $channelName / ${model.toString()}');
   }
 
   @override
-  void onRequestError(String funcName, Exception e) {
-    Log.e('JSObserver OnRequest Function : $funcName / $e');
+  void onRequestError(String script, Exception e) {
+    Log.e('JSObserver OnRequest : $script / $e');
   }
 
   @override
-  void onResponseError(String funcName, Exception e) {
-    Log.e('JSObserver OnResponse Function : $funcName / $e');
+  void onResponseError(String channelName, Exception e) {
+    Log.e('JSObserver OnResponse : $channelName / $e');
   }
 
   @override
   void onConsoleMessage(JavaScriptConsoleMessage consoleMessage) {
     Log.e(
         'JSObserver level : ${consoleMessage.level} / message : ${consoleMessage.message.replaceAll(', ', '')}');
+  }
+
+  @override
+  void onStorageError(String scriptName, error) {
+    Log.e('JSObserver onStorageError : $scriptName / $error');
   }
 }

@@ -1,8 +1,8 @@
-class JsLazy {
-  final String responseFunctionName;
+class JsLazyChannel {
+  final String name;
 
-  const JsLazy({
-    required this.responseFunctionName,
+  const JsLazyChannel({
+    required this.name,
   });
 }
 

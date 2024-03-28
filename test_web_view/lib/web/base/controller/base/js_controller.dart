@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:test_web_view/web/base/models/js_request_model.dart';
+import 'package:test_web_view/web/base/models/js_script_model.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 mixin JsController {
@@ -57,14 +57,13 @@ mixin JsController {
     return _nativeController.loadFlutterAsset(key);
   }
 
-  void sendJavascript<T extends JsRequestBaseModel>({
-    required String funcName,
-    required T requestModel,
+  void sendJavascript<T extends JsScriptModel>({
+    required String scriptName,
+    required T scriptModel,
   });
-  Future<JsCallbackResult>
-      sendJavascriptCallback<T extends JsRequestBaseModel>({
-    required String funcName,
-    required T requestModel,
+  Future<JsCallbackResult> sendScript<T extends JsScriptModel>({
+    required String scriptName,
+    required T scriptModel,
   });
 }
 
